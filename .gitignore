@@ -398,5 +398,6 @@ FodyWeavers.xsd
 *.sln.iml
 
 # CaptainDocker plugin
-CaptainDocker.Entities.DockerConnection.json
+src/CaptainDocker.Entities.DockerConnection.json
+
 *.sem

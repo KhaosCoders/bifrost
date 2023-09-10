@@ -1,0 +1,10 @@
+[
+  {
+    "__Key__": "31462541-54dd-4561-b650-063dc455a92c",
+    "Id": "31462541-54dd-4561-b650-063dc455a92c",
+    "Directory": "E:\\GitHub\\bifrost\\src\\Bifrost.Server",
+    "Dockerfile": "E:\\GitHub\\bifrost\\src\\Bifrost.Server\\Dockerfile",
+    "ImageName": "bifrost.server",
+    "Name": "Bifrost.Server"
+  }
+]
