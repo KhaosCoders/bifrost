@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34004.107
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bifrost.Server", "Bifrost.Server\Bifrost.Server.csproj", "{F7F9D175-2F72-4D7B-9AD6-06E4A3310CE2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bifrost.SCL", "Bifrost.SCL\Bifrost.SCL.csproj", "{6BEEA262-0E9E-4A87-9943-A2841DF5D23F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bifrost.Shared", "Bifrost.Shared\Bifrost.Shared.csproj", "{6BEEA262-0E9E-4A87-9943-A2841DF5D23F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{38B6A836-68EA-47A8-B187-99AB27624AE3}"
 	ProjectSection(SolutionItems) = preProject
