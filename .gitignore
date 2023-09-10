@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 # CaptainDocker plugin
 CaptainDocker.Entities.DockerConnection.json
+*.sem
