@@ -14,5 +14,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Bifrost.RCL\Bifrost.RCL.csproj" />
+	  <ProjectReference Include="..\Bifrost.SCL\Bifrost.SCL.csproj" />
 	</ItemGroup>
 </Project>
