@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34004.107
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bifrost", "Bifrost\Bifrost.csproj", "{77624880-45F4-4CAE-9A95-DF71EE3AD03D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bifrost.Server", "Bifrost.Server\Bifrost.Server.csproj", "{F7F9D175-2F72-4D7B-9AD6-06E4A3310CE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{77624880-45F4-4CAE-9A95-DF71EE3AD03D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{77624880-45F4-4CAE-9A95-DF71EE3AD03D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{77624880-45F4-4CAE-9A95-DF71EE3AD03D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{77624880-45F4-4CAE-9A95-DF71EE3AD03D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7F9D175-2F72-4D7B-9AD6-06E4A3310CE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7F9D175-2F72-4D7B-9AD6-06E4A3310CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7F9D175-2F72-4D7B-9AD6-06E4A3310CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7F9D175-2F72-4D7B-9AD6-06E4A3310CE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3D72774A-55CE-43D1-BDD1-E66737F57535}
+		SolutionGuid = {8A8B9543-B5C6-4BB3-89CB-4FC63DBF88AC}
 	EndGlobalSection
 EndGlobal
