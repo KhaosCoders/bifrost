@@ -1,3 +1,6 @@
+using Bifrost.Server.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bifrost.Server;
 
@@ -7,10 +10,30 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
+        // Add blazor components
         builder.Services.AddRazorComponents()
             .AddServerComponents()
             .AddWebAssemblyComponents();
+
+        // SQLite identity
+        var identityConnectionString = builder.Configuration.GetConnectionString("IdentityConnection") ?? throw new InvalidOperationException("Connection string 'IdentityConnection' not found.");
+
+        builder.Services.AddAuthorization();
+
+        builder.Services.AddAuthentication()
+            .AddBearerToken(IdentityConstants.BearerScheme);
+        builder.Services.AddAuthorizationBuilder();
+
+        builder.Services.AddDbContext<IdentityDbCtx>(
+            options => options.UseSqlite(identityConnectionString));
+
+        builder.Services.AddIdentityCore<IdentityUser>()
+           .AddEntityFrameworkStores<IdentityDbCtx>()
+           .AddApiEndpoints();
+
+        // Swagger
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
 
@@ -18,6 +41,8 @@ public static class Program
         if (app.Environment.IsDevelopment())
         {
             app.UseWebAssemblyDebugging();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
         else
         {
@@ -29,6 +54,10 @@ public static class Program
         app.UseHttpsRedirection();
 
         app.UseStaticFiles();
+
+        app.MapIdentityApi<IdentityUser>();
+
+        app.UseAuthorization();
 
         app.MapRazorComponents<App>()
             .AddServerRenderMode()
