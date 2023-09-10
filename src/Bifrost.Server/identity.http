@@ -1,0 +1,47 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+@url=http://localhost:5028
+@user=admin
+@password=P@$$w0rd1
+@email=admin@notadomain.com
+
+# Register admin user
+POST {{url}}/identity/register
+Content-Type: application/json
+
+{
+  "username": "{{user}}",
+  "password": "{{password}}",
+  "email": "{{email}}"
+}
+###
+
+# Login admin user
+
+POST {{url}}/identity/login
+Content-Type: application/json
+
+{
+  "username": "{{user}}",
+  "password": "{{password}}"
+}
+###
+
+# Make API call with token
+
+@token=<your token here>
+GET {{url}}
+Authorization: Bearer {{token}}
+###
+
+# Use refresh token
+
+@refreshToken=<your refresh token here>
+
+POST {{url}}/identity/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+###

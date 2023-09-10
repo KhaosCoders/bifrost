@@ -1,4 +1,5 @@
 using Bifrost.Server.Data;
+using Bifrost.Server.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,6 +38,9 @@ public static class Program
 
         var app = builder.Build();
 
+        // Ensure database is ready
+        app.EnsureDatabaseReady<IdentityDbCtx>();
+
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -55,7 +59,8 @@ public static class Program
 
         app.UseStaticFiles();
 
-        app.MapIdentityApi<IdentityUser>();
+        app.MapGroup("/identity")
+            .MapIdentityApi<IdentityUser>();
 
         app.UseAuthorization();
 

@@ -399,5 +399,8 @@ FodyWeavers.xsd
 
 # CaptainDocker plugin
 src/CaptainDocker.*
-
 *.sem
+
+# SQLite databse files
+*.sqlite
+*.sqlite3
