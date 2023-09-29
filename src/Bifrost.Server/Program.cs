@@ -1,5 +1,6 @@
 using Bifrost.Server.Data;
 using Bifrost.Server.Extensions;
+using Bifrost.WASM.Pages;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -65,6 +66,7 @@ public static class Program
         app.UseAuthorization();
 
         app.MapRazorComponents<App>()
+            .AddAdditionalAssemblies(typeof(Counter).Assembly)
             .AddServerRenderMode()
             .AddWebAssemblyRenderMode();
 
