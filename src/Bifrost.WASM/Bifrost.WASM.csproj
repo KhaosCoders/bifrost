@@ -13,4 +13,8 @@
 	  <Folder Include="wwwroot\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Bifrost.Shared\Bifrost.Shared.csproj" />
+	</ItemGroup>
+
 </Project>

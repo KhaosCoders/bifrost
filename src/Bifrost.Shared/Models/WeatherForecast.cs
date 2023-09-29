@@ -1,4 +1,4 @@
-namespace Bifrost.Server;
+namespace Bifrost.Models;
 
 public class WeatherForecast
 {
