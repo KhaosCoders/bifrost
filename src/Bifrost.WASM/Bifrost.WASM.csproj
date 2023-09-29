@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
 	<PropertyGroup>
-		<RazorLangVersion>8.0</RazorLangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
