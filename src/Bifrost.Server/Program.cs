@@ -14,8 +14,8 @@ public static class Program
 
         // Add blazor components
         builder.Services.AddRazorComponents()
-            .AddServerComponents()
-            .AddWebAssemblyComponents();
+            .AddInteractiveServerComponents()
+            .AddInteractiveWebAssemblyComponents();
 
         // SQLite identity
         var identityConnectionString = builder.Configuration.GetConnectionString("IdentityConnection") ?? throw new InvalidOperationException("Connection string 'IdentityConnection' not found.");
@@ -67,8 +67,8 @@ public static class Program
 
         app.MapRazorComponents<App>()
             .AddAdditionalAssemblies(typeof(Counter).Assembly)
-            .AddServerRenderMode()
-            .AddWebAssemblyRenderMode();
+            .AddInteractiveServerRenderMode()
+            .AddInteractiveWebAssemblyRenderMode();
 
         app.Run();
     }
