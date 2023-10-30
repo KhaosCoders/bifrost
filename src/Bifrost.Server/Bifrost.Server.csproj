@@ -3,8 +3,9 @@
 	<PropertyGroup>
 		<UserSecretsId>9dabad79-4508-4ab8-ab05-c792ae7f3346</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<DartSassOutputStyle>compressed</DartSassOutputStyle>
+		<DartSassOutputStyle Condition="'$(Configuration)' != 'Debug'">compressed</DartSassOutputStyle>
 		<DartSassOutputStyle Condition="'$(Configuration)' == 'Debug'">expanded</DartSassOutputStyle>
+		<DartSassMessageLevel>High</DartSassMessageLevel>
 	</PropertyGroup>
 
 	<ItemGroup>
