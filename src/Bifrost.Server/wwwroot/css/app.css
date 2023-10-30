@@ -92,3 +92,11 @@ a, .btn-link {
 .loading-progress-text:after {
   content: var(--blazor-load-percentage-text, "Loading");
 }
+
+.navbar-brand img {
+  height: 2rem;
+}
+.navbar-brand img:last-child {
+  padding-left: 0.5em;
+  filter: invert(9%) sepia(10%) saturate(0%) hue-rotate(218deg) brightness(97%) contrast(85%);
+}

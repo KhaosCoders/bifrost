@@ -47,7 +47,7 @@ a, .btn-link {
     width: 100%;
     z-index: 1000;
 
-     .dismiss {
+    .dismiss {
         cursor: pointer;
         position: absolute;
         right: 0.75rem;
@@ -72,7 +72,7 @@ a, .btn-link {
     height: 8rem;
     margin: 20vh auto 1rem auto;
 
-     circle {
+    circle {
         fill: none;
         stroke: #e0e0e0;
         stroke-width: 0.6rem;
@@ -95,5 +95,16 @@ a, .btn-link {
 
     &:after {
         content: var(--blazor-load-percentage-text, "Loading");
+    }
+}
+
+.navbar-brand {
+    img {
+        height: 2rem;
+
+        &:last-child {
+            padding-left: 0.5em;
+            filter: invert(9%) sepia(10%) saturate(0%) hue-rotate(218deg) brightness(97%) contrast(85%);
+        }
     }
 }
