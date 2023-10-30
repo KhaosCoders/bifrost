@@ -1,9 +1,40 @@
 ﻿@page "/Identity/Account/Login"
 @attribute [RenderModeInteractiveAuto]
-@* @attribute [Authorize] *@
 
-<PageTitle>Login</PageTitle>
+<PageTitle>Login - Bifrost</PageTitle>
 
-<h1>Login</h1>
+<HeadContent>
+    <link rel="stylesheet" href="/css/login.css" />
+</HeadContent>
 
-Welcome to Login.
+<div class="container h-100">
+    <LoginBackground />
+
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="login-dialog">
+            <form class="form-inline">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="username-addon">
+                        <i class="bi bi-person-fill"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="username-addon">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="password-addon">
+                        <i class="bi bi-key-fill"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="" id="staySignedIn">
+                    <label class="form-check-label" for="staySignedIn">
+                        Stay signed in
+                    </label>
+                </div>
+                <div class="input-group">
+                    <button class="btn btn-dark w-100" type="submit">Sign in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
