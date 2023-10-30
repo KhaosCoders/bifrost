@@ -31,4 +31,8 @@
 	  <ProjectReference Include="..\Bifrost.Shared\Bifrost.Shared.csproj" />
 	  <ProjectReference Include="..\Bifrost.WASM\Bifrost.WASM.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\svg\" />
+	</ItemGroup>
 </Project>
