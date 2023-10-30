@@ -20,14 +20,20 @@ public static class Program
         // SQLite identity
         var identityConnectionString = builder.Configuration.GetConnectionString("IdentityConnection") ?? throw new InvalidOperationException("Connection string 'IdentityConnection' not found.");
 
-        builder.Services.AddAuthorization();
+        builder.Services.AddAuthentication(o =>
+        {
+            o.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+            o.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+            o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+        })
+            .AddBearerToken(IdentityConstants.BearerScheme)
+            .AddIdentityCookies(b => b.ApplicationCookie?.Configure(o => o.LoginPath = "/Identity/Account/Login"));
 
-        builder.Services.AddAuthentication()
-            .AddBearerToken(IdentityConstants.BearerScheme);
         builder.Services.AddAuthorizationBuilder();
 
         builder.Services.AddDbContext<IdentityDbCtx>(
             options => options.UseSqlite(identityConnectionString));
+        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
         builder.Services.AddIdentityCore<IdentityUser>()
            .AddEntityFrameworkStores<IdentityDbCtx>()
@@ -48,6 +54,7 @@ public static class Program
             app.UseWebAssemblyDebugging();
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.UseMigrationsEndPoint();
         }
         else
         {
@@ -60,10 +67,13 @@ public static class Program
 
         app.UseStaticFiles();
 
+        app.UseAntiforgery();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
         app.MapGroup("/identity")
             .MapIdentityApi<IdentityUser>();
-
-        app.UseAuthorization();
 
         app.MapRazorComponents<App>()
             .AddAdditionalAssemblies(typeof(Counter).Assembly)
