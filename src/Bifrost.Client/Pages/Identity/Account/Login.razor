@@ -1,0 +1,58 @@
+﻿@page "/Identity/Account/Login"
+@rendermode InteractiveAuto
+@inject HttpClient HttpClient;
+
+<PageTitle>Login - Bifrost</PageTitle>
+
+<HeadContent>
+    <link rel="stylesheet" href="/css/login.css" />
+</HeadContent>
+
+<div class="container h-100">
+    <LoginBackground />
+
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="login-dialog">
+            <form class="form-inline" @onsubmit="SignInAsync">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="username-addon">
+                        <i class="bi bi-person-fill"></i>
+                    </span>
+                    <InputText type="text" class="form-control" @bind-Value="Username" placeholder="Username" aria-label="Username" aria-describedby="username-addon"></InputText>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="password-addon">
+                        <i class="bi bi-key-fill"></i>
+                    </span>
+                    <InputText type="text" class="form-control" @bind-Value="Password" placeholder="Password" aria-label="Password" aria-describedby="password-addon"></InputText>
+                </div>
+                <div class="form-check mb-3">
+                    <InputCheckbox class="form-check-input" @bind-Value="RememberMe" id="staySignedIn"></InputCheckbox>
+                    <label class="form-check-label" for="staySignedIn">
+                        Stay signed in
+                    </label>
+                </div>
+                <div class="input-group">
+                    <button class="btn btn-dark w-100" type="submit" id="login-submit">Sign in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@code {
+    public string Username { get; set; }
+    public string Password { get; set; }
+    public bool RememberMe { get; set; }
+
+    private async Task SignInAsync(EventArgs args)
+    {
+        if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+            return;
+
+
+        var response = await HttpClient.PostAsJsonAsync("/identity/login", new { Username, Password });
+
+        Console.WriteLine($"Signin: {response.StatusCode}");
+    }
+}
