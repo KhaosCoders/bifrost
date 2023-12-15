@@ -9,7 +9,7 @@
 <a target="_blank" href="https://github.com/KhaosCoders/bifrost"><img src="https://img.shields.io/github/stars/KhaosCoders/bifrost" /></a> <a target="_blank" href="https://github.com/KhaosCoders/bifrost"><img src="https://img.shields.io/github/last-commit/KhaosCoders/bifrost" /></a>
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/KhaosCoders?label=GitHub%20Sponsors)](https://github.com/sponsors/KhaosCoders)
 
-Bifröst is a easy-to-use self-host VPN proxy solution for all your remote assistant needs.
+Bifröst is an easy-to-use self-host VPN proxy solution for all your remote assistant needs.
 
 Define VPN connections to other organizations and create RDP (and other) connections through them, without the need of a local VPN client.
 
