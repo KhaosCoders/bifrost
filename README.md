@@ -29,3 +29,10 @@ TBD
 Consider becomming a GitHub Sponsor or donate via PayPal.
 
 Your contribution means all of midgard to me.
+
+# 🙂 Contribution
+
+Feel free to contribute to this project by creating a pull request.
+
+Here are some common steps in development:
+- Add a data migration: `dotnet ef migrations add <name> --output-dir Data/Migrations`

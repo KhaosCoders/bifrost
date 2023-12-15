@@ -1,0 +1,109 @@
+$planets: (midgard vanaheim hel alfheim jotunheim nifheim muspelheim savartalheim);
+
+$planet-sizes: ("midgard": 9%, "vanaheim": 5%, "hel": 7%, "alfheim": 6%, "jotunheim": 4%, "nifheim": 3%, "muspelheim": 5%, "savartalheim": 3%);
+
+$planet-offsets: ("midgard": 13%, "vanaheim": 39%, "hel": 30%, "alfheim": 47.5%, "jotunheim": 24.5%, "nifheim": 35%, "muspelheim": 20%, "savartalheim": 43%);
+
+$planet-speeds: ("midgard": 30000ms, "vanaheim": 60000ms, "hel": 56000ms, "alfheim": 80000ms, "jotunheim": 50000ms, "nifheim": 58000ms, "muspelheim": 32000ms, "savartalheim": 60000ms);
+
+$planet-positions: ("midgard": 5, "vanaheim": 25, "hel": 80, "alfheim": 75, "jotunheim": 10, "nifheim": 40, "muspelheim": 50, "savartalheim": 60);
+
+html,
+body,
+div.page,
+main,
+article {
+  height: 100%
+}
+
+.login-dialog {
+  position: relative;
+  opacity: 0.9;
+  width: 400px;
+  background: #E6E6E6;
+  border: 1px solid black;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 10px #bbb;
+  padding: 40px;
+
+  .input-group {
+    .form-control {
+      border-color: #333333;
+    }
+
+    .input-group-text {
+      border-color: #333333;
+    }
+  }
+
+  .form-check {
+    .form-check-input {
+      border-color: #333333;
+    }
+  }
+}
+
+.bifrost-background {
+  position: absolute;
+  width: 1100px;
+  height: 1100px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.circle {
+  border: 1px solid #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  offset-anchor: 50% 50%;
+}
+
+.bifrost {
+  display: inline-block;
+  offset-anchor: 50% 50%;
+  offset-path: circle(0.01% at 50% 50%);
+  width: 300px;
+  height: 300px;
+  opacity: 0.75;
+  animation: spin 20s linear infinite;
+  animation-direction: reverse;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url('/svg/logo.svg');
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@each $planet in $planets {
+  .#{$planet} {
+    height: #{map-get($planet-sizes, $planet)};
+    width: #{map-get($planet-sizes, $planet)};
+    offset-path: circle(#{map-get($planet-offsets, $planet)} at 50% 50%);
+    animation: #{$planet} #{map-get($planet-speeds, $planet)} infinite linear;
+  }
+
+  $pos: map-get($planet-positions, $planet);
+
+  @keyframes #{$planet} {
+    0% {
+      offset-distance: #{$pos + '%'};
+    }
+
+    #{100 - $pos}% {
+      offset-distance: 100%;
+    }
+
+    #{100 - $pos}.01% {
+      offset-distance: 0%;
+    }
+
+    100% {
+      offset-distance: #{$pos + '%'};
+    }
+  }
+}
