@@ -42,8 +42,8 @@
 </div>
 
 @code {
-    public string Username { get; set; }
-    public string Password { get; set; }
+    public string? Username { get; set; }
+    public string? Password { get; set; }
     public bool RememberMe { get; set; }
 
     private async Task SignInAsync(EventArgs args)
@@ -51,8 +51,7 @@
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
             return;
 
-
-        var response = await HttpClient.PostAsJsonAsync("/identity/login", new { Username, Password });
+        var response = await HttpClient.PostAsJsonAsync($"/identity/login?useSessionCookies={RememberMe}", new { Username, Password });
 
         Console.WriteLine($"Signin: {response.StatusCode}");
     }

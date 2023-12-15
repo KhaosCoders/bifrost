@@ -1,8 +1,8 @@
-using Bifrost.Client.Pages;
 using Bifrost.Components;
 using Bifrost.Components.Account;
 using Bifrost.Data;
 using Bifrost.Extensions;
+using Bifrost.Features.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +39,7 @@ public static class Program
             .AddDefaultTokenProviders()
             .AddApiEndpoints();
 
+        builder.Services.AddScoped<IIdentityService, IdentityService>();
         builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
         // Authentication
@@ -59,6 +60,9 @@ public static class Program
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+
+        // Ensure database is ready
+        app.EnsureDatabaseReady<ApplicationDbContext>();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -81,8 +85,11 @@ public static class Program
         app.UseAntiforgery();
 
         // Are these needed?
-        //app.UseAuthentication();
-        //app.UseAuthorization();
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.MapGroup("/identity")
+            .MapIdentityApiWithUsername<IdentityUser>();
 
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode()
