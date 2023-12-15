@@ -2,16 +2,20 @@ using Bifrost.Client.Pages;
 using Bifrost.Components;
 using Bifrost.Components.Account;
 using Bifrost.Data;
+using Bifrost.Extensions;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bifrost;
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        // HttpClient for Server-Side-Rendering
+        builder.Services.AddInternalHttpClient(builder.Configuration);
 
         // Add services to the container.
         builder.Services.AddRazorComponents()
