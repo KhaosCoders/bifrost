@@ -8,13 +8,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		..\.gitignore = ..\.gitignore
 		Directory.Build.props = Directory.Build.props
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E3596870-22E4-445F-83DA-2A2D4792C9D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bifrost", "Bifrost\Bifrost.csproj", "{1F49783C-4F32-47E5-9FC1-5B9FE7E07C41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bifrost", "Bifrost\Bifrost.csproj", "{1F49783C-4F32-47E5-9FC1-5B9FE7E07C41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bifrost.Client", "Bifrost.Client\Bifrost.Client.csproj", "{E2EA90FB-52D3-456B-9465-3837C0C2498D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bifrost.Client", "Bifrost.Client\Bifrost.Client.csproj", "{E2EA90FB-52D3-456B-9465-3837C0C2498D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
