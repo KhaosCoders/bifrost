@@ -1,7 +1,6 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 
-@url=http://localhost:5028
-@user=admin
+@url=http://localhost:7260
 @password=P@$$w0rd1
 @email=admin@notadomain.com
 
@@ -10,7 +9,6 @@ POST {{url}}/identity/register
 Content-Type: application/json
 
 {
-  "username": "{{user}}",
   "password": "{{password}}",
   "email": "{{email}}"
 }
@@ -22,7 +20,7 @@ POST {{url}}/identity/login
 Content-Type: application/json
 
 {
-  "username": "{{user}}",
+  "email": "{{email}}",
   "password": "{{password}}"
 }
 ###

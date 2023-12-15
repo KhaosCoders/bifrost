@@ -1,5 +1,6 @@
 using Bifrost.Server.Data;
 using Bifrost.Server.Extensions;
+using Bifrost.Server.Identity;
 using Bifrost.WASM.Pages;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,12 @@ public static class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        string? baseUrls = builder.Configuration["ASPNETCORE_URLS"];
+        if (string.IsNullOrWhiteSpace(baseUrls) )
+        {
+            throw new Exception("ASPNETCORE_URLS environment variable is not set.");
+        }
 
         // Add blazor components
         builder.Services.AddRazorComponents()
@@ -38,6 +45,8 @@ public static class Program
         builder.Services.AddIdentityCore<IdentityUser>()
            .AddEntityFrameworkStores<IdentityDbCtx>()
            .AddApiEndpoints();
+
+        builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(baseUrls.Split(';')[0]) });
 
         // Swagger
         builder.Services.AddEndpointsApiExplorer();
@@ -73,7 +82,7 @@ public static class Program
         app.UseAuthorization();
 
         app.MapGroup("/identity")
-            .MapIdentityApi<IdentityUser>();
+            .MapBetterIdentityApi<IdentityUser>();
 
         app.MapRazorComponents<App>()
             .AddAdditionalAssemblies(typeof(Counter).Assembly)
