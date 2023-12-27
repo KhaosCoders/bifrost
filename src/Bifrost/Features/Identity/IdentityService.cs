@@ -16,7 +16,8 @@ public class IdentityService(
     UserManager<ApplicationUser> userManager,
     IUserStore<ApplicationUser> userStore,
     IOptionsMonitor<BearerTokenOptions> bearerTokenOptions,
-    TimeProvider timeProvider) : IIdentityService
+    TimeProvider timeProvider,
+    ILogger<IdentityService> logger) : IIdentityService
 {
     // Validate the email address using DataAnnotations like the UserValidator does when RequireUniqueEmail = true.
     private static readonly EmailAddressAttribute emailAddressAttribute = new();
@@ -41,19 +42,33 @@ public class IdentityService(
 
         if (!result.RequiresTwoFactor)
         {
+            logger.LogInformation("User {Name} logged in using password", username);
             return result;
         }
 
         if (!string.IsNullOrEmpty(mfaCode))
         {
-            return await signInManager.TwoFactorAuthenticatorSignInAsync(mfaCode, isPersistent, rememberClient: isPersistent);
+            result = await signInManager.TwoFactorAuthenticatorSignInAsync(mfaCode, isPersistent, rememberClient: isPersistent);
+
+            if (result.Succeeded)
+            {
+                logger.LogInformation("User {Name} logged in using mfa code", username);
+                return result;
+            }
         }
 
         if (!string.IsNullOrEmpty(mfaRecovery))
         {
-            return await signInManager.TwoFactorRecoveryCodeSignInAsync(mfaRecovery);
+            result = await signInManager.TwoFactorRecoveryCodeSignInAsync(mfaRecovery);
+
+            if (result.Succeeded)
+            {
+                logger.LogInformation("User {Name} logged in using recovery code", username);
+                return result;
+            }
         }
 
+        logger.LogWarning("Login failed for user {Name}", username);
         return result;
     }
 
@@ -77,7 +92,18 @@ public class IdentityService(
         ApplicationUser user = new();
         await userStore.SetUserNameAsync(user, username, CancellationToken.None);
         await ((IUserEmailStore<ApplicationUser>)userStore).SetEmailAsync(user, email, CancellationToken.None);
-        return await userManager.CreateAsync(user, password);
+        var result = await userManager.CreateAsync(user, password);
+
+        if (result.Succeeded)
+        {
+            logger.LogInformation("User {Name} registered", username);
+        }
+        else
+        {
+            logger.LogWarning("Registration failed for user {name}", username);
+        }
+
+        return result;
     }
 
     /// <summary>
