@@ -1,3 +1,4 @@
+using Bifrost.Client.Contract;
 using Bifrost.Components;
 using Bifrost.Components.Account;
 using Bifrost.Data;
@@ -58,6 +59,9 @@ public static class Program
         // Swagger
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        // Server-Side-Requests
+        builder.Services.AddScoped<ILoginAction, ServersideLoginAction>();
 
         var app = builder.Build();
 
