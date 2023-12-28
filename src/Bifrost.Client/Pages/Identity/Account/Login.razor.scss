@@ -24,6 +24,11 @@
       border-color: #333333;
     }
   }
+
+  @media (max-width: 460px) {
+    width: 100%;
+    border-radius: 0px;
+  }
 }
 
 .logo {
@@ -37,5 +42,21 @@
 
   img {
     filter: invert(9%) sepia(13%) saturate(13%) hue-rotate(325deg) brightness(98%) contrast(84%);
+  }
+
+  // small screens
+  @media (max-width: 576px) {
+    width: 300px;
+  }
+
+  // extra small screens
+  @media (max-width: 400.98px) {
+    width: 250px;
+  }
+}
+
+.container {
+  @media (max-width: 460px) {
+    padding: 0 !important;
   }
 }
