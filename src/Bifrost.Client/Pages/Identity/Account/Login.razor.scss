@@ -25,3 +25,17 @@
     }
   }
 }
+
+.logo {
+  z-index: 2;
+  position: absolute;
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+
+  img {
+    filter: invert(9%) sepia(13%) saturate(13%) hue-rotate(325deg) brightness(98%) contrast(84%);
+  }
+}
