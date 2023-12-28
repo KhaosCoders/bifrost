@@ -404,3 +404,5 @@ src/CaptainDocker.*
 # SQLite databse files
 *.sqlite
 *.sqlite3
+/src/Bifrost.Client/Pages/Identity/Account/Login.razor.css
+/src/Bifrost.Client/Shared/LoginBackground.razor.css
