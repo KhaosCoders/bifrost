@@ -408,3 +408,5 @@ src/CaptainDocker.*
 /src/Bifrost.Client/Shared/LoginBackground.razor.css
 /src/Bifrost/identity.sqlite-shm
 /src/Bifrost/identity.sqlite-wal
+/src/Bifrost.Client/Components/Identity/Account/Pages/Login.razor.css
+/src/Bifrost.Client/Components/Identity/Account/Shared/LoginBackground.razor.css

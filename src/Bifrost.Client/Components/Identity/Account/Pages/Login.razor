@@ -1,8 +1,12 @@
-﻿@page "/Identity/Account/Login"
+﻿@using Bifrost.Client.Components.Identity.Account.Shared
+@using Bifrost.Client.Components.Layout
+
+@page "/Identity/Account/Login"
 @rendermode InteractiveAuto
 @layout FocusedLayout
 @inject NavigationManager NavigationManager
 @inject ILoginAction loginAction
+
 
 <PageTitle>Login - Bifrost</PageTitle>
 
