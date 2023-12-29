@@ -1,4 +1,5 @@
 ﻿using Bifrost.Data;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -17,6 +18,7 @@ public class IdentityService(
     IUserStore<ApplicationUser> userStore,
     IOptionsMonitor<BearerTokenOptions> bearerTokenOptions,
     TimeProvider timeProvider,
+    IHttpContextAccessor httpContextAccessor,
     ILogger<IdentityService> logger) : IIdentityService
 {
     // Validate the email address using DataAnnotations like the UserValidator does when RequireUniqueEmail = true.
@@ -37,6 +39,12 @@ public class IdentityService(
         var useCookieScheme = (useCookies == true) || (useSessionCookies == true);
         var isPersistent = (useCookies == true) && (useSessionCookies != true);
         signInManager.AuthenticationScheme = useCookieScheme ? IdentityConstants.ApplicationScheme : IdentityConstants.BearerScheme;
+
+        // Clear the existing external cookie to ensure a clean login process
+        if (httpContextAccessor.HttpContext is HttpContext httpContext)
+        {
+            await httpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+        }
 
         var result = await signInManager.PasswordSignInAsync(username, password, isPersistent, lockoutOnFailure: true);
 

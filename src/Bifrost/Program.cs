@@ -17,6 +17,7 @@ public static class Program
 
         // HttpClient for Server-Side-Rendering
         builder.Services.AddInternalHttpClient(builder.Configuration);
+        builder.Services.AddHttpContextAccessor();
 
         // Render-Modes
         builder.Services.AddRazorComponents()
@@ -47,8 +48,10 @@ public static class Program
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultScheme = IdentityConstants.ApplicationScheme;
-            options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
             options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+            options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+            options.DefaultSignOutScheme = IdentityConstants.ApplicationScheme;
         })
             .AddBearerToken(IdentityConstants.BearerScheme)
             .AddIdentityCookies(b => b.ApplicationCookie!.Configure(o => o.LoginPath = "/Identity/Account/Login"));
@@ -86,11 +89,12 @@ public static class Program
         app.UseHttpsRedirection();
 
         app.UseStaticFiles();
-        app.UseAntiforgery();
 
-        // Are these needed?
         app.UseAuthentication();
         app.UseAuthorization();
+
+        // Has to be called after UseAuthentication
+        app.UseAntiforgery();
 
         app.MapGroup("/identity")
             .MapIdentityApiWithUsername<IdentityUser>();
