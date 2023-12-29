@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Bifrost.Features.Identity.Model;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
-namespace Bifrost.Features.Identity;
+namespace Bifrost.Features.Identity.Services;
 
 /// <summary>
 /// Provides methods for registration, logging in and logging out using ASP.NET Core Identity.
@@ -35,8 +36,8 @@ public class IdentityService(
     /// <returns>result of the sign-in</returns>
     public async Task<SignInResult> LoginAsync(string username, string password, string? mfaCode, string? mfaRecovery, bool? useCookies, bool? useSessionCookies)
     {
-        var useCookieScheme = (useCookies == true) || (useSessionCookies == true);
-        var isPersistent = (useCookies == true) && (useSessionCookies != true);
+        var useCookieScheme = useCookies == true || useSessionCookies == true;
+        var isPersistent = useCookies == true && useSessionCookies != true;
         signInManager.AuthenticationScheme = useCookieScheme ? IdentityConstants.ApplicationScheme : IdentityConstants.BearerScheme;
 
         // Clear the existing external cookie to ensure a clean login process

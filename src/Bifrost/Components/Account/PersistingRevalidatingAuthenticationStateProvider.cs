@@ -1,5 +1,5 @@
 using Bifrost.Client;
-using Bifrost.Features.Identity;
+using Bifrost.Features.Identity.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;

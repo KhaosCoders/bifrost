@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication.BearerToken;
+﻿using Bifrost.Features.Identity.Services;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace Bifrost.Features.Identity;
 
-using RegisterResult = Results<Created, ValidationProblem>;
 using LoginResult = Results<Ok<AccessTokenResponse>, EmptyHttpResult, ProblemHttpResult>;
 using RefreshResult = Results<Ok<AccessTokenResponse>, UnauthorizedHttpResult, SignInHttpResult, ChallengeHttpResult>;
+using RegisterResult = Results<Created, ValidationProblem>;
 
 /// <summary>
 /// Provides extension methods for <see cref="IEndpointRouteBuilder"/> to add identity endpoints.
@@ -33,7 +33,7 @@ public static class IdentityApiEndpointRouteBuilderExtensions
         var routeGroup = endpoints.MapGroup("");
 
         routeGroup.MapPost("/register", async Task<RegisterResult> (
-            [FromBody] RegisterRequest registration,
+            [FromBody] DTO.RegisterRequest registration,
             [FromServices] IIdentityService identityService) =>
         {
             var result = await identityService.RegisterAsync(registration.UserName, registration.Password, registration.Email);
@@ -43,7 +43,7 @@ public static class IdentityApiEndpointRouteBuilderExtensions
         });
 
         routeGroup.MapPost("/login", async Task<LoginResult> (
-            [FromBody] LoginRequest login,
+            [FromBody] DTO.LoginRequest login,
             [FromQuery] bool? useCookies,
             [FromQuery] bool? useSessionCookies,
             [FromServices] IIdentityService identityService) =>
@@ -55,7 +55,7 @@ public static class IdentityApiEndpointRouteBuilderExtensions
         });
 
         routeGroup.MapPost("/refresh", async Task<RefreshResult> (
-            [FromBody] RefreshRequest refreshRequest,
+            [FromBody] DTO.RefreshRequest refreshRequest,
             [FromServices] IIdentityService identityService) =>
         {
             var newPrincipal = await identityService.RefreshAsync(refreshRequest.RefreshToken);

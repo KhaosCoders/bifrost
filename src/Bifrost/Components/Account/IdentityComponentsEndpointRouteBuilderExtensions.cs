@@ -1,6 +1,6 @@
 using Bifrost.Components.Account.Pages;
 using Bifrost.Components.Account.Pages.Manage;
-using Bifrost.Features.Identity;
+using Bifrost.Features.Identity.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;

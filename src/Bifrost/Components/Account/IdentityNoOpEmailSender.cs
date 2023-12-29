@@ -1,4 +1,4 @@
-using Bifrost.Features.Identity;
+using Bifrost.Features.Identity.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
