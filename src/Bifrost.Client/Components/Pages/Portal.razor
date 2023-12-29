@@ -1,4 +1,6 @@
-﻿@page "/"
+﻿@using Bifrost.Client.Components.Shared
+
+@page "/"
 
 @attribute [Authorize]
 @rendermode InteractiveAuto
@@ -7,9 +9,21 @@
 
 <div class="container">
     <div class="row">
-        <div class="col">
-            <h1>Welcome to Bifrost</h1>
-            <p>Use the navigation bar at the top of the page to get started.</p>
+        <PortalSearch />
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <Headline Text="Recent" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <Headline Text="Favorites" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <Headline Text="Browse" />
         </div>
     </div>
 </div>
