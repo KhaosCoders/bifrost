@@ -2,7 +2,6 @@ using Bifrost.Client.Contract;
 using Bifrost.Components;
 using Bifrost.Components.Account;
 using Bifrost.Data;
-using Bifrost.Extensions;
 using Bifrost.Features.Identity;
 using Bifrost.Features.Identity.Model;
 using Bifrost.Features.Identity.Serverside;
@@ -18,8 +17,6 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // HttpClient for Server-Side-Rendering
-        builder.Services.AddInternalHttpClient(builder.Configuration);
         builder.Services.AddHttpContextAccessor();
 
         // Render-Modes
