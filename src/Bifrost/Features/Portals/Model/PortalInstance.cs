@@ -17,6 +17,12 @@ public class PortalInstance
     public PortalState? CurrentState =>
         History?.LastOrDefault()?.State;
 
+    public DateTime? CreationDate =>
+        History?.FirstOrDefault()?.CreationDate;
+
+    public string? CreationUser =>
+        History?.FirstOrDefault()?.CreationUser;
+
     public PortalInstance()
     {
         Id = Guid.NewGuid().ToString();

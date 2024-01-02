@@ -44,12 +44,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        builder.Entity<PortalHistory>(b=>
+        builder.Entity<PortalHistory>(b =>
         {
             b.HasKey(r => r.Id);
             b.ToTable("PortalHistory");
         });
 
-        builder.Entity<PortMapping>(b => b.ToTable("PortMappings"));
+        builder.Entity<PortMapping>(b =>
+        {
+            b.HasKey(r => new { r.InstanceId, r.MappedPort });
+            b.ToTable("PortMappings");
+        });
     }
 }
