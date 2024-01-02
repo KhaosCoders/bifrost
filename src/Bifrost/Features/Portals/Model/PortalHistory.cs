@@ -4,7 +4,9 @@ public class PortalHistory
 {
     public string Id { get; set; } = default!;
 
-    public required PortalDefinition Portal { get; set; }
+    public required PortalInstance Instance { get; set; }
+
+    public required string InstanceId { get; set; }
 
     public PortalState State { get; set; }
 
@@ -20,13 +22,4 @@ public class PortalHistory
     {
         Id = Guid.NewGuid().ToString();
     }
-}
-
-public enum PortalState
-{
-    Pending,
-    Creating,
-    Open,
-    Closing,
-    Closed
 }

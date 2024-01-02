@@ -6,13 +6,19 @@ public class PortalInstance
 
     public required PortalDefinition Portal { get; set; }
 
-    public PortalHistory? History { get; set; }
+    public required string PortalId { get; set; }
 
-    public IList<PortMapping> Mappings { get; set; }
+    public IList<PortMapping>? Mappings { get; set; }
+
+    public IList<PortalHistory>? History { get; set; }
+
+    public string? ConcurrencyStamp { get; set; }
+
+    public PortalState? CurrentState =>
+        History?.LastOrDefault()?.State;
 
     public PortalInstance()
     {
-        Mappings = new List<PortMapping>();
         Id = Guid.NewGuid().ToString();
     }
 }

@@ -18,6 +18,8 @@ public class PortalDefinition
 
     public required string VpnConfig { get; set; }
 
+    public string? ConcurrencyStamp { get; set; }
+
     public PortalDefinition()
     {
         Instances = new List<PortalInstance>();
