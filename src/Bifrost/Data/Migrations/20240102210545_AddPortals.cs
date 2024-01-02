@@ -56,8 +56,7 @@ namespace Bifrost.Data.Migrations
                     InstanceId = table.Column<string>(type: "TEXT", nullable: false),
                     State = table.Column<int>(type: "INTEGER", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreationUser = table.Column<string>(type: "TEXT", nullable: false),
-                    CloseDate = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    CreationUser = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -14,10 +14,6 @@ public class PortalHistory
 
     public required string CreationUser { get; set; }
 
-    public DateTime? CloseDate { get; set; }
-
-    public TimeSpan? Period => CloseDate == null ? default : CloseDate.Value - CreationDate;
-
     public PortalHistory()
     {
         Id = Guid.NewGuid().ToString();
