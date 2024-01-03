@@ -81,7 +81,7 @@ namespace Bifrost.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Bifrost.Features.Portals.Model.PortMapping", b =>
+            modelBuilder.Entity("Bifrost.Features.Portals.Model.InstancePortMapping", b =>
                 {
                     b.Property<string>("InstanceId")
                         .HasColumnType("TEXT");
@@ -95,7 +95,7 @@ namespace Bifrost.Data.Migrations
 
                     b.HasKey("InstanceId", "MappedPort");
 
-                    b.ToTable("PortMappings", (string)null);
+                    b.ToTable("InstancePortMappings", (string)null);
                 });
 
             modelBuilder.Entity("Bifrost.Features.Portals.Model.PortalDefinition", b =>
@@ -144,9 +144,6 @@ namespace Bifrost.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("CloseDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("TEXT");
 
@@ -186,6 +183,23 @@ namespace Bifrost.Data.Migrations
                     b.HasIndex("PortalId");
 
                     b.ToTable("PortalInstances", (string)null);
+                });
+
+            modelBuilder.Entity("Bifrost.Features.Portals.Model.PortalPortMapping", b =>
+                {
+                    b.Property<string>("PortalId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MappedPort")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Service")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PortalId", "MappedPort");
+
+                    b.ToTable("PortalPortMappings", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -316,7 +330,7 @@ namespace Bifrost.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Bifrost.Features.Portals.Model.PortMapping", b =>
+            modelBuilder.Entity("Bifrost.Features.Portals.Model.InstancePortMapping", b =>
                 {
                     b.HasOne("Bifrost.Features.Portals.Model.PortalInstance", null)
                         .WithMany("Mappings")
@@ -345,6 +359,15 @@ namespace Bifrost.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Portal");
+                });
+
+            modelBuilder.Entity("Bifrost.Features.Portals.Model.PortalPortMapping", b =>
+                {
+                    b.HasOne("Bifrost.Features.Portals.Model.PortalDefinition", null)
+                        .WithMany("Mappings")
+                        .HasForeignKey("PortalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -401,6 +424,8 @@ namespace Bifrost.Data.Migrations
             modelBuilder.Entity("Bifrost.Features.Portals.Model.PortalDefinition", b =>
                 {
                     b.Navigation("Instances");
+
+                    b.Navigation("Mappings");
                 });
 
             modelBuilder.Entity("Bifrost.Features.Portals.Model.PortalInstance", b =>

@@ -14,6 +14,8 @@ public class PortalDefinition
 
     public IList<PortalInstance>? Instances { get; set; }
 
+    public IList<PortalPortMapping>? Mappings { get; set; }
+
     public required string VpnType { get; set; }
 
     public required string VpnConfig { get; set; }
@@ -22,7 +24,6 @@ public class PortalDefinition
 
     public PortalDefinition()
     {
-        Instances = new List<PortalInstance>();
         Id = Guid.NewGuid().ToString();
         MaxInstanceCount = 1;
     }

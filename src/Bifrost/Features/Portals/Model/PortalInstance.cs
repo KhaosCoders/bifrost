@@ -8,7 +8,7 @@ public class PortalInstance
 
     public required string PortalId { get; set; }
 
-    public IList<PortMapping>? Mappings { get; set; }
+    public IList<InstancePortMapping>? Mappings { get; set; }
 
     public IList<PortalHistory>? History { get; set; }
 

@@ -49,6 +49,44 @@ namespace Bifrost.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PortalPortMappings",
+                columns: table => new
+                {
+                    MappedPort = table.Column<string>(type: "TEXT", nullable: false),
+                    PortalId = table.Column<string>(type: "TEXT", nullable: false),
+                    Service = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PortalPortMappings", x => new { x.PortalId, x.MappedPort });
+                    table.ForeignKey(
+                        name: "FK_PortalPortMappings_PortalDefinitions_PortalId",
+                        column: x => x.PortalId,
+                        principalTable: "PortalDefinitions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InstancePortMappings",
+                columns: table => new
+                {
+                    MappedPort = table.Column<string>(type: "TEXT", nullable: false),
+                    InstanceId = table.Column<string>(type: "TEXT", nullable: false),
+                    Service = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InstancePortMappings", x => new { x.InstanceId, x.MappedPort });
+                    table.ForeignKey(
+                        name: "FK_InstancePortMappings_PortalInstances_InstanceId",
+                        column: x => x.InstanceId,
+                        principalTable: "PortalInstances",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PortalHistory",
                 columns: table => new
                 {
@@ -63,25 +101,6 @@ namespace Bifrost.Data.Migrations
                     table.PrimaryKey("PK_PortalHistory", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PortalHistory_PortalInstances_InstanceId",
-                        column: x => x.InstanceId,
-                        principalTable: "PortalInstances",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PortMappings",
-                columns: table => new
-                {
-                    MappedPort = table.Column<string>(type: "TEXT", nullable: false),
-                    InstanceId = table.Column<string>(type: "TEXT", nullable: false),
-                    Service = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PortMappings", x => new { x.InstanceId, x.MappedPort });
-                    table.ForeignKey(
-                        name: "FK_PortMappings_PortalInstances_InstanceId",
                         column: x => x.InstanceId,
                         principalTable: "PortalInstances",
                         principalColumn: "Id",
@@ -109,10 +128,13 @@ namespace Bifrost.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "InstancePortMappings");
+
+            migrationBuilder.DropTable(
                 name: "PortalHistory");
 
             migrationBuilder.DropTable(
-                name: "PortMappings");
+                name: "PortalPortMappings");
 
             migrationBuilder.DropTable(
                 name: "PortalInstances");

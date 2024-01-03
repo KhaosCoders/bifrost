@@ -21,6 +21,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
             b.Property(u => u.Name).HasMaxLength(256);
 
+            b.HasMany(p => p.Mappings)
+                .WithOne()
+                .HasForeignKey(p => p.PortalId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             b.HasMany(p => p.Instances)
                 .WithOne(p => p.Portal)
                 .HasForeignKey(p => p.PortalId)
@@ -50,10 +55,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             b.ToTable("PortalHistory");
         });
 
-        builder.Entity<PortMapping>(b =>
+        builder.Entity<InstancePortMapping>(b =>
         {
             b.HasKey(r => new { r.InstanceId, r.MappedPort });
-            b.ToTable("PortMappings");
+            b.ToTable("InstancePortMappings");
+        });
+
+        builder.Entity<PortalPortMapping>(b =>
+        {
+            b.HasKey(r => new { r.PortalId, r.MappedPort });
+            b.ToTable("PortalPortMappings");
         });
     }
 }
