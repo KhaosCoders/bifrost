@@ -7,7 +7,7 @@ namespace Bifrost.Data.Base;
 /// </summary>
 /// <typeparam name="TEntity">Type of the repository</typeparam>
 /// <param name="dbContext">EntityFramework DbContext</param>
-public abstract class RepositoryBase<TEntity>(DbContext dbContext) where TEntity : class, IEntity
+public abstract class RepositoryBase<TEntity>(DbContext dbContext) : IRepositoryBase<TEntity> where TEntity : class, IEntity
 {
     private readonly DbContext dbContext = dbContext;
 
