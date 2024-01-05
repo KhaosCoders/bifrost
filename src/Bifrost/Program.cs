@@ -6,6 +6,7 @@ using Bifrost.Features.Identity;
 using Bifrost.Features.Identity.Model;
 using Bifrost.Features.Identity.Serverside;
 using Bifrost.Features.Identity.Services;
+using Bifrost.Features.Portals;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,44 +25,21 @@ public static class Program
             .AddInteractiveServerComponents()
             .AddInteractiveWebAssemblyComponents();
 
-        // Identity
-        builder.Services.AddCascadingAuthenticationState();
-        builder.Services.AddScoped<IdentityUserAccessor>();
-        builder.Services.AddScoped<IdentityRedirectManager>();
-        builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
-
+        // DbContext
         var identityConnectionString = builder.Configuration.GetConnectionString("IdentityConnection") ?? throw new InvalidOperationException("Connection string 'IdentityConnection' not found.");
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlite(identityConnectionString));
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-        builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddSignInManager()
-            .AddDefaultTokenProviders()
-            .AddApiEndpoints();
-
-        builder.Services.AddScoped<IIdentityService, IdentityService>();
+        // Fake EmailSender
         builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
-
-        // Authentication
-        builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultScheme = IdentityConstants.ApplicationScheme;
-            options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-            options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-            options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-            options.DefaultSignOutScheme = IdentityConstants.ApplicationScheme;
-        })
-            .AddBearerToken(IdentityConstants.BearerScheme)
-            .AddIdentityCookies(b => b.ApplicationCookie!.Configure(o => o.LoginPath = "/Identity/Account/Login"));
-
-        // Authorization
-        builder.Services.AddAuthorizationBuilder();
 
         // Swagger
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        // Features
+        builder.Services.AddIdentityFeature();
 
         // Server-Side-Requests
         builder.Services.AddScoped<ILoginAction, ServersideLoginAction>();
@@ -96,8 +74,8 @@ public static class Program
         // Has to be called after UseAuthentication
         app.UseAntiforgery();
 
-        app.MapGroup("/identity")
-            .MapIdentityApiWithUsername<IdentityUser>();
+        // Features
+        app.MapIdentityFeature();
 
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode()
