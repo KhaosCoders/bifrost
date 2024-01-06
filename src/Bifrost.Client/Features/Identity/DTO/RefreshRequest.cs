@@ -1,4 +1,4 @@
-﻿namespace Bifrost.Features.Identity.DTO;
+﻿namespace Bifrost.Client.Features.Identity.DTO;
 
 /// <summary>
 /// The request type for the "/refresh" endpoint added by <see cref="IdentityApiEndpointRouteBuilderExtensions.MapIdentityApi"/>.

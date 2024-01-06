@@ -1,4 +1,4 @@
-﻿using Bifrost.Client.Contract;
+﻿using Bifrost.Client.Features.Identity;
 using Bifrost.Features.Identity.Services;
 
 namespace Bifrost.Features.Identity.Serverside;

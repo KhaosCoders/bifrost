@@ -1,4 +1,4 @@
-﻿namespace Bifrost.Features.Identity.DTO;
+﻿namespace Bifrost.Client.Features.Identity.DTO;
 
 public sealed class LoginRequest
 {

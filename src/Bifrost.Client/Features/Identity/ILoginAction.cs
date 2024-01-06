@@ -1,4 +1,4 @@
-﻿namespace Bifrost.Client.Contract;
+﻿namespace Bifrost.Client.Features.Identity;
 
 public interface ILoginAction
 {
