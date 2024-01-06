@@ -1,13 +1,11 @@
-using Bifrost.Client.Contract;
+using Bifrost.Client.Features.Identity.Actions;
 using Bifrost.Components;
 using Bifrost.Components.Account;
 using Bifrost.Data;
 using Bifrost.Features.Identity;
+using Bifrost.Features.Identity.Actions;
 using Bifrost.Features.Identity.Model;
-using Bifrost.Features.Identity.Serverside;
-using Bifrost.Features.Identity.Services;
 using Bifrost.Features.Portals;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,7 +1,7 @@
-﻿using Bifrost.Client.Features.Identity;
+﻿using Bifrost.Client.Features.Identity.Actions;
 using Bifrost.Features.Identity.Services;
 
-namespace Bifrost.Features.Identity.Serverside;
+namespace Bifrost.Features.Identity.Actions;
 
 public class ServersideLoginAction(IIdentityService identityService) : ILoginAction
 {

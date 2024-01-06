@@ -1,7 +1,7 @@
 ﻿using Bifrost.Client.Features.Identity.DTO;
 using System.Net.Http.Json;
 
-namespace Bifrost.Client.Features.Identity;
+namespace Bifrost.Client.Features.Identity.Actions;
 
 public class ClientsideLoginAction(HttpClient httpClient) : ILoginAction
 {

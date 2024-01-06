@@ -1,0 +1,203 @@
+.bifrost-background {
+  position: fixed;
+  width: 1100px;
+  height: 1100px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.circle {
+  border: 1px solid #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  offset-anchor: 50% 50%;
+}
+
+.bifrost {
+  display: inline-block;
+  offset-anchor: 50% 50%;
+  offset-path: circle(0.01% at 50% 50%);
+  width: 300px;
+  height: 300px;
+  opacity: 0.75;
+  animation: spin 20s linear infinite;
+  animation-direction: reverse;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("/svg/logo.svg");
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.midgard {
+  height: 9%;
+  width: 9%;
+  offset-path: circle(13% at 50% 50%);
+  animation: midgard 30000ms infinite linear;
+}
+
+@keyframes midgard {
+  0% {
+    offset-distance: 5%;
+  }
+  95% {
+    offset-distance: 100%;
+  }
+  95.01% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 5%;
+  }
+}
+.vanaheim {
+  height: 5%;
+  width: 5%;
+  offset-path: circle(39% at 50% 50%);
+  animation: vanaheim 60000ms infinite linear;
+}
+
+@keyframes vanaheim {
+  0% {
+    offset-distance: 25%;
+  }
+  75% {
+    offset-distance: 100%;
+  }
+  75.01% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 25%;
+  }
+}
+.hel {
+  height: 7%;
+  width: 7%;
+  offset-path: circle(30% at 50% 50%);
+  animation: hel 56000ms infinite linear;
+}
+
+@keyframes hel {
+  0% {
+    offset-distance: 80%;
+  }
+  20% {
+    offset-distance: 100%;
+  }
+  20.01% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 80%;
+  }
+}
+.alfheim {
+  height: 6%;
+  width: 6%;
+  offset-path: circle(47.5% at 50% 50%);
+  animation: alfheim 80000ms infinite linear;
+}
+
+@keyframes alfheim {
+  0% {
+    offset-distance: 75%;
+  }
+  25% {
+    offset-distance: 100%;
+  }
+  25.01% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 75%;
+  }
+}
+.jotunheim {
+  height: 4%;
+  width: 4%;
+  offset-path: circle(24.5% at 50% 50%);
+  animation: jotunheim 50000ms infinite linear;
+}
+
+@keyframes jotunheim {
+  0% {
+    offset-distance: 10%;
+  }
+  90% {
+    offset-distance: 100%;
+  }
+  90.01% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 10%;
+  }
+}
+.nifheim {
+  height: 3%;
+  width: 3%;
+  offset-path: circle(35% at 50% 50%);
+  animation: nifheim 58000ms infinite linear;
+}
+
+@keyframes nifheim {
+  0% {
+    offset-distance: 40%;
+  }
+  60% {
+    offset-distance: 100%;
+  }
+  60.01% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 40%;
+  }
+}
+.muspelheim {
+  height: 5%;
+  width: 5%;
+  offset-path: circle(20% at 50% 50%);
+  animation: muspelheim 32000ms infinite linear;
+}
+
+@keyframes muspelheim {
+  0% {
+    offset-distance: 50%;
+  }
+  50% {
+    offset-distance: 100%;
+  }
+  50.01% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 50%;
+  }
+}
+.savartalheim {
+  height: 3%;
+  width: 3%;
+  offset-path: circle(43% at 50% 50%);
+  animation: savartalheim 60000ms infinite linear;
+}
+
+@keyframes savartalheim {
+  0% {
+    offset-distance: 60%;
+  }
+  40% {
+    offset-distance: 100%;
+  }
+  40.01% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 60%;
+  }
+}
