@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -27,10 +27,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Bifrost.Client\Bifrost.Client.csproj" />
     <ProjectReference Include="..\Bifrost\Bifrost.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Utils\Validation\" />
   </ItemGroup>
 
 </Project>
