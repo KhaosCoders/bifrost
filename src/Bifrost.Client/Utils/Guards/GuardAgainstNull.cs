@@ -2,10 +2,10 @@
 
 public static class GuardAgainstNull
 {
-    public static bool ObjectIsNull<T>(this IGuard _, T? value, string? name = default, bool @throw = false)
+    public static bool IsNull<T>(this IGuard _, T? value, string? name = default, bool throws = true)
     {
         if (value is not null) return true;
-        if (@throw) throw new ArgumentNullException(name ?? nameof(value));
+        if (throws) throw new ArgumentNullException(name ?? nameof(value));
         return false;
     }
 }
