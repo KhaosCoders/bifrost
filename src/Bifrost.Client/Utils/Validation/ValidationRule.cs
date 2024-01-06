@@ -3,12 +3,7 @@ using System.Reflection;
 
 namespace Bifrost.Client.Utils.Validation;
 
-public abstract class ValidationRule
-{
-    public abstract ValidationFault? Validate();
-}
-
-public class ValidationRule<T>(Expression<Func<T>> Accessor, Func<T, bool> Validator) : ValidationRule
+internal class ValidationRule<T>(Expression<Func<T>> Accessor, Func<T, bool> Validator) : ValidationRuleBase
 {
     public string Name { get; } =
         Accessor.Body is MemberExpression member && member.Member is PropertyInfo property

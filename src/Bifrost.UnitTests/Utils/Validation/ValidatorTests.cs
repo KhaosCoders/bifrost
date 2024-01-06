@@ -9,10 +9,23 @@ public class ValidatorTests
     public string Text { get; set; } = "test";
 
     [Test]
+    public void Rule_Returns_NewValidationRule()
+    {
+        // Arrange
+
+        // Act
+        var result = Validator.Rule(() => Text, _ => true);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<ValidationRule<string>>();
+    }
+
+    [Test]
     public void Validate_ReturnsIsValid_ForJustValidRules()
     {
         // Arrange
-        ValidationRule[] rules =
+        ValidationRuleBase[] rules =
         [
             new ValidationRule<string>(() => Text, _ => true),
             new ValidationRule<int>(() => Number, _ => true)
@@ -31,7 +44,7 @@ public class ValidatorTests
     public void Validate_ReturnsIsNotValid_ForJustInvalidRules()
     {
         // Arrange
-        ValidationRule[] rules =
+        ValidationRuleBase[] rules =
         [
             new ValidationRule<string>(() => Text, _ => false),
             new ValidationRule<int>(() => Number, _ => false)
@@ -50,7 +63,7 @@ public class ValidatorTests
     public void Validate_ReturnsIsNotValid_ForMixedRules()
     {
         // Arrange
-        ValidationRule[] rules =
+        ValidationRuleBase[] rules =
         [
             new ValidationRule<string>(() => Text, _ => true),
             new ValidationRule<int>(() => Number, _ => false)
@@ -69,7 +82,7 @@ public class ValidatorTests
     public void Validate_ReturnsIsValid_ForNoRules()
     {
         // Arrange
-        ValidationRule[] rules = [];
+        ValidationRuleBase[] rules = [];
 
         // Act
         var result = Validator.Validate(rules);

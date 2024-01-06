@@ -1,8 +1,13 @@
-﻿namespace Bifrost.Client.Utils.Validation;
+﻿using System.Linq.Expressions;
+
+namespace Bifrost.Client.Utils.Validation;
 
 public static class Validator
 {
-    public static ValidationResult Validate(params ValidationRule[] rules)
+    public static ValidationRuleBase Rule<T>(Expression<Func<T>> accessor, Func<T, bool> validator) =>
+        new ValidationRule<T>(accessor, validator);
+
+    public static ValidationResult Validate(params ValidationRuleBase[] rules)
     {
         var faults = rules
             .Select(rule => rule.Validate())
