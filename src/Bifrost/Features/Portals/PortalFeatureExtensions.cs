@@ -10,7 +10,6 @@ using CreateResult = Results<Created, UnauthorizedHttpResult, ValidationProblem>
 using GetResult = Results<Ok<Model.PortalDefinition>, NotFound, UnauthorizedHttpResult>;
 using DeleteResult = Results<NoContent, NotFound, UnauthorizedHttpResult>;
 using PutResult = Results<NoContent, NotFound, UnauthorizedHttpResult, ValidationProblem>;
-using PatchResult = Results<NoContent, NotFound, UnauthorizedHttpResult, ValidationProblem>;
 
 public static class PortalFeatureExtensions
 {
