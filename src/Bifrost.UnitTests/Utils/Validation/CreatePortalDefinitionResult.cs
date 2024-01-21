@@ -1,4 +1,4 @@
-﻿using Bifrost.Features.Portals.Model;
+﻿using Bifrost.Features.PortalDefinitions.Model;
 
 namespace Bifrost.UnitTests.Utils.Validation;
 

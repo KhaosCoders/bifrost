@@ -1,5 +1,5 @@
 using Bifrost.Features.Identity.Model;
-using Bifrost.Features.Portals.Model;
+using Bifrost.Features.PortalDefinitions.Model;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

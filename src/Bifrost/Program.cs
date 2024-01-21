@@ -5,7 +5,7 @@ using Bifrost.Data;
 using Bifrost.Features.Identity;
 using Bifrost.Features.Identity.Actions;
 using Bifrost.Features.Identity.Model;
-using Bifrost.Features.Portals;
+using Bifrost.Features.PortalDefinitions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

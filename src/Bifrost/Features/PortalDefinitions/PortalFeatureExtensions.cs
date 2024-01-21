@@ -1,10 +1,10 @@
 ﻿using Bifrost.Data.Base;
-using Bifrost.Features.Portals.Services;
+using Bifrost.Features.PortalDefinitions.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using DTO = Bifrost.Client.Features.Portals.DTO;
 
-namespace Bifrost.Features.Portals;
+namespace Bifrost.Features.PortalDefinitions;
 
 using CreateResult = Results<Created, UnauthorizedHttpResult, ValidationProblem>;
 using GetResult = Results<Ok<Model.PortalDefinition>, NotFound, UnauthorizedHttpResult>;

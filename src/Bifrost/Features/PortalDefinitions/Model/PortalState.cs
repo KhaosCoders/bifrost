@@ -1,4 +1,4 @@
-﻿namespace Bifrost.Features.Portals.Model;
+﻿namespace Bifrost.Features.PortalDefinitions.Model;
 
 public enum PortalState
 {
