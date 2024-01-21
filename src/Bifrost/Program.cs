@@ -38,6 +38,7 @@ public static class Program
 
         // Features
         builder.Services.AddIdentityFeature();
+        builder.Services.AddPortalFeature();
 
         // Server-Side-Requests
         builder.Services.AddScoped<ILoginAction, ServersideLoginAction>();
@@ -74,6 +75,7 @@ public static class Program
 
         // Features
         app.MapIdentityFeature();
+        app.MapPortalFeature();
 
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode()

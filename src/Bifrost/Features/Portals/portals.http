@@ -2,3 +2,56 @@
 
 @url=https://localhost:7119
 
+# Register new portal
+POST {{url}}/api/portals
+Content-Type: application/json
+
+{
+    "name": "Test3",
+    "maxInstanceCount": 1,
+    "vpnType": "None",
+    "vpnConfig": null
+}
+###
+
+@portalId=a775ce3d-5f75-42e7-8bd9-d5ead98d5228
+# Get portal
+GET {{url}}/api/portals/{{portalId}}
+###
+
+# Delete portal
+DELETE {{url}}/api/portals/{{portalId}}
+###
+
+# Update portal
+PUT {{url}}/api/portals/{{portalId}}
+Content-Type: application/json
+
+{
+    "name": "Test3-1",
+    "maxInstanceCount": 2,
+    "vpnType": "None",
+    "vpnConfig": null
+}
+###
+
+# Patch portal
+# https://datatracker.ietf.org/doc/html/rfc6902
+PATCH {{url}}/api/portals/{{portalId}}
+Content-Type: application/json
+
+[
+    {
+        "op": "replace",
+        "path": "/name",
+        "value": "Test3-1"
+    },
+    {
+        "op": "replace",
+        "path": "/maxInstanceCount",
+        "value": 3
+    }
+]
+
+###
+

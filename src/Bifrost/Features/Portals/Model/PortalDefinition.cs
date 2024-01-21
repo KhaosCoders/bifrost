@@ -1,6 +1,8 @@
-﻿namespace Bifrost.Features.Portals.Model;
+﻿using Bifrost.Data.Base;
 
-public class PortalDefinition
+namespace Bifrost.Features.Portals.Model;
+
+public class PortalDefinition : IEntity
 {
     public string Id { get; set; } = default!;
 
