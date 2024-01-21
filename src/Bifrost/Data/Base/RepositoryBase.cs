@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Bifrost.Client.Utils.Guards;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bifrost.Data.Base;
 
@@ -29,8 +30,11 @@ public abstract class RepositoryBase<TEntity>(DbContext dbContext) : IRepository
     /// </remarks>
     /// <param name="id">Id of entity</param>
     /// <returns>Found entity or null</returns>
-    public Task<TEntity?> GetByIdAsync(string id) =>
-        QueryAll().FirstOrDefaultAsync(e => e.Id == id);
+    public Task<TEntity?> GetByIdAsync(string id)
+    {
+        Guard.Against.StringIsNullOrWhitespace(id, nameof(id));
+        return QueryAll().FirstOrDefaultAsync(e => e.Id == id);
+    }
 
     /// <summary>
     /// Creates a new entity.
@@ -73,6 +77,7 @@ public abstract class RepositoryBase<TEntity>(DbContext dbContext) : IRepository
     /// <exception cref="EntityNotFoundException"></exception>
     public async Task DeleteAsync(string id, bool isBulkOperation = false)
     {
+        Guard.Against.StringIsNullOrWhitespace(id, nameof(id));
         var entity = await GetByIdAsync(id) ?? throw new EntityNotFoundException();
         dbContext.Set<TEntity>().Remove(entity);
         if (isBulkOperation) return;
