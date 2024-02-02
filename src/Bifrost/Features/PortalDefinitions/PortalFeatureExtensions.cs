@@ -2,6 +2,7 @@
 using Bifrost.Features.PortalDefinitions.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using DTO = Bifrost.Client.Features.Portals.DTO;
 
 namespace Bifrost.Features.PortalDefinitions;
@@ -26,17 +27,19 @@ public static class PortalFeatureExtensions
 
     public static void MapPortalFeature(this IEndpointRouteBuilder app)
     {
-        var api = app.MapGroup("/api");
+        var api = app.MapGroup("/api")
+            .MapGroup("")
+                .RequireAuthorization("ApiPolicy");
         api.MapPost("/portals", async Task<CreateResult> (
             [FromBody] DTO.PortalRequest request,
             [FromServices] IPortalDefinitionService service,
             [FromServices] IHttpContextAccessor httpContextAccessor
             ) =>
         {
-            //if (httpContextAccessor?.HttpContext?.User?.Identity is not ApplicationUser user)
-            //    return TypedResults.Unauthorized();
+            if (httpContextAccessor?.HttpContext?.User?.Identity is not ClaimsIdentity user)
+                return TypedResults.Unauthorized();
 
-            var result = await service.CreatePortalAsync(request, new() { UserName = "Dummy" });
+            var result = await service.CreatePortalAsync(request, user.Name!);
             return result.IsSuccess
                 ? TypedResults.Created($"/api/portals/{result.Portal!.Id}")
                 : result.CreateValidationProblem();

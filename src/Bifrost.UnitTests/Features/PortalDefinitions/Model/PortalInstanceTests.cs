@@ -5,20 +5,14 @@ namespace Bifrost.UnitTests.Features.PortalDefinitions.Model;
 [TestClass]
 public class PortalInstanceTests
 {
-    private PortalDefinition portal;
-
-    [TestInitialize]
-    public void Setup()
+    private readonly PortalDefinition portal = new()
     {
-        portal = new()
-        {
-            Name = "UnitTests",
-            CreationDate = DateTime.Now,
-            CreationUser = "me",
-            VpnType = "Any",
-            VpnConfig = ""
-        };
-    }
+        Name = "UnitTests",
+        CreationDate = DateTime.Now,
+        CreationUser = "me",
+        VpnType = "Any",
+        VpnConfig = ""
+    };
 
     [TestMethod]
     public void PortalInstance_CurrentState_ShouldReturn_Null_WhenNoHistory()

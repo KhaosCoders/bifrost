@@ -34,8 +34,11 @@ public static class IdentityFeatureExtensions
             .AddIdentityCookies(b => b.ApplicationCookie!.Configure(o => o.LoginPath = "/Identity/Account/Login"));
 
         // Authorization
-        services.AddAuthorizationBuilder();
         services.AddCascadingAuthenticationState();
+        services.AddAuthorizationBuilder()
+            .AddPolicy("ApiPolicy", p => p
+                .AddAuthenticationSchemes(IdentityConstants.BearerScheme)
+                .RequireAuthenticatedUser());
 
         // Services
         services.AddScoped<IIdentityService, IdentityService>();

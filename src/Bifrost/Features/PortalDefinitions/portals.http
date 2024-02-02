@@ -1,16 +1,19 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 
 @url=https://localhost:7119
+@token=<AccessToken>
 
 # Register new portal
 POST {{url}}/api/portals
+Authorization: Bearer {{token}}
+Accept: application/json
 Content-Type: application/json
 
 {
-    "name": "Test3",
+    "name": "Test4",
     "maxInstanceCount": 1,
     "vpnType": "None",
-    "vpnConfig": null
+    "vpnConfig": "Empty"
 }
 ###
 

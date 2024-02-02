@@ -70,10 +70,9 @@ public class PortalDefinitionServiceTests
     {
         // Arrange
         (var fault, var validatorMock, var repoMock, var service) = PrepareServiceWithValidationFault();
-        ApplicationUser user = new();
 
         // Act
-        var result = await service.CreatePortalAsync(EmptyRequest, user);
+        var result = await service.CreatePortalAsync(EmptyRequest, "Dummy-User");
 
         // Assert
         validatorMock.Verify(x => x.ValidateRequest(EmptyRequest), Times.Once);
@@ -125,10 +124,9 @@ public class PortalDefinitionServiceTests
         {
             Validator = validatorMock.Object
         };
-        ApplicationUser user = new() { UserName = "UnitTest-User" };
 
         // Act
-        var result = await service.CreatePortalAsync(ValidRequest, user);
+        var result = await service.CreatePortalAsync(ValidRequest, "Dummy-User");
 
         // Assert
         validatorMock.Verify(x => x.ValidateRequest(ValidRequest), Times.Once);
@@ -138,6 +136,7 @@ public class PortalDefinitionServiceTests
         result.Faults.Should().BeEmpty();
         result.Portal.Should().Be(resultPortalDefinition);
         resultPortalDefinition.Should().NotBeNull();
+        resultPortalDefinition!.CreationUser.Should().Be("Dummy-User");
         resultPortalDefinition!.Name.Should().Be(ValidRequest.Name);
         resultPortalDefinition!.MaxInstanceCount.Should().Be(ValidRequest.MaxInstanceCount);
         resultPortalDefinition!.VpnType.Should().Be(ValidRequest.VpnType);

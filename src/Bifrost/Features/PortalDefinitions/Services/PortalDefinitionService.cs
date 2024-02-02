@@ -30,8 +30,10 @@ internal class PortalDefinitionService : IPortalDefinitionService, IRequestValid
                 vpnConfig => Guard.Against.StringIsNullOrWhitespace(vpnConfig))
         );
 
-    public async Task<CreatePortalDefinitionResult> CreatePortalAsync(PortalRequest request, ApplicationUser creator)
+    public async Task<CreatePortalDefinitionResult> CreatePortalAsync(PortalRequest request, string creatorName)
     {
+        Guard.Against.StringIsNullOrWhitespace(creatorName);
+
         var validation = Validator.ValidateRequest(request);
         if (!validation.IsValid)
         {
@@ -41,7 +43,7 @@ internal class PortalDefinitionService : IPortalDefinitionService, IRequestValid
         PortalDefinition definition = new()
         {
             CreationDate = DateTime.UtcNow,
-            CreationUser = creator.UserName!,
+            CreationUser = creatorName,
             Name = request.Name,
             MaxInstanceCount = request.MaxInstanceCount,
             VpnType = request.VpnType,
