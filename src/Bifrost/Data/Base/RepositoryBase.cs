@@ -32,7 +32,7 @@ public abstract class RepositoryBase<TEntity>(DbContext dbContext) : IRepository
     /// <returns>Found entity or null</returns>
     public Task<TEntity?> GetByIdAsync(string id)
     {
-        Guard.Against.StringIsNullOrWhitespace(id, nameof(id));
+        Guard.Against.StringIsNullOrWhitespace(id);
         return QueryAll().FirstOrDefaultAsync(e => e.Id == id);
     }
 
@@ -77,7 +77,7 @@ public abstract class RepositoryBase<TEntity>(DbContext dbContext) : IRepository
     /// <exception cref="EntityNotFoundException"></exception>
     public async Task DeleteAsync(string id, bool isBulkOperation = false)
     {
-        Guard.Against.StringIsNullOrWhitespace(id, nameof(id));
+        Guard.Against.StringIsNullOrWhitespace(id);
         var entity = await GetByIdAsync(id) ?? throw new EntityNotFoundException();
         dbContext.Set<TEntity>().Remove(entity);
         if (isBulkOperation) return;

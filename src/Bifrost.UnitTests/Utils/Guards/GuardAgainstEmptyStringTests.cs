@@ -12,7 +12,7 @@ public class GuardAgainstEmptyStringTests
         const string nonEmpty = "non-empty";
 
         // Act
-        bool result = Guard.Against.StringIsNullOrWhitespace(nonEmpty, nameof(nonEmpty), throws: false);
+        bool result = Guard.Against.StringIsNullOrWhitespace(nonEmpty, throws: false);
 
         // Assert
         result.Should().BeTrue();
@@ -25,7 +25,7 @@ public class GuardAgainstEmptyStringTests
         const string empty = "";
 
         // Act
-        bool result = Guard.Against.StringIsNullOrWhitespace(empty, nameof(empty), throws: false);
+        bool result = Guard.Against.StringIsNullOrWhitespace(empty, throws: false);
 
         // Assert
         result.Should().BeFalse();
@@ -38,7 +38,7 @@ public class GuardAgainstEmptyStringTests
         const string? nullString = null;
 
         // Act
-        bool result = Guard.Against.StringIsNullOrWhitespace(nullString, nameof(nullString), throws: false);
+        bool result = Guard.Against.StringIsNullOrWhitespace(nullString, throws: false);
 
         // Assert
         result.Should().BeFalse();
@@ -51,7 +51,7 @@ public class GuardAgainstEmptyStringTests
         const string empty = "";
 
         // Act
-        Action act = () => Guard.Against.StringIsNullOrWhitespace(empty, nameof(empty));
+        Action act = () => Guard.Against.StringIsNullOrWhitespace(empty);
 
         // Assert
         act.Should().Throw<ArgumentException>();
@@ -64,7 +64,7 @@ public class GuardAgainstEmptyStringTests
         const string? nullString = null;
 
         // Act
-        Action act = () => Guard.Against.StringIsNullOrWhitespace(nullString, nameof(nullString));
+        Action act = () => Guard.Against.StringIsNullOrWhitespace(nullString);
 
         // Assert
         act.Should().Throw<ArgumentException>();

@@ -13,7 +13,7 @@ public class GuardAgainstLessThanTests
         const int minimum = 2;
 
         // Act
-        Action act = () => Guard.Against.IsLessThan(value, minimum, nameof(value));
+        Action act = () => Guard.Against.IsLessThan(value, minimum);
 
         // Assert
         act.Should().Throw<ArgumentException>();
@@ -27,7 +27,7 @@ public class GuardAgainstLessThanTests
         const int minimum = 2;
 
         // Act
-        bool result = Guard.Against.IsLessThan(value, minimum, nameof(value), throws: false);
+        bool result = Guard.Against.IsLessThan(value, minimum, throws: false);
 
         // Assert
         result.Should().BeFalse();
@@ -41,7 +41,7 @@ public class GuardAgainstLessThanTests
         const int minimum = 2;
 
         // Act
-        bool result = Guard.Against.IsLessThan(value, minimum, nameof(value));
+        bool result = Guard.Against.IsLessThan(value, minimum);
 
         // Assert
         result.Should().BeTrue();
@@ -55,7 +55,7 @@ public class GuardAgainstLessThanTests
         const int minimum = 2;
 
         // Act
-        bool result = Guard.Against.IsLessThan(value, minimum, nameof(value));
+        bool result = Guard.Against.IsLessThan(value, minimum);
 
         // Assert
         result.Should().BeTrue();

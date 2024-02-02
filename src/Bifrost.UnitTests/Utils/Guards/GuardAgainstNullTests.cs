@@ -12,7 +12,7 @@ public class GuardAgainstNullTests
         const string? nullString = null;
 
         // Act
-        Action act = () => Guard.Against.IsNull(nullString, nameof(nullString));
+        Action act = () => Guard.Against.IsNull(nullString);
 
         // Assert
         act.Should().Throw<ArgumentNullException>();
@@ -25,7 +25,7 @@ public class GuardAgainstNullTests
         const string? nullString = null;
 
         // Act
-        bool result = Guard.Against.IsNull(nullString, nameof(nullString), throws: false);
+        bool result = Guard.Against.IsNull(nullString, throws: false);
 
         // Assert
         result.Should().BeFalse();
@@ -38,7 +38,7 @@ public class GuardAgainstNullTests
         const string nonNull = "non-null";
 
         // Act
-        bool result = Guard.Against.IsNull(nonNull, nameof(nonNull));
+        bool result = Guard.Against.IsNull(nonNull);
 
         // Assert
         result.Should().BeTrue();

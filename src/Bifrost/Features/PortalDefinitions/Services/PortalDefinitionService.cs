@@ -21,13 +21,13 @@ internal class PortalDefinitionService : IPortalDefinitionService, IRequestValid
     ValidationResult IRequestValidator<PortalRequest>.ValidateRequest(PortalRequest request) =>
         Validation.Validate(
             Validation.Rule(() => request.Name,
-                x => Guard.Against.StringIsNullOrWhitespace(x, nameof(request.Name))),
+                name => Guard.Against.StringIsNullOrWhitespace(name)),
             Validation.Rule(() => request.MaxInstanceCount,
-                x => Guard.Against.IsLessThan(x, 1, nameof(request.MaxInstanceCount))),
+                maxInstanceCount => Guard.Against.IsLessThan(maxInstanceCount, 1)),
             Validation.Rule(() => request.VpnType,
-                x => Guard.Against.StringIsNullOrWhitespace(x, nameof(request.VpnType))),
+                vpnType => Guard.Against.StringIsNullOrWhitespace(vpnType)),
             Validation.Rule(() => request.VpnConfig,
-                x => Guard.Against.StringIsNullOrWhitespace(x, nameof(request.VpnType)))
+                vpnConfig => Guard.Against.StringIsNullOrWhitespace(vpnConfig))
         );
 
     public async Task<CreatePortalDefinitionResult> CreatePortalAsync(PortalRequest request, ApplicationUser creator)
@@ -55,7 +55,7 @@ internal class PortalDefinitionService : IPortalDefinitionService, IRequestValid
 
     public async Task<UpdatePortalResult> UpdatePortalAsync(string id, PortalRequest request)
     {
-        Guard.Against.StringIsNullOrWhitespace(id, nameof(id));
+        Guard.Against.StringIsNullOrWhitespace(id);
 
         var validation = Validator.ValidateRequest(request);
         if (!validation.IsValid)
@@ -81,13 +81,13 @@ internal class PortalDefinitionService : IPortalDefinitionService, IRequestValid
 
     public Task<PortalDefinition?> GetPortalAsync(string id)
     {
-        Guard.Against.StringIsNullOrWhitespace(id, nameof(id));
+        Guard.Against.StringIsNullOrWhitespace(id);
         return repository.GetByIdAsync(id);
     }
 
     public Task DeletePortalAsync(string id)
     {
-        Guard.Against.StringIsNullOrWhitespace(id, nameof(id));
+        Guard.Against.StringIsNullOrWhitespace(id);
         return repository.DeleteAsync(id);
     }
 }
