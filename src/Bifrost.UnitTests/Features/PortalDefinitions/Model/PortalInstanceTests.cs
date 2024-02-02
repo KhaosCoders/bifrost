@@ -38,6 +38,7 @@ public class PortalInstanceTests
         state.Should().BeNull();
     }
 
+    [DataTestMethod]
     [DataRow(PortalState.Pending)]
     [DataRow(PortalState.Creating)]
     [DataRow(PortalState.Open)]
