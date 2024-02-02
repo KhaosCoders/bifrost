@@ -6,13 +6,33 @@ using Bifrost.Features.PortalDefinitions.Model;
 
 namespace Bifrost.Features.PortalDefinitions.Services;
 
-internal class PortalDefinitionService(IPortalDefinitionRepository repository) : IPortalDefinitionService
+internal class PortalDefinitionService : IPortalDefinitionService, IRequestValidator<PortalRequest>
 {
-    private readonly IPortalDefinitionRepository repository = repository;
+    private readonly IPortalDefinitionRepository repository;
+
+    public PortalDefinitionService(IPortalDefinitionRepository repository)
+    {
+        this.Validator = this;
+        this.repository = repository;
+    }
+
+    internal IRequestValidator<PortalRequest> Validator { get; set; }
+
+    ValidationResult IRequestValidator<PortalRequest>.ValidateRequest(PortalRequest request) =>
+        Validation.Validate(
+            Validation.Rule(() => request.Name,
+                x => Guard.Against.StringIsNullOrWhitespace(x, nameof(request.Name))),
+            Validation.Rule(() => request.MaxInstanceCount,
+                x => Guard.Against.IsLessThan(x, 1, nameof(request.MaxInstanceCount))),
+            Validation.Rule(() => request.VpnType,
+                x => Guard.Against.StringIsNullOrWhitespace(x, nameof(request.VpnType))),
+            Validation.Rule(() => request.VpnConfig,
+                x => Guard.Against.StringIsNullOrWhitespace(x, nameof(request.VpnType)))
+        );
 
     public async Task<CreatePortalDefinitionResult> CreatePortalAsync(PortalRequest request, ApplicationUser creator)
     {
-        var validation = ValidateRequest(request);
+        var validation = Validator.ValidateRequest(request);
         if (!validation.IsValid)
         {
             return new(false, null, validation.Faults);
@@ -33,21 +53,11 @@ internal class PortalDefinitionService(IPortalDefinitionRepository repository) :
         return new(true, definition, []);
     }
 
-    private static ValidationResult ValidateRequest(PortalRequest request) =>
-        Validator.Validate(
-            Validator.Rule(() => request.Name,
-                x => Guard.Against.StringIsNullOrWhitespace(x, nameof(request.Name))),
-            Validator.Rule(() => request.MaxInstanceCount,
-                x => Guard.Against.IsLessThan(x, 0, nameof(request.MaxInstanceCount))),
-            Validator.Rule(() => request.VpnType,
-                x => Guard.Against.StringIsNullOrWhitespace(x, nameof(request.VpnType)))
-        );
-
     public async Task<UpdatePortalResult> UpdatePortalAsync(string id, PortalRequest request)
     {
         Guard.Against.StringIsNullOrWhitespace(id, nameof(id));
 
-        var validation = ValidateRequest(request);
+        var validation = Validator.ValidateRequest(request);
         if (!validation.IsValid)
         {
             return new(false, validation.Faults);
@@ -56,7 +66,7 @@ internal class PortalDefinitionService(IPortalDefinitionRepository repository) :
         var definition = await repository.GetByIdAsync(id);
         if (definition is null)
         {
-            return new(false, new[] { new ValidationFault("Portal", "Portal not found") });
+            return new(false, [new ValidationFault("Portal", "Portal not found")]);
         }
 
         definition.Name = request.Name;

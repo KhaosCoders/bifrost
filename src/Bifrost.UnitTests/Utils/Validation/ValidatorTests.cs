@@ -14,7 +14,7 @@ public class ValidatorTests
         // Arrange
 
         // Act
-        var result = Validator.Rule(() => Text, _ => true);
+        var result = Client.Utils.Validation.Validation.Rule(() => Text, _ => true);
 
         // Assert
         result.Should().NotBeNull();
@@ -32,7 +32,7 @@ public class ValidatorTests
         ];
 
         // Act
-        var result = Validator.Validate(rules);
+        var result = Client.Utils.Validation.Validation.Validate(rules);
 
         // Assert
         result.Should().NotBeNull();
@@ -51,7 +51,7 @@ public class ValidatorTests
         ];
 
         // Act
-        var result = Validator.Validate(rules);
+        var result = Client.Utils.Validation.Validation.Validate(rules);
 
         // Assert
         result.Should().NotBeNull();
@@ -70,7 +70,7 @@ public class ValidatorTests
         ];
 
         // Act
-        var result = Validator.Validate(rules);
+        var result = Client.Utils.Validation.Validation.Validate(rules);
 
         // Assert
         result.Should().NotBeNull();
@@ -85,7 +85,7 @@ public class ValidatorTests
         ValidationRuleBase[] rules = [];
 
         // Act
-        var result = Validator.Validate(rules);
+        var result = Client.Utils.Validation.Validation.Validate(rules);
 
         // Assert
         result.Should().NotBeNull();

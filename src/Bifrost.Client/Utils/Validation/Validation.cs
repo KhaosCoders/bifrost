@@ -2,7 +2,7 @@
 
 namespace Bifrost.Client.Utils.Validation;
 
-public static class Validator
+public static class Validation
 {
     public static ValidationRuleBase Rule<T>(Expression<Func<T>> accessor, Func<T, bool> validator) =>
         new ValidationRule<T>(accessor, validator);
