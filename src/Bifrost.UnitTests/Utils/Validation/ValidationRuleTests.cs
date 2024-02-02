@@ -2,9 +2,10 @@
 
 namespace Bifrost.UnitTests.Utils.Validation;
 
+[TestClass]
 public class ValidationRuleTests
 {
-    [Test]
+    [TestMethod]
     public void Name_ReturnsPropertyOfAccessor()
     {
         // Arrange
@@ -18,7 +19,7 @@ public class ValidationRuleTests
         name.Should().Be(nameof(obj.DummyName));
     }
 
-    [Test]
+    [TestMethod]
     public void Name_ThrowsArgumentException_WhenAccessorIsNotProperty()
     {
         // Arrange
@@ -31,7 +32,7 @@ public class ValidationRuleTests
         act.Should().Throw<ArgumentException>();
     }
 
-    [Test]
+    [TestMethod]
     public void Validate_ReturnsNull_WhenValid()
     {
         // Arrange
@@ -45,7 +46,7 @@ public class ValidationRuleTests
         result.Should().BeNull();
     }
 
-    [Test]
+    [TestMethod]
     public void Validate_ReturnsValidationFault_WhenInvalid()
     {
         // Arrange
@@ -61,7 +62,7 @@ public class ValidationRuleTests
         result.Message.Should().Be("Validation failed");
     }
 
-    [Test]
+    [TestMethod]
     public void Validate_ReturnsValidationFault_WhenValidatorThrowsException()
     {
         // Arrange

@@ -1,11 +1,13 @@
 ﻿using Bifrost.Features.PortalDefinitions.Model;
 
 namespace Bifrost.UnitTests.Features.PortalDefinitions.Model;
-internal class PortalInstanceTests
+
+[TestClass]
+public class PortalInstanceTests
 {
     private PortalDefinition portal;
 
-    [SetUp]
+    [TestInitialize]
     public void Setup()
     {
         portal = new()
@@ -18,7 +20,7 @@ internal class PortalInstanceTests
         };
     }
 
-    [Test]
+    [TestMethod]
     public void PortalInstance_CurrentState_ShouldReturn_Null_WhenNoHistory()
     {
         // Arrange
@@ -36,11 +38,11 @@ internal class PortalInstanceTests
         state.Should().BeNull();
     }
 
-    [TestCase(PortalState.Pending)]
-    [TestCase(PortalState.Creating)]
-    [TestCase(PortalState.Open)]
-    [TestCase(PortalState.Closing)]
-    [TestCase(PortalState.Closed)]
+    [DataRow(PortalState.Pending)]
+    [DataRow(PortalState.Creating)]
+    [DataRow(PortalState.Open)]
+    [DataRow(PortalState.Closing)]
+    [DataRow(PortalState.Closed)]
     public void PortalInstance_CurrentState_ShouldReturn_LatestHistoryState(PortalState highestState)
     {
         // Arrange
@@ -73,7 +75,7 @@ internal class PortalInstanceTests
         state.Should().Be(highestState);
     }
 
-    [Test]
+    [TestMethod]
     public void PortalInstance_CreationUser_ShouldReturn_FirstHistoryUser()
     {
         // Arrange
@@ -96,7 +98,7 @@ internal class PortalInstanceTests
         user.Should().Be("User1");
     }
 
-    [Test]
+    [TestMethod]
     public void PortalInstance_CreationUser_ShouldReturn_Null_WhenNoHistory()
     {
         // Arrange
@@ -113,7 +115,7 @@ internal class PortalInstanceTests
         user.Should().BeNull();
     }
 
-    [Test]
+    [TestMethod]
     public void PortalInstance_CreationDate_ShouldReturn_FirstHistoryDate()
     {
         // Arrange
@@ -137,7 +139,7 @@ internal class PortalInstanceTests
         date.Should().Be(creationDate);
     }
 
-    [Test]
+    [TestMethod]
     public void PortalInstance_CreationDate_ShouldReturn_Null_WhenNoHistory()
     {
         // Arrange

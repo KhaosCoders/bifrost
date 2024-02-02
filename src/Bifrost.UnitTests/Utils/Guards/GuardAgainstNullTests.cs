@@ -2,9 +2,10 @@
 
 namespace Bifrost.UnitTests.Utils.Guards;
 
+[TestClass]
 public class GuardAgainstNullTests
 {
-    [Test]
+    [TestMethod]
     public void IsNull_ThrowsArgumentNullException_ForNullValue()
     {
         // Arrange
@@ -17,7 +18,7 @@ public class GuardAgainstNullTests
         act.Should().Throw<ArgumentNullException>();
     }
 
-    [Test]
+    [TestMethod]
     public void IsNull_ReturnsFalse_ForNullValue()
     {
         // Arrange
@@ -30,7 +31,7 @@ public class GuardAgainstNullTests
         result.Should().BeFalse();
     }
 
-    [Test]
+    [TestMethod]
     public void IsNull_ReturnsTrue_ForNonNullValue()
     {
         // Arrange

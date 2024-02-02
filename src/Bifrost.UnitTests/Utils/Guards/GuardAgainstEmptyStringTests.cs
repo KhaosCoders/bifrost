@@ -2,9 +2,10 @@
 
 namespace Bifrost.UnitTests.Utils.Guards;
 
+[TestClass]
 public class GuardAgainstEmptyStringTests
 {
-    [Test]
+    [TestMethod]
     public void StringIsNullOrWhitespace_ReturnsTrue_ForNonEmptyStrings()
     {
         // Arrange
@@ -17,7 +18,7 @@ public class GuardAgainstEmptyStringTests
         result.Should().BeTrue();
     }
 
-    [Test]
+    [TestMethod]
     public void StringIsNullOrWhitespace_ReturnsFalse_ForEmptyStrings()
     {
         // Arrange
@@ -30,7 +31,7 @@ public class GuardAgainstEmptyStringTests
         result.Should().BeFalse();
     }
 
-    [Test]
+    [TestMethod]
     public void StringIsNullOrWhitespace_ReturnsFalse_ForNullStrings()
     {
         // Arrange
@@ -43,7 +44,7 @@ public class GuardAgainstEmptyStringTests
         result.Should().BeFalse();
     }
 
-    [Test]
+    [TestMethod]
     public void StringIsNullOrWhitespace_ThrowsArgumentException_ForEmptyStrings()
     {
         // Arrange
@@ -56,7 +57,7 @@ public class GuardAgainstEmptyStringTests
         act.Should().Throw<ArgumentException>();
     }
 
-    [Test]
+    [TestMethod]
     public void StringIsNullOrWhitespace_ThrowsArgumentNullException_ForNullStrings()
     {
         // Arrange

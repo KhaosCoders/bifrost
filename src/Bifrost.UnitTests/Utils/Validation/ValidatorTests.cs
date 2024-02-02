@@ -2,13 +2,14 @@
 
 namespace Bifrost.UnitTests.Utils.Validation;
 
+[TestClass]
 public class ValidatorTests
 {
     public int Number { get; } = 1;
 
     public string Text { get; set; } = "test";
 
-    [Test]
+    [TestMethod]
     public void Rule_Returns_NewValidationRule()
     {
         // Arrange
@@ -21,7 +22,7 @@ public class ValidatorTests
         result.Should().BeOfType<ValidationRule<string>>();
     }
 
-    [Test]
+    [TestMethod]
     public void Validate_ReturnsIsValid_ForJustValidRules()
     {
         // Arrange
@@ -40,7 +41,7 @@ public class ValidatorTests
         result.Faults.Should().BeEmpty();
     }
 
-    [Test]
+    [TestMethod]
     public void Validate_ReturnsIsNotValid_ForJustInvalidRules()
     {
         // Arrange
@@ -59,7 +60,7 @@ public class ValidatorTests
         result.Faults.Should().HaveCount(2);
     }
 
-    [Test]
+    [TestMethod]
     public void Validate_ReturnsIsNotValid_ForMixedRules()
     {
         // Arrange
@@ -78,7 +79,7 @@ public class ValidatorTests
         result.Faults.Should().HaveCount(1);
     }
 
-    [Test]
+    [TestMethod]
     public void Validate_ReturnsIsValid_ForNoRules()
     {
         // Arrange

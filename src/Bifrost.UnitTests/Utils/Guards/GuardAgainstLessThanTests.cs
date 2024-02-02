@@ -1,9 +1,11 @@
 ﻿using Bifrost.Client.Utils.Guards;
 
 namespace Bifrost.UnitTests.Utils.Guards;
+
+[TestClass]
 public class GuardAgainstLessThanTests
 {
-    [Test]
+    [TestMethod]
     public void IsLessThan_ThrowsArgumentException_ForLessThanValue()
     {
         // Arrange
@@ -17,7 +19,7 @@ public class GuardAgainstLessThanTests
         act.Should().Throw<ArgumentException>();
     }
 
-    [Test]
+    [TestMethod]
     public void IsLessThan_ReturnsFalse_ForLessThanValue()
     {
         // Arrange
@@ -31,7 +33,7 @@ public class GuardAgainstLessThanTests
         result.Should().BeFalse();
     }
 
-    [Test]
+    [TestMethod]
     public void IsLessThan_ReturnsTrue_ForEqualValue()
     {
         // Arrange
@@ -45,7 +47,7 @@ public class GuardAgainstLessThanTests
         result.Should().BeTrue();
     }
 
-    [Test]
+    [TestMethod]
     public void IsLessThan_ReturnsTrue_ForGreaterThanValue()
     {
         // Arrange
