@@ -18,9 +18,9 @@
     </div>
     <div class="row">
         <div class="col-12 d-inline-flex">
-            <Portal Name="GTM" CurrentInstances="0" MaxInstances="2" DefinedPorts="1" />
-            <Portal Name="Glassline" CurrentInstances="1" MaxInstances="3" DefinedPorts="2" />
-            <Portal Name="SWS" CurrentInstances="1" MaxInstances="1" DefinedPorts="3" />
+            <Portal Id="1" Name="GTM" CurrentInstances="0" MaxInstances="2" DefinedPorts="1" OnPortaClicked="OnPortalClicked" />
+            <Portal Id="2" Name="Glassline" CurrentInstances="1" MaxInstances="3" DefinedPorts="2" OnPortaClicked="OnPortalClicked" />
+            <Portal Id="3" Name="SWS" CurrentInstances="1" MaxInstances="1" DefinedPorts="3" OnPortaClicked="OnPortalClicked" />
         </div>
     </div>
     <div class="row">
@@ -34,3 +34,10 @@
         </div>
     </div>
 </div>
+
+@code {
+    public void OnPortalClicked(PortalEventArgs e)
+    {
+        Console.WriteLine("Portal clicked");
+    }
+}
