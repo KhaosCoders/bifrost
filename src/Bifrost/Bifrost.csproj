@@ -21,8 +21,6 @@
     <None Include="wwwroot\css\bootstrap-icons\bootstrap-icons.scss" />
     <None Include="wwwroot\css\bootstrap-icons\fonts\bootstrap-icons.woff2" />
     <None Include="wwwroot\css\bootstrap\bootstrap.min.css.map" />
-    <None Include="wwwroot\svg\Bifrost.svg" />
-    <None Include="wwwroot\svg\Logo.svg" />
   </ItemGroup>
 
   <ItemGroup>

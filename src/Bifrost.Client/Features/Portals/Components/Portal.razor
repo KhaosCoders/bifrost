@@ -1,0 +1,25 @@
+﻿<div class="portal @(CurrentInstances >= MaxInstances ? "full" : "")">
+    <div class="instances">
+        <span class="x-rune" />
+        <span class="instance-count">@CurrentInstances</span> / <span class="max-instance-count">@MaxInstances</span>
+    </div>
+    <div class="logo" />
+    <div class="ports">@DefinedPorts Port</div>
+    <div class="start" />
+    <div class="occupied" />
+    <div class="name">@Name</div>
+</div>
+
+@code {
+    [Parameter]
+    public required string Name { get; set; }
+
+    [Parameter]
+    public required int MaxInstances { get; set; }
+
+    [Parameter]
+    public required int CurrentInstances { get; set; }
+
+    [Parameter]
+    public required int DefinedPorts { get; set; }
+}

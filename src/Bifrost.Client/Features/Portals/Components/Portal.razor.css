@@ -1,0 +1,97 @@
+.portal {
+    background-color: #F5F5F5;
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    margin: 12px;
+}
+
+    .portal:hover {
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+        -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+
+        .portal:hover .start {
+            display: block;
+        }
+
+.instances {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    font-size: 20px;
+}
+
+.portal.full .instances {
+    color: #FF5400;
+}
+
+    .portal.full .instances .x-rune {
+        filter: brightness(0) saturate(100%) invert(37%) sepia(91%) saturate(3094%) hue-rotate(3deg) brightness(104%) contrast(103%);
+    }
+
+.x-rune {
+    display: inline-block;
+    width: 13px;
+    height: 22px;
+    background-image: url("svg/x-rune.svg");
+    background-size: contain;
+    vertical-align: text-top;
+}
+
+.logo {
+    position: relative;
+    top: 30px;
+    width: 94px;
+    height: 93px;
+    margin: 0 auto;
+    background-image: url("svg/logo.svg");
+    background-size: contain;
+}
+
+.name {
+    position: absolute;
+    bottom: 28px;
+    width: 100%;
+    text-align: center;
+    font-size: 36px;
+}
+
+.ports {
+    position: absolute;
+    bottom: 6px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+}
+
+.start {
+    display: none;
+    position: absolute;
+    width: 40px;
+    height: 58px;
+    top: 60px;
+    left: 80px;
+    background-image: url("svg/j-rune.svg");
+    background-size: contain;
+}
+
+.portal.full .start {
+    display: none;
+}
+
+.occupied {
+    display: none;
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background-image: url("svg/Occupied.svg");
+    background-size: contain;
+}
+
+.portal.full .occupied {
+    display: block;
+}
