@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bifrost", "Bifrost\Bifrost.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bifrost.Client", "Bifrost.Client\Bifrost.Client.csproj", "{E2EA90FB-52D3-456B-9465-3837C0C2498D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bifrost.UnitTests", "Bifrost.UnitTests\Bifrost.UnitTests.csproj", "{9D81C7FB-6A02-4D54-9BCF-11460777CE21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bifrost.UnitTests", "Bifrost.UnitTests\Bifrost.UnitTests.csproj", "{9D81C7FB-6A02-4D54-9BCF-11460777CE21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
