@@ -8,6 +8,7 @@ using Bifrost.Features.Identity.Model;
 using Bifrost.Features.PortalDefinitions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace Bifrost;
 public static class Program
@@ -22,6 +23,9 @@ public static class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents()
             .AddInteractiveWebAssemblyComponents();
+
+        // FluentUI
+        builder.Services.AddFluentUIComponents();
 
         // DbContext
         var identityConnectionString = builder.Configuration.GetConnectionString("IdentityConnection") ?? throw new InvalidOperationException("Connection string 'IdentityConnection' not found.");
