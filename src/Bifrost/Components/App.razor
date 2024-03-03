@@ -5,20 +5,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
-    @* <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/bootstrap-icons/bootstrap-icons.css" /> *@
     <link href="_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="Bifrost.styles.css" />
     <link rel="icon" type="image/svg" href="svg/logo.svg" />
     <HeadOutlet />
-    @* <FluentDesignTheme StorageName="theme" /> *@
+    <FluentDesignTheme StorageName="theme" />
 </head>
 
 <body>
-    <Routes />
+    <FluentDesignSystemProvider AccentBaseColor="#D83B01">
+        <Routes />
+    </FluentDesignSystemProvider>
     <script src="_framework/blazor.web.js"></script>
-    @* <script src="js/bootstrap.bundle.min.js"></script> *@
 </body>
 
 </html>
