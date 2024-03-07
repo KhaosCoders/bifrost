@@ -1,0 +1,20 @@
+﻿@rendermode InteractiveAuto
+
+<FluentButton Appearance="Appearance.Lightweight" @onclick="ToggleTheme">
+    <FluentIcon Value="@((Icon)(GlobalDesign.Luminance == StandardLuminance.DarkMode ? new Icons.Regular.Size16.WeatherSunny() : new Icons.Regular.Size16.WeatherMoon()))" />
+</FluentButton>
+
+@code {
+
+    [Inject]
+    private GlobalState GlobalDesign { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        GlobalDesign.OnChange += StateHasChanged;
+    }
+
+    private void ToggleTheme() =>
+        GlobalDesign.SetLuminance(GlobalDesign.Luminance == StandardLuminance.LightMode ? StandardLuminance.DarkMode : StandardLuminance.LightMode);
+
+}

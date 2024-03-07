@@ -1,0 +1,13 @@
+﻿@rendermode InteractiveAuto
+
+<FluentDesignTheme StorageName="theme" CustomColor="#D83B01" Mode="@(GlobalDesign.Luminance == StandardLuminance.LightMode ? DesignThemeModes.Light : DesignThemeModes.Dark)" />
+
+@code {
+    [Inject]
+    private GlobalState GlobalDesign { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        GlobalDesign.OnChange += StateHasChanged;
+    }
+}
