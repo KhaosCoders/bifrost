@@ -1,4 +1,9 @@
-﻿::deep fluent-anchor.stealth::part(control) {
+﻿.logo {
+    max-width: 100%;
+    height: auto;
+}
+
+::deep fluent-anchor.stealth::part(control) {
     background-color: transparent;
 }
 

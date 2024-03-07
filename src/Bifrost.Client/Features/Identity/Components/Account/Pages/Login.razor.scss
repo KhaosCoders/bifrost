@@ -1,34 +1,18 @@
 
-.login-dialog {
-  position: relative;
-  opacity: 0.9;
-  width: 400px;
-  background: #E6E6E6;
-  border: 1px solid black;
-  border-radius: 10px;
-  box-shadow: inset 0px 0px 10px #bbb;
-  padding: 40px;
+.login-page {
+    height: 100vh;
+}
 
-  ::deep .input-group {
-    .form-control {
-      border-color: #333333;
-    }
+.login-dialog-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
-    .input-group-text {
-      border-color: #333333;
-    }
-  }
-
-  ::deep .form-check {
-    .form-check-input {
-      border-color: #333333;
-    }
-  }
-
-  @media (max-width: 460px) {
-    width: 100%;
-    border-radius: 0px;
-  }
+.img-fluid {
+    max-width: 100%;
+    height: auto;
 }
 
 .logo {
@@ -52,11 +36,5 @@
   // extra small screens
   @media (max-width: 400.98px) {
     width: 250px;
-  }
-}
-
-.container {
-  @media (max-width: 460px) {
-    padding: 0 !important;
   }
 }

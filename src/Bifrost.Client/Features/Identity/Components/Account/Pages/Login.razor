@@ -10,7 +10,7 @@
 
 <PageTitle>Login - Bifrost</PageTitle>
 
-<div class="container h-100">
+<div class="login-page">
     <LoginBackground />
 
     <div>
@@ -19,36 +19,33 @@
         </div>
     </div>
 
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="login-dialog">
+    <div class="login-dialog-container">
+        <FluentCard Width="400px" Height="230px" Style="opacity: 0.95">
             <EditForm EditContext="@editContext" method="post" OnValidSubmit="SignInAsync" FormName="login" class="form-inline">
                 <DataAnnotationsValidator />
                 <ServerModelValidator @ref="_serverModelValidator" />
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="username-addon">
-                        <span class="bi bi-person-fill"></span>
-                    </span>
-                    <InputText type="text" class="form-control" @bind-Value="Input.Username" placeholder="Username" aria-label="Username" aria-describedby="username-addon"></InputText>
-                    <ValidationMessage For="() => Input.Username" class="invalid-feedback" />
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="password-addon">
-                        <span class="bi bi-key-fill"></span>
-                    </span>
-                    <InputText type="password" class="form-control" @bind-Value="Input.Password" placeholder="Password" aria-label="Password" aria-describedby="password-addon"></InputText>
-                    <ValidationMessage For="() => Input.Password" class="invalid-feedback" />
-                </div>
-                <div class="form-check mb-3">
-                    <InputCheckbox class="form-check-input" @bind-Value="Input.RememberMe" id="staySignedIn"></InputCheckbox>
-                    <label class="form-check-label" for="staySignedIn">
-                        Stay signed in
-                    </label>
-                </div>
-                <div class="input-group">
-                    <button class="btn btn-dark w-100" type="submit" id="login-submit">Sign in</button>
-                </div>
+                <FluentLayout>
+                    <FluentHeader>
+                        Login
+                    </FluentHeader>
+                    <FluentBodyContent Style="margin: 10px 0px">
+                        <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="10">
+                            <FluentTextField @bind-Value="Input.Username" Placeholder="Username" Autofocus="true">
+                                <FluentIcon Value="@(new Icons.Regular.Size16.Person())" Slot="start" Color="Color.Neutral" />
+                            </FluentTextField>
+                            <FluentTextField @bind-Value="Input.Password" Placeholder="Password" TextFieldType="TextFieldType.Password">
+                                <FluentIcon Value="@(new Icons.Regular.Size16.Key())" Slot="start" Color="Color.Neutral" />
+                            </FluentTextField>
+                        </FluentStack>
+                        <FluentCheckbox @bind-Value="Input.RememberMe" Label="Stay signed in" Style="margin-top: 10px" />
+                    </FluentBodyContent>
+                    <FluentFooter>
+                        <FluentButton Type="ButtonType.Submit">Sign in</FluentButton>
+                        <FluentValidationSummary />
+                    </FluentFooter>
+                </FluentLayout>
             </EditForm>
-        </div>
+        </FluentCard>
     </div>
 </div>
 
@@ -66,7 +63,6 @@
     protected override void OnInitialized()
     {
         editContext = new(Input);
-        editContext.SetFieldCssClassProvider(new Bifrost.Client.Utils.BootstrapValidationClassProvider());
     }
 
     private async Task SignInAsync()
