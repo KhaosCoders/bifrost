@@ -1,0 +1,69 @@
+﻿@* @implements IDisposable *@
+@rendermode InteractiveAuto
+
+@inject NavigationManager NavigationManager
+
+<img src="svg/Bifrost.svg" alt="Bifrost" style="height: -webkit-fill-available" />
+<FluentSpacer />
+<FluentStack HorizontalGap="10" HorizontalAlignment="HorizontalAlignment.Right">
+    <AuthorizeView>
+        <Authorized>
+            <FluentButton Id="profile" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ChevronDown())" @onclick="ToggleMenu" @onkeydown="OnKeyDown">
+                @context.User.Identity?.Name
+            </FluentButton>
+            <FluentMenu @bind-Open="_visible" Anchor="profile">
+                <div class="menuitem">
+                    <FluentAnchor IconStart="@(new Icons.Regular.Size20.Person())" Appearance="Appearance.Stealth" Href="Account/Manage">Manage</FluentAnchor>
+                </div>
+                <div class="menuitem">
+                    <FluentAnchor IconStart="@(new Icons.Regular.Size20.Person())" Appearance="Appearance.Stealth" Href="Account/Logout">Logout</FluentAnchor>
+                </div>
+            </FluentMenu>
+        </Authorized>
+        <NotAuthorized>
+            <FluentAnchor IconStart="@(new Icons.Regular.Size20.Person())" Appearance="Appearance.Stealth" Href="Account/Register">Register</FluentAnchor>
+            <FluentAnchor IconStart="@(new Icons.Regular.Size20.Key())" Appearance="Appearance.Lightweight" Href="Account/Login">Login</FluentAnchor>
+        </NotAuthorized>
+    </AuthorizeView>
+</FluentStack>
+
+@code {
+    bool _visible;
+
+    private void ToggleMenu() => _visible = !_visible;
+
+    private void OnKeyDown(KeyboardEventArgs args)
+    {
+        if (args is not null && args.Key == "Escape")
+        {
+            _visible = false;
+        }
+    }
+
+    // private string? currentUrl;
+
+    // protected override void OnInitialized()
+    // {
+    //     currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+    //     NavigationManager.LocationChanged += OnLocationChanged;
+    // }
+
+    // private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    // {
+    //     currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+    //     StateHasChanged();
+    // }
+
+    // public void Dispose()
+    // {
+    //     NavigationManager.LocationChanged -= OnLocationChanged;
+    // }
+}
+
+@* <form action="Account/Logout" method="post">
+    <AntiforgeryToken />
+    <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+    <button type="submit" class="dropdown-item">
+        <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+    </button>
+</form> *@

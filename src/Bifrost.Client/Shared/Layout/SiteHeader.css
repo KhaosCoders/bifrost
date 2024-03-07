@@ -1,0 +1,7 @@
+﻿::deep fluent-anchor.stealth::part(control) {
+    background-color: transparent;
+}
+
+.menuitem:hover {
+    background-color: var(--neutral-fill-stealth-rest);
+}
