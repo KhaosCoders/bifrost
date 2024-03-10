@@ -1,21 +1,14 @@
-﻿@using System.Runtime.InteropServices
-
-@implements IDisposable
+﻿@* @implements IDisposable *@
 @rendermode InteractiveAuto
 
 @inject NavigationManager NavigationManager
-@inject IJSRuntime JSRuntime
-@inject AntiforgeryStateProvider AntiforgerySP
 
 <img src="svg/Bifrost.svg" alt="Bifrost" class="logo" />
 <FluentSpacer />
 <FluentStack HorizontalGap="10" HorizontalAlignment="HorizontalAlignment.Right">
     <AuthorizeView>
         <Authorized>
-            <div>
-                @context?.ToString()
-            </div>
-            <FluentButton Id="profile" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ChevronDown())" OnClick="@ToggleMenu" @onkeydown="OnKeyDown">
+            <FluentButton Id="profile" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ChevronDown())" @onclick="ToggleMenu" @onkeydown="OnKeyDown">
                 @context.User.Identity?.Name
             </FluentButton>
             <FluentMenu @bind-Open="_visible" Anchor="profile">
@@ -23,16 +16,7 @@
                     <FluentAnchor IconStart="@(new Icons.Regular.Size20.Person())" Appearance="Appearance.Stealth" Href="Account/Manage">Manage</FluentAnchor>
                 </div>
                 <div class="menuitem">
-                    <form action="Account/Logout" method="post" id="logoutForm">
-                        <CascadingAntiforgeryToken />
-                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                        <FluentAnchor IconStart="@(new Icons.Regular.Size20.Person())" Appearance="Appearance.Stealth" Href="#" OnClick="@Logout">Logout</FluentAnchor>
-                    </form>
-                    <script>
-                        window.submitLogoutForm = () => {
-                            document.getElementById("logoutForm").submit();
-                        }
-                    </script>
+                    <FluentAnchor IconStart="@(new Icons.Regular.Size20.Person())" Appearance="Appearance.Stealth" Href="Account/Logout">Logout</FluentAnchor>
                 </div>
             </FluentMenu>
         </Authorized>
@@ -43,26 +27,10 @@
     </AuthorizeView>
 
     <ThemeToggle />
-
-    <div>
-        @(AntiforgerySP.GetAntiforgeryToken()?.ToString() ?? "fehlt")
-    </div>
-    <div>
-        <!-- Aktuelle Plattform ausgeben (Server oder WebAssembly) -->
-        @if (RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER")))
-        {
-            <span>WebAssembly</span>
-        }
-        else
-        {
-            <span>Server</span>
-        }
-    </div>
 </FluentStack>
 
 @code {
     bool _visible;
-    private string? currentUrl;
 
     private void ToggleMenu() => _visible = !_visible;
 
@@ -74,23 +42,30 @@
         }
     }
 
-    private void Logout() =>
-        JSRuntime.InvokeVoidAsync("submitLogoutForm");
+    // private string? currentUrl;
 
-    protected override void OnInitialized()
-    {
-        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-        NavigationManager.LocationChanged += OnLocationChanged;
-    }
+    // protected override void OnInitialized()
+    // {
+    //     currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+    //     NavigationManager.LocationChanged += OnLocationChanged;
+    // }
 
-    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
-    {
-        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
-        StateHasChanged();
-    }
+    // private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    // {
+    //     currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+    //     StateHasChanged();
+    // }
 
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= OnLocationChanged;
-    }
+    // public void Dispose()
+    // {
+    //     NavigationManager.LocationChanged -= OnLocationChanged;
+    // }
 }
+
+@* <form action="Account/Logout" method="post">
+    <AntiforgeryToken />
+    <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+    <button type="submit" class="dropdown-item">
+        <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+    </button>
+</form> *@
