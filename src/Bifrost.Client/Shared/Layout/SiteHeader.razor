@@ -1,22 +1,33 @@
-﻿@* @implements IDisposable *@
+﻿@implements IDisposable
 @rendermode InteractiveAuto
 
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject AntiforgeryStateProvider AntiforgeryStateProvider
 
 <img src="svg/Bifrost.svg" alt="Bifrost" class="logo" />
 <FluentSpacer />
 <FluentStack HorizontalGap="10" HorizontalAlignment="HorizontalAlignment.Right">
     <AuthorizeView>
         <Authorized>
-            <FluentButton Id="profile" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ChevronDown())" @onclick="ToggleMenu" @onkeydown="OnKeyDown">
-                @context.User.Identity?.Name
+            <FluentButton Id="profile" Appearance="Appearance.Lightweight" IconEnd="@(new Icons.Regular.Size20.ChevronDown())" OnClick="@ToggleMenu" @onkeydown="OnKeyDown">
+                @context?.User?.Identity?.Name
             </FluentButton>
             <FluentMenu @bind-Open="_visible" Anchor="profile">
                 <div class="menuitem">
                     <FluentAnchor IconStart="@(new Icons.Regular.Size20.Person())" Appearance="Appearance.Stealth" Href="Account/Manage">Manage</FluentAnchor>
                 </div>
                 <div class="menuitem">
-                    <FluentAnchor IconStart="@(new Icons.Regular.Size20.Person())" Appearance="Appearance.Stealth" Href="Account/Logout">Logout</FluentAnchor>
+                    <form action="Account/Logout" method="post" id="logoutForm">
+                        <input type="hidden" name="@antiforgeryToken.FormFieldName" value="@antiforgeryToken.Value" />
+                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                        <FluentAnchor IconStart="@(new Icons.Regular.Size20.Person())" Appearance="Appearance.Stealth" Href="#" OnClick="@Logout">Logout</FluentAnchor>
+                    </form>
+                    <script>
+                        window.submitLogoutForm = () => {
+                            document.getElementById("logoutForm").submit();
+                        }
+                    </script>
                 </div>
             </FluentMenu>
         </Authorized>
@@ -31,6 +42,8 @@
 
 @code {
     bool _visible;
+    string? currentUrl;
+    AntiforgeryRequestToken? antiforgeryToken;
 
     private void ToggleMenu() => _visible = !_visible;
 
@@ -42,30 +55,27 @@
         }
     }
 
-    // private string? currentUrl;
+    private void Logout() =>
+        JSRuntime.InvokeVoidAsync("submitLogoutForm");
 
-    // protected override void OnInitialized()
-    // {
-    //     currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-    //     NavigationManager.LocationChanged += OnLocationChanged;
-    // }
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.LocationChanged += OnLocationChanged;
 
-    // private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
-    // {
-    //     currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
-    //     StateHasChanged();
-    // }
+        // <AntiforgeryToken /> in deferred popup not rendered correctly
+        // so acquire one here and use it later
+        antiforgeryToken = AntiforgeryStateProvider.GetAntiforgeryToken();
+    }
 
-    // public void Dispose()
-    // {
-    //     NavigationManager.LocationChanged -= OnLocationChanged;
-    // }
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
 }
-
-@* <form action="Account/Logout" method="post">
-    <AntiforgeryToken />
-    <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-    <button type="submit" class="dropdown-item">
-        <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
-    </button>
-</form> *@

@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
 
+// Shows up in browser console (easy hint on WASM)
+Console.WriteLine("Running in WASM");
+
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Services.AddOptions();
