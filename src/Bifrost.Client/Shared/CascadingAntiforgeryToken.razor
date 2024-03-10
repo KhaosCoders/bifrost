@@ -1,0 +1,17 @@
+﻿@inject JSRuntime JSRuntime
+
+@rendermode InteractiveAuto
+
+<input type="hidden" name="@AntiforgeryFieldName" value="@AntiforgeryValue" />
+
+@code {
+    private string? AntiforgeryFieldName;
+    private string? AntiforgeryValue;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AntiforgeryFieldName = await JSRuntime.InvokeAsync<string>("document.getElementById('_sftoken').getAttribute('name')");
+        AntiforgeryValue = await JSRuntime.InvokeAsync<string>("document.getElementById('_sftoken').getAttribute('value')");
+        StateHasChanged();
+    }
+}

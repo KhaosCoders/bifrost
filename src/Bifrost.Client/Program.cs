@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
 
+Console.WriteLine("Startup...");
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Services.AddOptions();

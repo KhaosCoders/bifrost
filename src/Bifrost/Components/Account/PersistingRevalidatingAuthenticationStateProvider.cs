@@ -1,7 +1,9 @@
 using Bifrost.Client;
 using Bifrost.Features.Identity.Model;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +20,7 @@ internal sealed class PersistingRevalidatingAuthenticationStateProvider : Revali
     private readonly IServiceScopeFactory scopeFactory;
     private readonly PersistentComponentState state;
     private readonly IdentityOptions options;
+    private readonly AntiforgeryStateProvider antiforgery;
 
     private readonly PersistingComponentStateSubscription subscription;
 
@@ -27,12 +30,14 @@ internal sealed class PersistingRevalidatingAuthenticationStateProvider : Revali
         ILoggerFactory loggerFactory,
         IServiceScopeFactory serviceScopeFactory,
         PersistentComponentState persistentComponentState,
+        AntiforgeryStateProvider antiforgeryStateProvider,
         IOptions<IdentityOptions> optionsAccessor)
         : base(loggerFactory)
     {
         scopeFactory = serviceScopeFactory;
         state = persistentComponentState;
         options = optionsAccessor.Value;
+        antiforgery = antiforgeryStateProvider;
 
         AuthenticationStateChanged += OnAuthenticationStateChanged;
         subscription = state.RegisterOnPersisting(OnPersistingAsync, RenderMode.InteractiveWebAssembly);

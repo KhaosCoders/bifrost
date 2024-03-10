@@ -1,0 +1,18 @@
+﻿@inject AntiforgeryStateProvider AntiforgeryStateProvider
+
+@rendermode InteractiveServer
+
+<input type="hidden" id="_aftoken" name="@AntiforgeryFieldName" value="@AntiforgeryValue"/>
+
+@code {
+    private string? AntiforgeryFieldName;
+    private string? AntiforgeryValue;
+
+    protected override void OnInitialized()
+    {
+        var token = AntiforgeryStateProvider.GetAntiforgeryToken();
+        AntiforgeryFieldName = token?.FormFieldName;
+        AntiforgeryValue = token?.Value;
+        StateHasChanged();
+    }
+}
