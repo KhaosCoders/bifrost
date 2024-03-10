@@ -1,7 +1,19 @@
-﻿<span>
-    <InputText placeholder="PortalSearch..." type="text" class="form-control" @bind-Value="SearchText" />
-</span>
+﻿<FluentAutocomplete TOption="string"
+                    AutoComplete="off"
+                    Autofocus="true"
+                    Width="300px"
+                    Placeholder="Find a portal..."
+                    OnOptionsSearch="@OnSearchAsync"
+                    MaximumSelectedOptions="1"
+                    @bind-SelectedOptions="@SelectedItems" />
+
 
 @code {
-    private string? SearchText { get; set; }
+
+    IEnumerable<string> SelectedItems = Array.Empty<string>();
+
+    private async Task OnSearchAsync(OptionsSearchEventArgs<string> e)
+    {
+        await Task.Delay(1);
+    }
 }

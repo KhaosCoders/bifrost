@@ -1,0 +1,14 @@
+﻿@using Bifrost.Client.Features.Portals.Shared
+
+@page "/"
+
+@attribute [Authorize]
+@rendermode InteractiveAuto
+
+<PageTitle>Bifrost</PageTitle>
+
+<FluentStack HorizontalAlignment="@HorizontalAlignment.Center" VerticalAlignment="@VerticalAlignment.Center" Style="margin-top: 20px">
+    <PortalSearch />
+</FluentStack>
+
+@* <Portal Id="1" Name="GTM" CurrentInstances="0" MaxInstances="2" DefinedPorts="1" OnPortaClicked="OnPortalClicked" /> *@

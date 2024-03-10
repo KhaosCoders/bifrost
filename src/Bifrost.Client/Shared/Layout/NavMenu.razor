@@ -4,11 +4,12 @@
 
     <FluentNavMenu @bind-Expanded="@expanded" Width="200" Collapsible="true" Title="Collapsible demo">
         <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
-        @* <FluentNavLink Href="auth" Icon="@(new Icons.Regular.Size20.LockClosed())" IconColor="Color.Accent">Auth required</FluentNavLink> *@
+        <FluentNavLink Href="/Favorites" Icon="@(new Icons.Regular.Size20.Star())" IconColor="Color.Accent">Favorites</FluentNavLink>
+        <FluentNavLink Href="/Recent" Icon="@(new Icons.Regular.Size20.Clock())" IconColor="Color.Accent">Recent</FluentNavLink>
+        <FluentNavLink Href="/Manage" Icon="@(new Icons.Regular.Size20.Settings())" IconColor="Color.Accent">Manage</FluentNavLink>
     </FluentNavMenu>
 </div>
 
 @code {
-    private bool expanded = true;
-
+    private bool expanded;
 }
