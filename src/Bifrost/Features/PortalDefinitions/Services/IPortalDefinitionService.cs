@@ -1,5 +1,4 @@
-﻿using Bifrost.Client.Features.Portals.DTO;
-using Bifrost.Features.Identity.Model;
+﻿using Bifrost.DTOs;
 using Bifrost.Features.PortalDefinitions.Model;
 
 namespace Bifrost.Features.PortalDefinitions.Services;

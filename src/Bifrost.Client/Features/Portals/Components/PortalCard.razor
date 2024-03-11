@@ -1,4 +1,6 @@
-﻿<div class="portal @(CurrentInstances >= MaxInstances ? "full" : "")" @onclick="OnClick">
+﻿@using Bifrost.Client.Features.Portals
+
+<div class="portal @(CurrentInstances >= MaxInstances ? "full" : "")" @onclick="OnClick">
     <div class="instances">
         <span class="x-rune" />
         <span class="instance-count">@CurrentInstances</span> / <span class="max-instance-count">@MaxInstances</span>

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using DTO = Bifrost.Client.Features.Identity.DTO;
+using DTO = Bifrost.DTOs;
 
 namespace Bifrost.Features.Identity;
 

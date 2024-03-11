@@ -19,7 +19,7 @@
                 </div>
                 <div class="menuitem">
                     <form action="Account/Logout" method="post" id="logoutForm">
-                        <input type="hidden" name="@antiforgeryToken.FormFieldName" value="@antiforgeryToken.Value" />
+                        <input type="hidden" name="@antiforgeryToken?.FormFieldName" value="@antiforgeryToken?.Value" />
                         <input type="hidden" name="ReturnUrl" value="@currentUrl" />
                         <FluentAnchor IconStart="@(new Icons.Regular.Size20.SignOut())" Appearance="Appearance.Stealth" Href="#" OnClick="@Logout">Logout</FluentAnchor>
                     </form>

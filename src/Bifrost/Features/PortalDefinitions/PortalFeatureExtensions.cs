@@ -3,7 +3,7 @@ using Bifrost.Features.PortalDefinitions.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using DTO = Bifrost.Client.Features.Portals.DTO;
+using DTO = Bifrost.DTOs;
 
 namespace Bifrost.Features.PortalDefinitions;
 

@@ -1,4 +1,4 @@
-﻿using Bifrost.Client.Utils.Guards;
+﻿using Bifrost.Utils.Guards;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bifrost.Data.Base;

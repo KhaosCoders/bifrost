@@ -1,5 +1,6 @@
+using Bifrost.Actions;
 using Bifrost.Client;
-using Bifrost.Client.Features.Identity.Actions;
+using Bifrost.Features.Identity.Actions;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;

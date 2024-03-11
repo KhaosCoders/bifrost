@@ -1,4 +1,4 @@
-﻿using Bifrost.Client.Utils.Validation;
+﻿using Bifrost.Utils.Validation;
 
 namespace Bifrost.Features;
 

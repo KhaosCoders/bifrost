@@ -1,14 +1,14 @@
-using Bifrost.Client.Features.Identity.Actions;
+using Bifrost.Features.Identity.Actions;
 using Bifrost.Components;
 using Bifrost.Components.Account;
 using Bifrost.Data;
 using Bifrost.Features.Identity;
-using Bifrost.Features.Identity.Actions;
 using Bifrost.Features.Identity.Model;
 using Bifrost.Features.PortalDefinitions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Bifrost.Actions;
 
 namespace Bifrost;
 public static class Program
@@ -84,7 +84,7 @@ public static class Program
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode()
             .AddInteractiveWebAssemblyRenderMode()
-            .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
+            .AddAdditionalAssemblies(typeof(Client.UserInfo).Assembly);
 
         // Add additional endpoints required by the Identity /Account Razor components.
         app.MapAdditionalIdentityEndpoints();

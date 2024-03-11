@@ -1,4 +1,4 @@
-﻿using Bifrost.Client.Features.Identity.Actions;
+﻿using Bifrost.Actions;
 using Bifrost.Features.Identity.Services;
 
 namespace Bifrost.Features.Identity.Actions;

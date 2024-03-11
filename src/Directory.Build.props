@@ -6,5 +6,6 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
 		<RazorLangVersion>8.0</RazorLangVersion>
+		<RootNamespace>Bifrost</RootNamespace>
 	</PropertyGroup>
 </Project>

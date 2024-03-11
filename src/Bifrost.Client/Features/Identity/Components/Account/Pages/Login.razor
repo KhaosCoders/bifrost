@@ -1,6 +1,7 @@
-﻿@using Bifrost.Client.Features.Identity.Components.Account.Shared
-@using Bifrost.Client.Features.Identity.Actions
-@using Bifrost.Client.Shared.Layout
+﻿@using Bifrost.Actions
+@using Bifrost.Features.Identity.Components.Account.Shared
+@using Bifrost.Features.Identity.Actions
+@using Bifrost.Shared.Layout
 
 @page "/Identity/Account/Login"
 @rendermode InteractiveAuto
@@ -19,7 +20,7 @@
         </div>
     </div>
     <div class="theme-toggle">
-        <Bifrost.Client.Shared.ThemeToggle />
+        <Bifrost.Shared.ThemeToggle />
     </div>
 
     <div class="login-dialog-container">
