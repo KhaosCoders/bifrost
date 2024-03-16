@@ -1,5 +1,3 @@
 ﻿namespace Bifrost.Utils.Guards;
 
-public interface IGuard
-{
-}
+public interface IGuard;

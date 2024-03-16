@@ -11,13 +11,16 @@ using Microsoft.FluentUI.AspNetCore.Components;
 using Bifrost.Actions;
 
 namespace Bifrost;
-public static class Program
+public class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddHttpContextAccessor();
+
+        // MediatR
+        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 
         // Render-Modes
         builder.Services.AddRazorComponents()
@@ -78,6 +81,7 @@ public static class Program
         app.UseAntiforgery();
 
         // Features
+        app.UseMediatRRpc();
         app.MapIdentityFeature();
         app.MapPortalFeature();
 

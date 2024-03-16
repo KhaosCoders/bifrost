@@ -2,12 +2,14 @@
 @using Bifrost.Features.Identity.Components.Account.Shared
 @using Bifrost.Features.Identity.Actions
 @using Bifrost.Shared.Layout
+@using MediatR
 
 @page "/Identity/Account/Login"
 @rendermode InteractiveAuto
 @layout FocusedLayout
 @inject NavigationManager NavigationManager
 @inject ILoginAction loginAction
+@inject IMediator MediatR
 
 <PageTitle>Login - Bifrost</PageTitle>
 
@@ -71,6 +73,19 @@
 
     private async Task SignInAsync()
     {
+        try
+        {
+            var response = await MediatR.Send(new Queries.DummyQuery());
+            Console.WriteLine($"Success: {response.Success}");
+            Console.WriteLine($"Description: {response.Description}");
+            Console.WriteLine($"Data: {response.Data}");
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+
+
         if (string.IsNullOrWhiteSpace(Input.Username) || string.IsNullOrWhiteSpace(Input.Password))
             return;
 
