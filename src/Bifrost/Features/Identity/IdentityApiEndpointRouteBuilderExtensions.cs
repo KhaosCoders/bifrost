@@ -32,7 +32,7 @@ public static class IdentityApiEndpointRouteBuilderExtensions
 
         endpoints.MapPost("/register", async Task<RegisterResult> (
             [FromBody] RegisterCommand registration,
-            [FromServices] IMediator mediator) =>
+            [FromServices] ISender mediator) =>
         {
             var result = await mediator.Send(registration);
             return !result.Success || !result.Data.Success
@@ -42,7 +42,7 @@ public static class IdentityApiEndpointRouteBuilderExtensions
 
         endpoints.MapPost("/login", async Task<LoginResult> (
             [FromBody] LoginCommand login,
-            [FromServices] IMediator mediator) =>
+            [FromServices] ISender mediator) =>
         {
             var result = await mediator.Send(login);
             return !result.Success || !result.Data.Succeeded
@@ -52,7 +52,7 @@ public static class IdentityApiEndpointRouteBuilderExtensions
 
         endpoints.MapPost("/refresh", async Task<RefreshResult> (
             [FromBody] RefreshTokenCommand refreshRequest,
-            [FromServices] IMediator mediator) =>
+            [FromServices] ISender mediator) =>
         {
             var result = await mediator.Send(refreshRequest);
             return !result.Success || result.Data.NewPrincipal == default

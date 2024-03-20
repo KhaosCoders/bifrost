@@ -32,7 +32,7 @@ public static class PortalFeatureExtensions
                 .RequireAuthorization("ApiPolicy");
         api.MapPost("/portals", async Task<CreateResult> (
             [FromBody] CreatePortalCommand request,
-            [FromServices] IMediator mediator
+            [FromServices] ISender mediator
             ) =>
         {
             var result = await mediator.Send(request);
@@ -56,7 +56,7 @@ public static class PortalFeatureExtensions
         api.MapPut("/portals/{id}", async Task<PutResult> (
             [FromRoute] string id,
             [FromBody] UpdatePortalCommand request,
-            [FromServices] IMediator mediator
+            [FromServices] ISender mediator
             ) =>
         {
             var result = await mediator.Send(request with { Id = id });
@@ -76,7 +76,7 @@ public static class PortalFeatureExtensions
         api.MapGet("/portals", async Task<GetPortalsResult>(
             [FromQuery] int? limit,
             [FromQuery] int? offset,
-            [FromServices] IMediator mediator
+            [FromServices] ISender mediator
             ) =>
         {
             var result = await mediator.Send(new GetPortalsQuery(limit, offset));
@@ -88,7 +88,7 @@ public static class PortalFeatureExtensions
 
         api.MapGet("/portals/{id}", async Task<GetPortalResult> (
             [FromRoute] string id,
-            [FromServices] IMediator mediator
+            [FromServices] ISender mediator
             ) =>
         {
             var result = await mediator.Send(new GetPortalQuery(id));
@@ -100,7 +100,7 @@ public static class PortalFeatureExtensions
 
         api.MapDelete("/portals/{id}", async Task<DeleteResult> (
             [FromRoute] string id,
-            [FromServices] IMediator mediator
+            [FromServices] ISender mediator
             ) =>
         {
             var result = await mediator.Send(new DeletePortalCommand(id));
