@@ -1,6 +1,4 @@
-﻿@using Bifrost.Actions
-@using Bifrost.Features.Identity.Components.Account.Shared
-@using Bifrost.Features.Identity.Actions
+﻿@using Bifrost.Features.Identity.Components.Account.Shared
 @using Bifrost.Shared.Layout
 @using MediatR
 
@@ -8,7 +6,6 @@
 @rendermode InteractiveAuto
 @layout FocusedLayout
 @inject NavigationManager NavigationManager
-@inject ILoginAction loginAction
 @inject IMediator MediatR
 
 <PageTitle>Login - Bifrost</PageTitle>
@@ -36,17 +33,34 @@
                     </FluentHeader>
                     <FluentBodyContent Style="margin: 10px 0px">
                         <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="10">
-                            <FluentTextField @bind-Value="Input.Username" Placeholder="Username" Autofocus="true">
+                            <FluentTextField @bind-Value="Input.Username" Placeholder="Username" Autofocus="true" Id="username">
                                 <FluentIcon Value="@(new Icons.Regular.Size16.Person())" Slot="start" Color="Color.Neutral" />
                             </FluentTextField>
-                            <FluentTextField @bind-Value="Input.Password" Placeholder="Password" TextFieldType="TextFieldType.Password">
+                            <FluentTextField @bind-Value="Input.Password" Placeholder="Password" TextFieldType="TextFieldType.Password" Id="password">
                                 <FluentIcon Value="@(new Icons.Regular.Size16.Key())" Slot="start" Color="Color.Neutral" />
                             </FluentTextField>
                         </FluentStack>
                         <FluentCheckbox @bind-Value="Input.RememberMe" Label="Stay signed in" Style="margin-top: 10px" />
                     </FluentBodyContent>
                     <FluentFooter>
-                        <FluentButton Type="ButtonType.Submit">Sign in</FluentButton>
+                        @* Login only works WASM, not Server *@
+                        @if (Runtime == "browser-wasm")
+                        {
+                            <FluentButton Type="ButtonType.Submit">Sign in</FluentButton>
+                        }
+                        else
+                        {
+                            @* On Server show loading indicator and reload page once the WASM runtime is prefetched *@
+                            <FluentProgressRing></FluentProgressRing>
+                            <script>
+                                (async () => {
+                                    if (typeof Module !== 'undefined' && Module.ready) {
+                                        await Module.ready;
+                                        location.reload();
+                                    }
+                                })();
+                            </script>
+                        }
                         <FluentValidationSummary />
                     </FluentFooter>
                 </FluentLayout>
@@ -66,6 +80,8 @@
 
     private ServerModelValidator? _serverModelValidator;
 
+    private string Runtime => System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
+
     protected override void OnInitialized()
     {
         editContext = new(Input);
@@ -75,40 +91,41 @@
     {
         try
         {
-            var response = await MediatR.Send(new Queries.DummyQuery());
-            Console.WriteLine($"Success: {response.Success}");
-            Console.WriteLine($"Description: {response.Description}");
-            Console.WriteLine($"Data: {response.Data}");
-        }
-        catch(Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-        }
+            if (string.IsNullOrWhiteSpace(Input.Username) || string.IsNullOrWhiteSpace(Input.Password))
+                return;
 
+            var response = await MediatR.Send(new Commands.LoginCommand(Input.Username, Input.Password, true, Input.RememberMe));
 
-        if (string.IsNullOrWhiteSpace(Input.Username) || string.IsNullOrWhiteSpace(Input.Password))
-            return;
-
-        var result = await loginAction.LoginAsync(Input.Username, Input.Password, true, Input.RememberMe);
-        if (result.Succeeded)
-        {
-            if (string.IsNullOrWhiteSpace(ReturnUrl))
-                NavigationManager.NavigateTo("/", true);
+            if (!response.Success)
+            {
+                _serverModelValidator?.DisplayError("Username", $"Error: {response.Description}");
+                return;
+            }
+            else if (response.Data.Succeeded)
+            {
+                if (string.IsNullOrWhiteSpace(ReturnUrl))
+                    NavigationManager.NavigateTo("/", true);
+                else
+                    NavigationManager.NavigateTo(ReturnUrl, true);
+                return;
+            }
+            else if (response.Data.RequiresTwoFactor)
+            {
+                // TODO: Implement two factor authentication
+                _serverModelValidator?.DisplayError("Username", "MFA not supported");
+            }
+            else if (response.Data.IsLockedOut)
+            {
+                _serverModelValidator?.DisplayError("Username", "Locked-Out");
+            }
             else
-                NavigationManager.NavigateTo(ReturnUrl, true);
-            return;
+            {
+                _serverModelValidator?.DisplayError("Password", "Error: Invalid login attempt.");
+            }
         }
-        else if (result.RequiresTwoFactor)
+        catch (Exception ex)
         {
-            // TODO: Implement two factor authentication
-        }
-        else if (result.IsLockedOut)
-        {
-            // TODO: Implement lockout
-        }
-        else
-        {
-            _serverModelValidator?.DisplayError("Password", "Error: Invalid login attempt.");
+            _serverModelValidator?.DisplayError("Username", $"Error: {ex.Message}");
         }
     }
 

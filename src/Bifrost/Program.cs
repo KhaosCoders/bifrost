@@ -1,4 +1,3 @@
-using Bifrost.Features.Identity.Actions;
 using Bifrost.Components;
 using Bifrost.Components.Account;
 using Bifrost.Data;
@@ -8,9 +7,9 @@ using Bifrost.Features.PortalDefinitions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
-using Bifrost.Actions;
 
 namespace Bifrost;
+
 public class Program
 {
     public static void Main(string[] args)
@@ -46,9 +45,6 @@ public class Program
         // Features
         builder.Services.AddIdentityFeature();
         builder.Services.AddPortalFeature();
-
-        // Server-Side-Requests
-        builder.Services.AddScoped<ILoginAction, ServersideLoginAction>();
 
         var app = builder.Build();
 

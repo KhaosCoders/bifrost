@@ -1,4 +1,5 @@
-﻿using Bifrost.Features.Identity.Services;
+﻿using Bifrost.Commands;
+using Bifrost.Features.Identity.Services;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
@@ -44,7 +45,7 @@ public static class IdentityApiEndpointRouteBuilderExtensions
         });
 
         routeGroup.MapPost("/login", async Task<LoginResult> (
-            [FromBody] DTO.LoginRequest login,
+            [FromBody] LoginCommand login,
             [FromQuery] bool? useCookies,
             [FromQuery] bool? useSessionCookies,
             [FromServices] IIdentityService identityService) =>

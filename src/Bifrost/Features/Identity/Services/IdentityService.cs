@@ -41,7 +41,7 @@ public class IdentityService(
         signInManager.AuthenticationScheme = useCookieScheme ? IdentityConstants.ApplicationScheme : IdentityConstants.BearerScheme;
 
         // Clear the existing external cookie to ensure a clean login process
-        if (httpContextAccessor.HttpContext is HttpContext httpContext)
+        if (httpContextAccessor.HttpContext is HttpContext httpContext && httpContext.User.Identity?.IsAuthenticated == true)
         {
             await httpContext.SignOutAsync(IdentityConstants.ExternalScheme);
         }

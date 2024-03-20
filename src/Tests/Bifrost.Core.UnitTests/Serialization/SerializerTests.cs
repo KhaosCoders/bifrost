@@ -1,6 +1,5 @@
-﻿using Bifrost.Queries;
+﻿using Bifrost.Commands;
 using Bifrost.Serialization;
-using MediatR;
 using System.Text;
 
 namespace Bifrost.Tests.Serialization;
@@ -8,12 +7,13 @@ namespace Bifrost.Tests.Serialization;
 [TestClass]
 public class SerializerTests
 {
+    const string serializedCommand = @"{""username"":""user"",""password"":""pwd"",""useCookie"":true,""useSession"":true,""twoFactorCode"":null,""twoFactorRecoveryCode"":null,""$type"":""Bifrost.Commands.LoginCommand, Bifrost.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null""}";
+
     [TestMethod]
     public async Task Serialize_ReturnJsonWithObjectType()
     {
         // Arrange
-        const string serializedCommand = @"{""$type"":""Bifrost.Commands.DummyCommand, Bifrost.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null""}";
-        DummyQuery command = new();
+        LoginCommand command = new("user", "pwd", true, true);
 
         // Act
         Stream data = await Serializer.SerializeAsync(command);
@@ -35,8 +35,8 @@ public class SerializerTests
     public async Task Deserialize_ReturnsCorrectTypedObject()
     {
         // Arrange
-        const string serializedCommand = @"{""$type"":""Bifrost.Commands.DummyCommand, Bifrost.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null""}";
         await using MemoryStream stream = new(Encoding.UTF8.GetBytes(serializedCommand));
+        LoginCommand command = new("user", "pwd", true, true);
 
         // Act
         object? result = await Serializer.TypedDeserializeAsync(stream);
@@ -44,6 +44,7 @@ public class SerializerTests
         // Assert
         result.Should()
             .NotBeNull()
-            .And.BeOfType<DummyQuery>();
+            .And.BeOfType<LoginCommand>()
+                .Which.Should().BeEquivalentTo(command);
     }
 }
