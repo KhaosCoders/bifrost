@@ -1,7 +1,7 @@
 ﻿using Bifrost.Utils.Validation;
 using V = Bifrost.Utils.Validation.Validation;
 
-namespace Bifrost.Core.UnitTests.Utils.Validation;
+namespace Bifrost.Tests.Validation;
 
 [TestClass]
 public class ValidatorTests

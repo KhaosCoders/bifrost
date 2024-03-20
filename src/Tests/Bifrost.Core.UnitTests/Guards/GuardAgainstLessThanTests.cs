@@ -1,6 +1,6 @@
 ﻿using Bifrost.Guards;
 
-namespace Bifrost.UnitTests.Utils.Guards;
+namespace Bifrost.Tests.Guards;
 
 [TestClass]
 public class GuardAgainstLessThanTests

@@ -1,6 +1,6 @@
 ﻿using Bifrost.Utils.Validation;
 
-namespace Bifrost.UnitTests.Utils.Validation;
+namespace Bifrost.Tests.Validation;
 
 [TestClass]
 public class ValidationRuleTests
