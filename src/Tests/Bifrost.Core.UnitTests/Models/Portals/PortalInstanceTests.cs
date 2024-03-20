@@ -1,6 +1,6 @@
 ﻿using Bifrost.Models.Portals;
 
-namespace Bifrost.UnitTests.Features.PortalDefinitions.Model;
+namespace Bifrost.Core.UnitTests.Models.Portals;
 
 [TestClass]
 public class PortalInstanceTests
