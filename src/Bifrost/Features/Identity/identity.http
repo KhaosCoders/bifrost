@@ -1,7 +1,7 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 
 @url=https://localhost:7119
-@username=admin3
+@username=admin4
 @password=P@$$w0rd1
 @email=admin@notadomain.com
 
@@ -18,12 +18,13 @@ Content-Type: application/json
 
 # Login admin user
 
-POST {{url}}/identity/login?useSessionCookies=false
+POST {{url}}/identity/login
 Content-Type: application/json
 
 {
   "username": "{{username}}",
-  "password": "{{password}}"
+  "password": "{{password}}",
+  "useSessionCookies": false
 }
 ###
 

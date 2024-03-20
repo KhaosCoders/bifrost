@@ -28,7 +28,7 @@ public class RegistrationHandler(IIdentityService identityService) : IRequestHan
         catch (Exception ex)
         {
             RegisterResult result = new (false, new Dictionary<string, string[]>{
-                { "666", [ ex.GetType().Name ] }
+                { "Exception", [ ex.GetType().Name ] }
             });
             return CommandResponse<RegisterResult>.Problem(result, ex.Message);
         }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bifrost.Features.Identity;
 
-using LoginResult = Results<Ok<AccessTokenResponse>, Ok, ProblemHttpResult>;
+using LoginResult = Results<Ok<AccessTokenResponse>,EmptyHttpResult, ProblemHttpResult>;
 using RefreshResult = Results<Ok<AccessTokenResponse>, UnauthorizedHttpResult, SignInHttpResult, ChallengeHttpResult>;
 using RegisterResult = Results<Created, ValidationProblem>;
 
@@ -35,7 +35,7 @@ public static class IdentityApiEndpointRouteBuilderExtensions
             [FromServices] IMediator mediator) =>
         {
             var result = await mediator.Send(registration);
-            return !result.Success || result.Data.Success
+            return !result.Success || !result.Data.Success
                 ? (RegisterResult)TypedResults.ValidationProblem(result.Data.ErrorDetails!)
                 : (RegisterResult)TypedResults.Created();
         });
@@ -47,7 +47,7 @@ public static class IdentityApiEndpointRouteBuilderExtensions
             var result = await mediator.Send(login);
             return !result.Success || !result.Data.Succeeded
                 ? (LoginResult)TypedResults.Problem(result.Description, statusCode: StatusCodes.Status401Unauthorized)
-                : (LoginResult)TypedResults.Ok();
+                : (LoginResult)TypedResults.Empty;
         });
 
         endpoints.MapPost("/refresh", async Task<RefreshResult> (
