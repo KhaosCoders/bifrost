@@ -1,4 +1,4 @@
-﻿namespace Bifrost.Commands;
+﻿namespace Bifrost.Commands.Identity;
 
 public record RegisterCommand(
     string UserName,

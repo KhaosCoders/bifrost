@@ -1,4 +1,4 @@
-﻿namespace Bifrost.Utils.Guards;
+﻿namespace Bifrost.Guards;
 
 public static class Guard
 {

@@ -1,4 +1,4 @@
-﻿using Bifrost.Commands;
+﻿using Bifrost.Commands.Identity;
 using Bifrost.Serialization;
 using System.Text;
 
@@ -7,7 +7,7 @@ namespace Bifrost.Tests.Serialization;
 [TestClass]
 public class SerializerTests
 {
-    const string serializedCommand = @"{""username"":""user"",""password"":""pwd"",""useCookie"":true,""useSession"":true,""twoFactorCode"":null,""twoFactorRecoveryCode"":null,""$type"":""Bifrost.Commands.LoginCommand, Bifrost.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null""}";
+    const string serializedCommand = @"{""username"":""user"",""password"":""pwd"",""useCookie"":true,""useSession"":true,""twoFactorCode"":null,""twoFactorRecoveryCode"":null,""$type"":""Bifrost.Commands.Identity.LoginCommand, Bifrost.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null""}";
 
     [TestMethod]
     public async Task Serialize_ReturnJsonWithObjectType()

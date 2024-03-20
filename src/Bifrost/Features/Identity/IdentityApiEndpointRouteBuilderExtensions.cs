@@ -1,4 +1,4 @@
-﻿using Bifrost.Commands;
+﻿using Bifrost.Commands.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bifrost.Features.Identity;
 
-using LoginResult = Results<Ok<AccessTokenResponse>,EmptyHttpResult, ProblemHttpResult>;
+using LoginResult = Results<Ok<AccessTokenResponse>, EmptyHttpResult, ProblemHttpResult>;
 using RefreshResult = Results<Ok<AccessTokenResponse>, UnauthorizedHttpResult, SignInHttpResult, ChallengeHttpResult>;
 using RegisterResult = Results<Created, ValidationProblem>;
 

@@ -1,4 +1,4 @@
-﻿using Bifrost.Utils.Guards;
+﻿using Bifrost.Guards;
 
 namespace Bifrost.UnitTests.Utils.Guards;
 

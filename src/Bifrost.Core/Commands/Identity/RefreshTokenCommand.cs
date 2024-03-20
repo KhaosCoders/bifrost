@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Bifrost.Commands;
+namespace Bifrost.Commands.Identity;
 
 public record RefreshTokenCommand(string RefreshToken) : ICommand<RefreshTokenResult>;
 

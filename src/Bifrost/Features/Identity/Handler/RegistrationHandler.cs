@@ -1,4 +1,5 @@
 ﻿using Bifrost.Commands;
+using Bifrost.Commands.Identity;
 using Bifrost.Features.Identity.Services;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

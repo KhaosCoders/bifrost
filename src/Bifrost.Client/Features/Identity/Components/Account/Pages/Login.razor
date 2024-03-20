@@ -94,7 +94,7 @@
             if (string.IsNullOrWhiteSpace(Input.Username) || string.IsNullOrWhiteSpace(Input.Password))
                 return;
 
-            var response = await MediatR.Send(new Commands.LoginCommand(Input.Username, Input.Password, true, Input.RememberMe));
+            var response = await MediatR.Send(new Commands.Identity.LoginCommand(Input.Username, Input.Password, true, Input.RememberMe));
 
             if (!response.Success)
             {

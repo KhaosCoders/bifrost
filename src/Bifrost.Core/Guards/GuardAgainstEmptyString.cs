@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Bifrost.Utils.Guards;
+namespace Bifrost.Guards;
 
 public static class GuardAgainstEmptyString
 {

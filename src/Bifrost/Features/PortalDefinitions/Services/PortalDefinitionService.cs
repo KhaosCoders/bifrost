@@ -1,7 +1,7 @@
 ﻿using Bifrost.DTOs;
-using Bifrost.Utils.Guards;
 using Bifrost.Utils.Validation;
 using Bifrost.Features.PortalDefinitions.Model;
+using Bifrost.Guards;
 
 namespace Bifrost.Features.PortalDefinitions.Services;
 
