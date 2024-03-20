@@ -44,9 +44,6 @@ public static class IdentityFeatureExtensions
         services.AddScoped<IIdentityService, IdentityService>();
     }
 
-    public static void MapIdentityFeature(this WebApplication app)
-    {
-        app.MapGroup("/identity")
-            .MapIdentityApiWithUsername<IdentityUser>();
-    }
+    public static void MapIdentityFeature(this WebApplication app) =>
+        app.MapGroup("/identity").MapIdentityApiWithUsername<IdentityUser>();
 }
