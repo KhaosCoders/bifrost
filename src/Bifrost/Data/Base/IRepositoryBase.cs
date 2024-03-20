@@ -1,4 +1,5 @@
-﻿
+﻿using Bifrost.Models;
+
 namespace Bifrost.Data.Base;
 
 public interface IRepositoryBase<TEntity> where TEntity : class, IEntity

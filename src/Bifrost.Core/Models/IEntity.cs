@@ -1,4 +1,4 @@
-﻿namespace Bifrost.Data.Base;
+﻿namespace Bifrost.Models;
 
 /// <summary>
 /// A database entity.

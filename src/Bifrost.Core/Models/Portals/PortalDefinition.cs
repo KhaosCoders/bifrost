@@ -1,6 +1,4 @@
-﻿using Bifrost.Data.Base;
-
-namespace Bifrost.Features.PortalDefinitions.Model;
+﻿namespace Bifrost.Models.Portals;
 
 public class PortalDefinition : IEntity
 {

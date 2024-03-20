@@ -1,7 +1,7 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 
 @url=https://localhost:7119
-@token=<AccessToken>
+@token=CfDJ8E5wUJR4dWxGnLtDl6mEgqZAERaMOxaA8VXk3SWkLxo5mDOGIVdIHga5V0HxfAS4Klp00naNiuJUAvwr-3JlgA98OoZv73l7v_o9z0GpHys4C7zIHdaFTK4Zjwnhi2RRF2vmKEls8YTWqi-hh1LQ8rcFk7vxGK7K4DMjD8FTWhLKZARXXUk0RfDn3sA29_BrA1Sx22zPjcXADKiM0FVElB_4BC2jaXetXm0EEIHqKsYqrkbV228Xo4Ygf4Nu8PknAo1o9n_P6dz3JYby3USY_3KfG7KzAHWwCpEQvWu37FfP2bq4ewzEd8XwNvje0wqfmY5gyVbejVSo9NpJ_XoYRMMJTVncNV5IZFklCi_FQ6_Nfhr5NiP9ErD-32OqUQNfUZC4XbkEunnYgej9yx2rImxFV1mfX-ZPpcj_H7tCaYjKcPvGFSbgh8SQIqpW5d2xDGavRcV95y33_-MQTs33XTUXA5VLZRvvj0DWd1uW2OrXGQHJynTQ4wlfvySB5lOtVAAgtkEpn1FORmTOURuhpUSL_0Hfhf32zw-YMuJwIipXWDIdjd3bCXjiaEOLI48ZS_Ro8ABDa0OdVSNITV9WUPFeyIGSHD5G3AMX0LyWFRge2gQinrIBa-5r4cA4ug4omZxjQVNdAj9RhHI8EtqAcp2BdpLOC1aZGmrgvCdtclnqHTv5R_iyaSn8uZNGd2u2YQ
 
 # Register new portal
 POST {{url}}/api/portals
@@ -10,31 +10,44 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "name": "Test4",
+    "name": "Test5-1",
     "maxInstanceCount": 1,
     "vpnType": "None",
     "vpnConfig": "Empty"
 }
 ###
 
-@portalId=a775ce3d-5f75-42e7-8bd9-d5ead98d5228
+# Get portals
+GET {{url}}/api/portals?}
+Authorization: Bearer {{token}}
+Accept: application/json
+###
+
+
+@portalId=4de273c6-0b9c-4e5a-8c0d-9ca7f55666e9
 # Get portal
 GET {{url}}/api/portals/{{portalId}}
+Authorization: Bearer {{token}}
+Accept: application/json
 ###
 
 # Delete portal
 DELETE {{url}}/api/portals/{{portalId}}
+Authorization: Bearer {{token}}
+
 ###
 
 # Update portal
 PUT {{url}}/api/portals/{{portalId}}
+Authorization: Bearer {{token}}
+Accept: application/json
 Content-Type: application/json
 
 {
     "name": "Test3-1",
     "maxInstanceCount": 2,
     "vpnType": "None",
-    "vpnConfig": null
+    "vpnConfig": "null"
 }
 ###
 

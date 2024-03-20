@@ -1,4 +1,4 @@
-﻿namespace Bifrost.Features.PortalDefinitions.Model;
+﻿namespace Bifrost.Models.Portals;
 
 public abstract class BasePortMapping
 {

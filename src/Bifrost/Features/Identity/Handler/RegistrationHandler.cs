@@ -1,6 +1,7 @@
 ﻿using Bifrost.Commands;
 using Bifrost.Commands.Identity;
 using Bifrost.Features.Identity.Services;
+using Bifrost.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -28,16 +29,14 @@ public class RegistrationHandler(IIdentityService identityService) : IRequestHan
         }
         catch (Exception ex)
         {
-            RegisterResult result = new (false, new Dictionary<string, string[]>{
-                { "Exception", [ ex.GetType().Name ] }
-            });
+            RegisterResult result = new (false, ErrorDetails.SingleError(ex.GetType().Name, ex.Message));
             return CommandResponse<RegisterResult>.Problem(result, ex.Message);
         }
     }
 
-    private static Dictionary<string, string[]> GetLoginErrorDetails(IdentityResult result)
+    private static ErrorDetails GetLoginErrorDetails(IdentityResult result)
     {
-        var errorDetails = new Dictionary<string, string[]>(1);
+        ErrorDetails errorDetails = [];
 
         foreach (var error in result.Errors)
         {
