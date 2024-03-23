@@ -2,7 +2,7 @@
 
 namespace Bifrost.Commands.Portals.Validation;
 
-public class PortalCommandValidatorBase : AbstractValidator<PortalCommandBase>
+public class PortalCommandValidatorBase<T> : AbstractValidator<T> where T : PortalCommandBase
 {
     public PortalCommandValidatorBase()
     {

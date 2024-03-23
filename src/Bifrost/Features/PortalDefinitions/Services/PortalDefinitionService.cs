@@ -3,17 +3,20 @@ using Bifrost.Commands.Portals;
 using Bifrost.Models.Portals;
 using Bifrost.Data;
 using Bifrost.Shared;
-using Bifrost.Commands.Portals.Validation;
 using Bifrost.Extensions;
+using FluentValidation;
 
 namespace Bifrost.Features.PortalDefinitions.Services;
 
-internal class PortalDefinitionService(IPortalDefinitionRepository repository) : IPortalDefinitionService
+internal class PortalDefinitionService(
+    IPortalDefinitionRepository repository,
+    IValidator<CreatePortalCommand> createCommandValidator,
+    IValidator<UpdatePortalCommand> updateCommandValidator) : IPortalDefinitionService
 {
     private readonly IPortalDefinitionRepository repository = repository;
 
-    private static readonly CreatePortalCommandValidator createCommandValidator = new();
-    private static readonly UpdatePortalCommandValidator updateCommandValidator = new();
+    private readonly IValidator<CreatePortalCommand> createCommandValidator = createCommandValidator;
+    private readonly IValidator<UpdatePortalCommand> updateCommandValidator = updateCommandValidator;
 
     public async Task<CreatePortalDefinitionResult> CreatePortalAsync(CreatePortalCommand request, string creatorName)
     {

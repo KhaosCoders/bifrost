@@ -1,3 +1,3 @@
 ﻿namespace Bifrost.Commands.Portals.Validation;
 
-public class CreatePortalCommandValidator : PortalCommandValidatorBase;
+public class CreatePortalCommandValidator : PortalCommandValidatorBase<CreatePortalCommand>;

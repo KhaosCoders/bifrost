@@ -4,6 +4,7 @@ using Bifrost.Data;
 using Bifrost.Features.Identity;
 using Bifrost.Features.Identity.Model;
 using Bifrost.Features.PortalDefinitions;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
@@ -18,6 +19,9 @@ public class Program
 
         builder.Services.AddHttpContextAccessor();
 
+        // Fluent Validators (Bifrost.Core)
+        builder.Services.AddValidatorsFromAssemblyContaining(typeof(VpnTypes));
+
         // MediatR
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 
@@ -30,7 +34,8 @@ public class Program
         builder.Services.AddFluentUIComponents();
 
         // DbContext
-        var identityConnectionString = builder.Configuration.GetConnectionString("IdentityConnection") ?? throw new InvalidOperationException("Connection string 'IdentityConnection' not found.");
+        var identityConnectionString = builder.Configuration.GetConnectionString("IdentityConnection")
+            ?? throw new InvalidOperationException("Connection string 'IdentityConnection' not found.");
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlite(identityConnectionString));
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
