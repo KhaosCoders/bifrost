@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace Bifrost.Client.Utils;
@@ -30,6 +31,15 @@ public class ServerModelValidator : ComponentBase
         foreach (var err in errors)
         {
             _messageStore?.Add(CurrentEditContext.Field(err.Key), err.Value);
+        }
+        CurrentEditContext.NotifyValidationStateChanged();
+    }
+
+    public void DisplayErrors(List<ValidationFailure> error)
+    {
+        foreach (var err in error)
+        {
+            _messageStore?.Add(CurrentEditContext.Field(err.PropertyName), err.ErrorMessage);
         }
         CurrentEditContext.NotifyValidationStateChanged();
     }

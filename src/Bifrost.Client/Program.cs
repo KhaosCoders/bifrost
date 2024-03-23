@@ -1,5 +1,6 @@
 using Bifrost;
 using Bifrost.Client;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -9,6 +10,9 @@ using Microsoft.FluentUI.AspNetCore.Components;
 Console.WriteLine("Running in WASM");
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+// Fluent Validators (Bifrost.Core)
+builder.Services.AddValidatorsFromAssemblyContaining(typeof(VpnTypes));
 
 // MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());

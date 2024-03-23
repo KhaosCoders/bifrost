@@ -1,5 +1,7 @@
-﻿@using Bifrost.Features.Identity.Components.Account.Shared
+﻿@using Bifrost.Commands.Identity
+@using Bifrost.Features.Identity.Components.Account.Shared
 @using Bifrost.Shared.Layout
+@using FluentValidation
 @using MediatR
 
 @page "/Identity/Account/Login"
@@ -7,6 +9,7 @@
 @layout FocusedLayout
 @inject NavigationManager NavigationManager
 @inject ISender MediatR
+@inject IValidator<LoginCommand> LoginCommandValidator
 
 <PageTitle>Login - Bifrost</PageTitle>
 
@@ -25,7 +28,6 @@
     <div class="login-dialog-container">
         <FluentCard Width="400px" Height="230px" Style="opacity: 0.95">
             <EditForm EditContext="@editContext" method="post" OnValidSubmit="SignInAsync" FormName="login" class="form-inline">
-                <DataAnnotationsValidator />
                 <ServerModelValidator @ref="_serverModelValidator" />
                 <FluentLayout>
                     <FluentHeader>
@@ -91,14 +93,19 @@
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(Input.Username) || string.IsNullOrWhiteSpace(Input.Password))
+            var loginCommand = Input.ToCommand();
+            var validationResult = LoginCommandValidator.Validate(loginCommand);
+            if (!validationResult.IsValid)
+            {
+                _serverModelValidator?.DisplayErrors(validationResult.Errors);
                 return;
+            }
 
-            var response = await MediatR.Send(new Commands.Identity.LoginCommand(Input.Username, Input.Password, true, Input.RememberMe));
+            var response = await MediatR.Send(new LoginCommand(Input.Username, Input.Password, true, Input.RememberMe));
 
             if (!response.Success)
             {
-                _serverModelValidator?.DisplayError("Username", $"Error: {response.Description}");
+                _serverModelValidator?.DisplayError(nameof(InputModel.Username), $"Error: {response.Description}");
                 return;
             }
             else if (response.Data.Succeeded)
@@ -112,36 +119,29 @@
             else if (response.Data.RequiresTwoFactor)
             {
                 // TODO: Implement two factor authentication
-                _serverModelValidator?.DisplayError("Username", "MFA not supported");
+                _serverModelValidator?.DisplayError(nameof(InputModel.Username), "MFA not supported");
             }
             else if (response.Data.IsLockedOut)
             {
-                _serverModelValidator?.DisplayError("Username", "Locked-Out");
+                _serverModelValidator?.DisplayError(nameof(InputModel.Username), "Locked-Out");
             }
             else
             {
-                _serverModelValidator?.DisplayError("Password", "Error: Invalid login attempt.");
+                _serverModelValidator?.DisplayError(nameof(InputModel.Username), "Error: Invalid login attempt.");
             }
         }
         catch (Exception ex)
         {
-            _serverModelValidator?.DisplayError("Username", $"Error: {ex.Message}");
+            _serverModelValidator?.DisplayError(nameof(InputModel.Username), $"Error: {ex.Message}");
         }
     }
 
     private sealed class InputModel
     {
-        [Required]
-        [DataType(DataType.Text)]
-        [Display(Name = "Username")]
-        public string Username { get; set; } = "";
-
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; } = "";
-
-        [Display(Name = "Remember me?")]
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
         public bool RememberMe { get; set; }
+
+        public LoginCommand ToCommand() => new(Username, Password, true, RememberMe);
     }
 }
