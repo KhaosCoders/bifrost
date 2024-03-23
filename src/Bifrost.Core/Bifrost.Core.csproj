@@ -3,6 +3,7 @@
     <InternalsVisibleTo Include="Bifrost.Core.UnitTests" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
   </ItemGroup>
 </Project>

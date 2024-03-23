@@ -16,7 +16,7 @@ public class RegistrationHandler(IIdentityService identityService) : IRequestHan
         try
         {
             var result = await identityService.RegisterAsync(
-                request.UserName,
+                request.Username,
                 request.Password,
                 request.Email) ?? throw new InvalidOperationException("Login failed");
 

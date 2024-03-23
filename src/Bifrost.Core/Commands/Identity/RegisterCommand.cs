@@ -3,7 +3,7 @@
 namespace Bifrost.Commands.Identity;
 
 public record RegisterCommand(
-    string UserName,
+    string Username,
     string Password,
     string Email) : ICommand<RegisterResult>;
 
