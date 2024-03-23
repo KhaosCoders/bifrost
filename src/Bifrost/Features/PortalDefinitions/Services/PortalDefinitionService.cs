@@ -1,44 +1,28 @@
-﻿using Bifrost.Utils.Validation;
-using Bifrost.Guards;
+﻿using Bifrost.Guards;
 using Bifrost.Commands.Portals;
 using Bifrost.Models.Portals;
 using Bifrost.Data;
 using Bifrost.Shared;
+using Bifrost.Commands.Portals.Validation;
+using Bifrost.Extensions;
 
 namespace Bifrost.Features.PortalDefinitions.Services;
 
-internal class PortalDefinitionService : IPortalDefinitionService, IRequestValidator<PortalCommandBase>
+internal class PortalDefinitionService(IPortalDefinitionRepository repository) : IPortalDefinitionService
 {
-    private readonly IPortalDefinitionRepository repository;
+    private readonly IPortalDefinitionRepository repository = repository;
 
-    public PortalDefinitionService(IPortalDefinitionRepository repository)
-    {
-        this.Validator = this;
-        this.repository = repository;
-    }
-
-    internal IRequestValidator<PortalCommandBase> Validator { get; set; }
-
-    ValidationResult IRequestValidator<PortalCommandBase>.ValidateRequest(PortalCommandBase command) =>
-        Validation.Validate(
-            Validation.Rule(() => command.Name,
-                name => Guard.Against.StringIsNullOrWhitespace(name)),
-            Validation.Rule(() => command.MaxInstanceCount,
-                maxInstanceCount => Guard.Against.IsLessThan(maxInstanceCount, 1)),
-            Validation.Rule(() => command.VpnType,
-                vpnType => Guard.Against.StringIsNullOrWhitespace(vpnType)),
-            Validation.Rule(() => command.VpnConfig,
-                vpnConfig => Guard.Against.StringIsNullOrWhitespace(vpnConfig))
-        );
+    private static readonly CreatePortalCommandValidator createCommandValidator = new();
+    private static readonly UpdatePortalCommandValidator updateCommandValidator = new();
 
     public async Task<CreatePortalDefinitionResult> CreatePortalAsync(CreatePortalCommand request, string creatorName)
     {
         Guard.Against.StringIsNullOrWhitespace(creatorName);
 
-        var validation = Validator.ValidateRequest(request);
-        if (!validation.IsValid)
+        var validationResult = createCommandValidator.Validate(request);
+        if (!validationResult.IsValid)
         {
-            return new(false, null, validation.GetErrorDetails());
+            return new(false, null, validationResult.ToErrorDetails());
         }
 
         PortalDefinition definition = new()
@@ -67,10 +51,10 @@ internal class PortalDefinitionService : IPortalDefinitionService, IRequestValid
     {
         Guard.Against.StringIsNullOrWhitespace(id);
 
-        var validation = Validator.ValidateRequest(request);
-        if (!validation.IsValid)
+        var validationResult = updateCommandValidator.Validate(request);
+        if (!validationResult.IsValid)
         {
-            return new(false, validation.GetErrorDetails());
+            return new(false, validationResult.ToErrorDetails());
         }
 
         var definition = await repository.GetByIdAsync(id);

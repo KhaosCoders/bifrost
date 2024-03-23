@@ -1,5 +1,4 @@
 ﻿using Bifrost.Models.Portals;
-using Bifrost.Utils.Validation;
 using Bifrost.Features.PortalDefinitions.Services;
 using Bifrost.Commands.Portals;
 
@@ -8,89 +7,38 @@ namespace Bifrost.UnitTests.Features.PortalDefinitions.Services;
 [TestClass]
 public class PortalDefinitionServiceTests
 {
-    readonly CreatePortalCommand ValidCreateCommand = new("UnitTest-Portal", 1, "utVPN", "Some config");
+    readonly CreatePortalCommand ValidCreateCommand = new("UnitTest-Portal", 1, nameof(VpnTypes.OpenVPN), "Some config");
 
     readonly CreatePortalCommand EmptyCreateCommand = new(string.Empty, 0, string.Empty, string.Empty);
 
-    readonly UpdatePortalCommand ValidUpdateCommand = new("UnitTest-Portal", 1, "utVPN", "Some config");
+    readonly UpdatePortalCommand ValidUpdateCommand = new("UnitTest-Portal", 1, nameof(VpnTypes.OpenVPN), "Some config");
 
     readonly UpdatePortalCommand EmptyUpdateCommand = new(string.Empty, 0, string.Empty, string.Empty);
-
-    [TestMethod]
-    public void ValidateRequest_ReturnsTrue_ForValidRequest()
-    {
-        // Arrange
-        PortalDefinitionService service = new(Mock.Of<IPortalDefinitionRepository>());
-
-        // Act
-        var result = ((IRequestValidator<PortalCommandBase>)service).ValidateRequest(ValidUpdateCommand);
-
-        // Assert
-        result.Should().NotBeNull();
-        result.IsValid.Should().BeTrue();
-        result.Faults.Should().BeEmpty();
-    }
-
-    [DataTestMethod]
-    [DataRow("UnitTests", 1, "Any", null)]
-    [DataRow("UnitTests", 1, null, "Config")]
-    [DataRow("UnitTests", 0, "Any", "Config")]
-    [DataRow(null, 1, "Any", "Config")]
-    public void ValidateRequest_ReturnsFailures_ForInvalidRequest(string? name, int instanceCount, string? vpnType, string? vpnConfig)
-    {
-        // Arrange
-        PortalDefinitionService service = new(Mock.Of<IPortalDefinitionRepository>());
-        CreatePortalCommand request = new(name!, instanceCount, vpnType!, vpnConfig!);
-
-        // Act
-        var result = ((IRequestValidator<PortalCommandBase>)service).ValidateRequest(request);
-
-        // Assert
-        result.Should().NotBeNull();
-        result.IsValid!.Should().BeFalse();
-        result.Faults.Should().NotBeEmpty();
-    }
 
     [TestMethod]
     public async Task CreatePortalAsync_Fails_WhenValidationFails()
     {
         // Arrange
-        (var fault, var validatorMock, var repoMock, var service) = PrepareServiceWithValidationFault();
+        (var repoMock, var service) = PrepareServiceWithValidationFault();
 
         // Act
         var result = await service.CreatePortalAsync(EmptyCreateCommand, "Dummy-User");
 
         // Assert
-        validatorMock.Verify(x => x.ValidateRequest(EmptyCreateCommand), Times.Once);
         repoMock.Verify(x => x.CreateAsync(It.IsAny<PortalDefinition>(), It.IsAny<bool>()), Times.Never);
         repoMock.VerifyNoOtherCalls();
         result.Should().NotBeNull();
         result.IsSuccess.Should().BeFalse();
         result.ErrorDetails.Should().NotBeNullOrEmpty();
-        result.ErrorDetails!.First().Key.Should().BeEquivalentTo(fault.Property);
-        result.ErrorDetails!.First().Value.Should().BeEquivalentTo(fault.Message);
     }
 
-    private static (ValidationFault, Mock<IRequestValidator<PortalCommandBase>>, Mock<IPortalDefinitionRepository>, PortalDefinitionService) PrepareServiceWithValidationFault()
+    private static (Mock<IPortalDefinitionRepository>, PortalDefinitionService) PrepareServiceWithValidationFault()
     {
-        ValidationFault fault = new("UnitTest", "failing?");
-        Bifrost.Utils.Validation.ValidationResult validationResult = new()
-        {
-            IsValid = false,
-            Faults = [fault]
-        };
-        Mock<IRequestValidator<PortalCommandBase>> validatorMock = new();
-        validatorMock.Setup(x => x.ValidateRequest(It.IsAny<PortalCommandBase>()))
-            .Returns(validationResult)
-            .Verifiable();
         Mock<IPortalDefinitionRepository> repoMock = new();
         repoMock.Setup(x => x.CreateAsync(It.IsAny<PortalDefinition>(), It.IsAny<bool>())).Verifiable();
         repoMock.Setup(x => x.UpdateAsync(It.IsAny<PortalDefinition>(), It.IsAny<bool>())).Verifiable();
-        PortalDefinitionService service = new(repoMock.Object)
-        {
-            Validator = validatorMock.Object
-        };
-        return (fault, validatorMock, repoMock, service);
+        PortalDefinitionService service = new(repoMock.Object);
+        return (repoMock, service);
     }
 
     [TestMethod]
@@ -98,25 +46,17 @@ public class PortalDefinitionServiceTests
     {
         // Arrange
         PortalDefinition? resultPortalDefinition = null;
-        Mock<IRequestValidator<PortalCommandBase>> validatorMock = new();
-        validatorMock.Setup(x => x.ValidateRequest(It.IsAny<CreatePortalCommand>()))
-            .Returns(new Bifrost.Utils.Validation.ValidationResult() { IsValid = true, Faults = [] })
-            .Verifiable();
         Mock<IPortalDefinitionRepository> repoMock = new();
         repoMock.Setup(x => x.CreateAsync(It.IsAny<PortalDefinition>(), false))
             .Returns(Task.CompletedTask)
             .Callback((PortalDefinition portal, bool _) => resultPortalDefinition = portal)
             .Verifiable();
-        PortalDefinitionService service = new(repoMock.Object)
-        {
-            Validator = validatorMock.Object
-        };
+        PortalDefinitionService service = new(repoMock.Object);
 
         // Act
         var result = await service.CreatePortalAsync(ValidCreateCommand, "Dummy-User");
 
         // Assert
-        validatorMock.Verify(x => x.ValidateRequest(ValidCreateCommand), Times.Once);
         repoMock.Verify(x => x.CreateAsync(It.IsAny<PortalDefinition>(), false), Times.Once);
         repoMock.VerifyNoOtherCalls();
         result.IsSuccess.Should().BeTrue();
@@ -150,44 +90,33 @@ public class PortalDefinitionServiceTests
     public async Task UpdatePortalAsync_Fails_WhenValidationFails()
     {
         // Arrange
-        (var fault, var validatorMock, var repoMock, var service) = PrepareServiceWithValidationFault();
+        (var repoMock, var service) = PrepareServiceWithValidationFault();
 
         // Act
         var result = await service.UpdatePortalAsync("some-id", EmptyUpdateCommand);
 
         // Assert
-        validatorMock.Verify(x => x.ValidateRequest(EmptyUpdateCommand), Times.Once);
         repoMock.Verify(x => x.UpdateAsync(It.IsAny<PortalDefinition>(), It.IsAny<bool>()), Times.Never);
         repoMock.VerifyNoOtherCalls();
         result.Should().NotBeNull();
         result.IsSuccess.Should().BeFalse();
         result.ErrorDetails.Should().NotBeNullOrEmpty();
-        result.ErrorDetails!.First().Key.Should().BeEquivalentTo(fault.Property);
-        result.ErrorDetails!.First().Value.Should().BeEquivalentTo(fault.Message);
     }
 
     [TestMethod]
     public async Task UpdatePortalAsync_Fails_ForUnknownId()
     {
         // Arrange
-        Mock<IRequestValidator<PortalCommandBase>> validatorMock = new();
-        validatorMock.Setup(x => x.ValidateRequest(It.IsAny<PortalCommandBase>()))
-            .Returns(new Bifrost.Utils.Validation.ValidationResult() { IsValid = true, Faults = [] })
-            .Verifiable();
         Mock<IPortalDefinitionRepository> repoMock = new();
         repoMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
             .Returns(Task.FromResult((PortalDefinition?)null))
             .Verifiable();
-        PortalDefinitionService service = new(repoMock.Object)
-        {
-            Validator = validatorMock.Object
-        };
+        PortalDefinitionService service = new(repoMock.Object);
 
         // Act
         var result = await service.UpdatePortalAsync("invalid-id", ValidUpdateCommand);
 
         // Assert
-        validatorMock.Verify(x => x.ValidateRequest(ValidUpdateCommand), Times.Once);
         repoMock.Verify(x => x.GetByIdAsync("invalid-id"), Times.Once);
         repoMock.Verify(x => x.UpdateAsync(It.IsAny<PortalDefinition>(), It.IsAny<bool>()), Times.Never);
         repoMock.VerifyNoOtherCalls();
@@ -212,10 +141,6 @@ public class PortalDefinitionServiceTests
             VpnType = "",
             VpnConfig = ""
         };
-        Mock<IRequestValidator<PortalCommandBase>> validatorMock = new();
-        validatorMock.Setup(x => x.ValidateRequest(It.IsAny<PortalCommandBase>()))
-            .Returns(new Bifrost.Utils.Validation.ValidationResult() { IsValid = true, Faults = [] })
-            .Verifiable();
         Mock<IPortalDefinitionRepository> repoMock = new();
         repoMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
             .Returns(Task.FromResult((PortalDefinition?)emptyPortalDefinition))
@@ -224,16 +149,12 @@ public class PortalDefinitionServiceTests
             .Returns(Task.CompletedTask)
             .Callback((PortalDefinition portal, bool _) => resultPortalDefinition = portal)
             .Verifiable();
-        PortalDefinitionService service = new(repoMock.Object)
-        {
-            Validator = validatorMock.Object
-        };
+        PortalDefinitionService service = new(repoMock.Object);
 
         // Act
         var result = await service.UpdatePortalAsync("some-id", ValidUpdateCommand);
 
         // Assert
-        validatorMock.Verify(x => x.ValidateRequest(ValidUpdateCommand), Times.Once);
         repoMock.Verify(x => x.GetByIdAsync("some-id"), Times.Once);
         repoMock.Verify(x => x.UpdateAsync(It.IsAny<PortalDefinition>(), false), Times.Once);
         repoMock.VerifyNoOtherCalls();
