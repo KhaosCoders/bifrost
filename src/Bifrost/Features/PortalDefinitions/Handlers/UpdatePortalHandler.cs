@@ -1,14 +1,19 @@
 ﻿using Bifrost.Commands;
 using Bifrost.Commands.Portals;
+using Bifrost.Extensions;
 using Bifrost.Features.PortalDefinitions.Services;
 using Bifrost.Shared;
+using FluentValidation;
 using MediatR;
 
 namespace Bifrost.Features.PortalDefinitions.Handlers;
 
-internal class UpdatePortalHandler(IPortalDefinitionService portalDefinitionService) : IRequestHandler<UpdatePortalCommand, CommandResponse<UpdatePortalResult>>
+internal class UpdatePortalHandler(
+    IPortalDefinitionRepository repository,
+    IValidator<UpdatePortalCommand> validator) : IRequestHandler<UpdatePortalCommand, CommandResponse<UpdatePortalResult>>
 {
-    private readonly IPortalDefinitionService portalDefinitionService = portalDefinitionService;
+    private readonly IPortalDefinitionRepository repository = repository;
+    private readonly IValidator<UpdatePortalCommand> validator = validator;
 
     public async Task<CommandResponse<UpdatePortalResult>> Handle(UpdatePortalCommand request, CancellationToken cancellationToken)
     {
@@ -16,7 +21,7 @@ internal class UpdatePortalHandler(IPortalDefinitionService portalDefinitionServ
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(request.Id, nameof(request.Id));
 
-            ServiceResult result = await portalDefinitionService.UpdatePortalAsync(request.Id, request);
+            var result = await UpdatePortalAsync(request);
 
             if (result.IsSuccess)
             {
@@ -31,4 +36,29 @@ internal class UpdatePortalHandler(IPortalDefinitionService portalDefinitionServ
             return CommandResponse<UpdatePortalResult>.Problem(result, ex.Message);
         }
     }
+
+    public async Task<(bool IsSuccess, ErrorDetails? ErrorDetails)> UpdatePortalAsync(UpdatePortalCommand request)
+    {
+        var validationResult = validator.Validate(request);
+        if (!validationResult.IsValid)
+        {
+            return new(false, validationResult.ToErrorDetails());
+        }
+
+        var definition = await repository.GetByIdAsync(request.Id);
+        if (definition is null)
+        {
+            return new(false, ErrorDetails.SingleError("Portal", "Portal not found"));
+        }
+
+        definition.Name = request.Name;
+        definition.MaxInstanceCount = request.MaxInstanceCount;
+        definition.VpnType = request.VpnType;
+        definition.VpnConfig = request.VpnConfig ?? string.Empty;
+
+        await repository.UpdateAsync(definition);
+
+        return new(true, default);
+    }
+
 }

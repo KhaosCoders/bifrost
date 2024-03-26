@@ -20,9 +20,6 @@ public static class PortalFeatureExtensions
     {
         // Repositories
         services.AddScoped<IPortalDefinitionRepository, PortalDefinitionRepository>();
-
-        // Services
-        services.AddScoped<IPortalDefinitionService, PortalDefinitionService>();
     }
 
     public static void MapPortalFeature(this IEndpointRouteBuilder app)
@@ -79,10 +76,10 @@ public static class PortalFeatureExtensions
             [FromServices] ISender mediator
             ) =>
         {
-            var result = await mediator.Send(new GetPortalsQuery(limit, offset));
+            var result = await mediator.Send(new GetPortalsQuery(limit ?? GetPortalsQuery.DefaultLimit, offset ?? GetPortalsQuery.DefaultOffset));
 
             return result.Success
-                ? TypedResults.Ok((IEnumerable<PortalDefinition>)result.Data.Portals)
+                ? TypedResults.Ok((IEnumerable<PortalDefinition>)result.Data.Portals!)
                 : TypedResults.Problem(result.Description);
         });
 

@@ -1,25 +1,60 @@
 ﻿using Bifrost.Commands;
+using Bifrost.Data;
+using Bifrost.Extensions;
 using Bifrost.Features.PortalDefinitions.Services;
+using Bifrost.Models.Portals;
 using Bifrost.Queries.Portals;
+using Bifrost.Shared;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Immutable;
 
 namespace Bifrost.Features.PortalDefinitions.Handlers;
 
-internal class GetPortalsHandler(IPortalDefinitionService portalDefinitionService) : IRequestHandler<GetPortalsQuery, CommandResponse<GetPortalsResult>>
+internal class GetPortalsHandler(
+    IPortalDefinitionRepository repository,
+    IValidator<GetPortalsQuery> validator) : IRequestHandler<GetPortalsQuery, CommandResponse<GetPortalsResult>>
 {
+    private readonly IValidator<GetPortalsQuery> validator = validator;
+    private readonly IPortalDefinitionRepository repository = repository;
+
     public async Task<CommandResponse<GetPortalsResult>> Handle(GetPortalsQuery request, CancellationToken cancellationToken)
     {
         try
         {
-            var result = portalDefinitionService.GetPortals(request.Limit ?? 50, request.Offset ?? 0).ToImmutableList();
+            var result = GetPortals(request);
 
-            return CommandResponse<GetPortalsResult>.Ok(new(result), "Got portal list");
+            if (result.IsSuccess && result.Portals != default)
+            {
+                var portals = await result.Portals.ToListAsync(cancellationToken: cancellationToken);
+                return CommandResponse<GetPortalsResult>.Ok(new(portals), "Got portal list");
+            }
+
+            return CommandResponse<GetPortalsResult>.Problem(new([], ErrorDetails: result.ErrorDetails), "Portal not found");
         }
         catch (Exception ex)
         {
-            return CommandResponse<GetPortalsResult>.Problem(new ([]), ex.Message);
+            GetPortalsResult result = new([], ErrorDetails: ErrorDetails.SingleError(ex.GetType().Name, ex.Message));
+            return CommandResponse<GetPortalsResult>.Problem(result, ex.Message);
+        }
+    }
+
+    private (bool IsSuccess, IQueryable<PortalDefinition>? Portals, ErrorDetails? ErrorDetails) GetPortals(GetPortalsQuery request)
+    {
+        var validationResult = validator.Validate(request);
+        if (!validationResult.IsValid)
+        {
+            return new(false, null, validationResult.ToErrorDetails());
+        }
+
+        try
+        {
+            var result = repository.QueryAll().Skip(request.Offset).Take(request.Limit);
+            return new(true, result, default);
+        }
+        catch (Exception ex) when (RepositoryExceptionHandler.ToErrorDetails(ex) is ErrorDetails error)
+        {
+            return new(false, null, error);
         }
     }
 }
