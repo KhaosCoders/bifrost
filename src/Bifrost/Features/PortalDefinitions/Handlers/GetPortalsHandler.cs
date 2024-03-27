@@ -1,6 +1,6 @@
 ﻿using Bifrost.Commands;
 using Bifrost.Data;
-using Bifrost.Features.PortalDefinitions.Services;
+using Bifrost.Features.PortalDefinitions.Repositories;
 using Bifrost.Models.Portals;
 using Bifrost.Queries.Portals;
 using Bifrost.Shared;

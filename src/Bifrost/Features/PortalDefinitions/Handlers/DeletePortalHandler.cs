@@ -1,7 +1,7 @@
 ﻿using Bifrost.Commands;
 using Bifrost.Commands.Portals;
 using Bifrost.Data;
-using Bifrost.Features.PortalDefinitions.Services;
+using Bifrost.Features.PortalDefinitions.Repositories;
 using Bifrost.Shared;
 using MediatR;
 

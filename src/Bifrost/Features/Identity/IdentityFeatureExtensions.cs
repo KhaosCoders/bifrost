@@ -40,7 +40,7 @@ public static class IdentityFeatureExtensions
                 .AddAuthenticationSchemes(IdentityConstants.BearerScheme)
                 .RequireAuthenticatedUser());
 
-        // Services
+        // Repositories
         services.AddScoped<IIdentityService, IdentityService>();
     }
 

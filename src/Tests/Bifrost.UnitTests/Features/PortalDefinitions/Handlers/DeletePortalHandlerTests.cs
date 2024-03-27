@@ -1,7 +1,7 @@
 ﻿using Bifrost.Commands.Portals;
 using Bifrost.Data.Base;
 using Bifrost.Features.PortalDefinitions.Handlers;
-using Bifrost.Features.PortalDefinitions.Services;
+using Bifrost.Features.PortalDefinitions.Repositories;
 
 namespace Bifrost.Tests.Features.PortalDefinitions.Handlers;
 

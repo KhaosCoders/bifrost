@@ -1,6 +1,6 @@
 ﻿using Bifrost.Commands.Portals;
 using Bifrost.Features.PortalDefinitions.Handlers;
-using Bifrost.Features.PortalDefinitions.Services;
+using Bifrost.Features.PortalDefinitions.Repositories;
 using Bifrost.Models.Portals;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

@@ -1,5 +1,5 @@
 ﻿using Bifrost.Commands.Portals;
-using Bifrost.Features.PortalDefinitions.Services;
+using Bifrost.Features.PortalDefinitions.Repositories;
 using Bifrost.Models.Portals;
 using Bifrost.Queries.Portals;
 using MediatR;
