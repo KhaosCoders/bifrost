@@ -2,7 +2,6 @@
 using Bifrost.Features.PortalDefinitions.Handlers;
 using Bifrost.Features.PortalDefinitions.Services;
 using Bifrost.Models.Portals;
-using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -14,7 +13,7 @@ public class CreatePortalHandlerTests
 {
     private static IHttpContextAccessor MockHttpAccessor(string username)
     {
-        ClaimsIdentity identity = new([new Claim(ClaimsIdentity.DefaultNameClaimType,username)]);
+        ClaimsIdentity identity = new([new Claim(ClaimsIdentity.DefaultNameClaimType, username)]);
         ClaimsPrincipal principal = new(identity);
         Mock<HttpContext> httpContextMock = new();
         httpContextMock.Setup(x => x.User)
@@ -35,11 +34,8 @@ public class CreatePortalHandlerTests
         repoMock.Setup(x => x.CreateAsync(It.IsAny<PortalDefinition>(), false))
             .Returns(Task.CompletedTask)
             .Verifiable(Times.Once);
-        Mock<IValidator<CreatePortalCommand>> validatorMock = new();
-        validatorMock.Setup(x => x.Validate(cmd))
-            .Returns(new FluentValidation.Results.ValidationResult());
         var httpContext = MockHttpAccessor("user1");
-        CreatePortalHandler handler = new(httpContext, repoMock.Object, validatorMock.Object);
+        CreatePortalHandler handler = new(httpContext, repoMock.Object);
 
         // Act
         var result = await handler.Handle(cmd, CancellationToken.None);
@@ -61,11 +57,8 @@ public class CreatePortalHandlerTests
         Mock<IPortalDefinitionRepository> repoMock = new();
         repoMock.Setup(x => x.CreateAsync(It.IsAny<PortalDefinition>(), false))
             .Returns(Task.CompletedTask);
-        Mock<IValidator<CreatePortalCommand>> validatorMock = new();
-        validatorMock.Setup(x => x.Validate(cmd))
-            .Returns(new FluentValidation.Results.ValidationResult());
         var httpContext = MockHttpAccessor(string.Empty);
-        CreatePortalHandler handler = new(httpContext, repoMock.Object, validatorMock.Object);
+        CreatePortalHandler handler = new(httpContext, repoMock.Object);
 
         // Act
         var result = await handler.Handle(cmd, CancellationToken.None);
@@ -86,11 +79,8 @@ public class CreatePortalHandlerTests
         Mock<IPortalDefinitionRepository> repoMock = new();
         repoMock.Setup(x => x.CreateAsync(It.IsAny<PortalDefinition>(), false))
             .Throws(new DbUpdateException("", new Exception("SQLite Error 19: 'UNIQUE constraint failed: PortalDefinition.Name'")));
-        Mock<IValidator<CreatePortalCommand>> validatorMock = new();
-        validatorMock.Setup(x => x.Validate(cmd))
-            .Returns(new FluentValidation.Results.ValidationResult());
         var httpContext = MockHttpAccessor("user1");
-        CreatePortalHandler handler = new(httpContext, repoMock.Object, validatorMock.Object);
+        CreatePortalHandler handler = new(httpContext, repoMock.Object);
 
         // Act
         var result = await handler.Handle(cmd, CancellationToken.None);

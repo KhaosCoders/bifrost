@@ -2,7 +2,6 @@
 using Bifrost.Data.Base;
 using Bifrost.Features.PortalDefinitions.Handlers;
 using Bifrost.Features.PortalDefinitions.Services;
-using FluentValidation;
 
 namespace Bifrost.Tests.Features.PortalDefinitions.Handlers;
 
@@ -18,10 +17,7 @@ public class DeletePortalHandlerTests
         repoMock.Setup(x => x.DeleteAsync(cmd.Id, false))
             .Returns(Task.CompletedTask)
             .Verifiable(Times.Once);
-        Mock<IValidator<DeletePortalCommand>> validatorMock = new();
-        validatorMock.Setup(x => x.Validate(cmd))
-               .Returns(new FluentValidation.Results.ValidationResult());
-        DeletePortalHandler handler = new(repoMock.Object, validatorMock.Object);
+        DeletePortalHandler handler = new(repoMock.Object);
 
         // Act
         var result = await handler.Handle(cmd, CancellationToken.None);
@@ -44,10 +40,7 @@ public class DeletePortalHandlerTests
         Mock<IPortalDefinitionRepository> repoMock = new();
         repoMock.Setup(x => x.DeleteAsync(cmd.Id, false))
             .Throws(new EntityNotFoundException());
-        Mock<IValidator<DeletePortalCommand>> validatorMock = new();
-        validatorMock.Setup(x => x.Validate(cmd))
-               .Returns(new FluentValidation.Results.ValidationResult());
-        DeletePortalHandler handler = new(repoMock.Object, validatorMock.Object);
+        DeletePortalHandler handler = new(repoMock.Object);
 
         // Act
         var result = await handler.Handle(cmd, CancellationToken.None);

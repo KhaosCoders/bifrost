@@ -3,7 +3,6 @@ using Bifrost.Data.Base;
 using Bifrost.Features.PortalDefinitions.Handlers;
 using Bifrost.Features.PortalDefinitions.Services;
 using Bifrost.Models.Portals;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bifrost.Tests.Features.PortalDefinitions.Handlers;
@@ -24,11 +23,7 @@ public class UpdatePortalHandlerTests
         repoMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
             .Returns(Task.FromResult((PortalDefinition?)currentState))
             .Verifiable(Times.Once);
-        Mock<IValidator<UpdatePortalCommand>> validatorMock = new();
-        validatorMock
-            .Setup(x => x.Validate(cmd))
-        .Returns(new FluentValidation.Results.ValidationResult());
-        UpdatePortalHandler handler = new(repoMock.Object, validatorMock.Object);
+        UpdatePortalHandler handler = new(repoMock.Object);
 
         // Act
         var result = await handler.Handle(cmd, CancellationToken.None);
@@ -53,10 +48,7 @@ public class UpdatePortalHandlerTests
             .Throws(new DbUpdateException("", new Exception("SQLite Error 19: 'UNIQUE constraint failed: PortalDefinition.Name'")));
         repoMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
             .Returns(Task.FromResult((PortalDefinition?)currentState));
-        Mock<IValidator<UpdatePortalCommand>> validatorMock = new();
-        validatorMock.Setup(x => x.Validate(cmd))
-            .Returns(new FluentValidation.Results.ValidationResult());
-        UpdatePortalHandler handler = new(repoMock.Object, validatorMock.Object);
+        UpdatePortalHandler handler = new(repoMock.Object);
 
         // Act
         var result = await handler.Handle(cmd, CancellationToken.None);
@@ -77,10 +69,7 @@ public class UpdatePortalHandlerTests
         Mock<IPortalDefinitionRepository> repoMock = new();
         repoMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
             .ThrowsAsync(new EntityNotFoundException());
-        Mock<IValidator<UpdatePortalCommand>> validatorMock = new();
-        validatorMock.Setup(x => x.Validate(cmd))
-            .Returns(new FluentValidation.Results.ValidationResult());
-        UpdatePortalHandler handler = new(repoMock.Object, validatorMock.Object);
+        UpdatePortalHandler handler = new(repoMock.Object);
 
         // Act
         var result = await handler.Handle(cmd, CancellationToken.None);

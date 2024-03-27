@@ -3,7 +3,6 @@ using Bifrost.Features.PortalDefinitions.Handlers;
 using Bifrost.Features.PortalDefinitions.Services;
 using Bifrost.Models.Portals;
 using Bifrost.Queries.Portals;
-using FluentValidation;
 
 namespace Bifrost.Tests.Features.PortalDefinitions.Handlers;
 
@@ -20,10 +19,7 @@ public class GetPortalHandlerTests
         repoMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
             .ReturnsAsync(portal)
             .Verifiable(Times.Once);
-        Mock<IValidator<GetPortalQuery>> validatorMock = new();
-        validatorMock.Setup(x => x.Validate(query))
-            .Returns(new FluentValidation.Results.ValidationResult());
-        GetPortalHandler handler = new(repoMock.Object, validatorMock.Object);
+        GetPortalHandler handler = new(repoMock.Object);
 
         // Act
         var result = await handler.Handle(query, CancellationToken.None);
@@ -45,10 +41,7 @@ public class GetPortalHandlerTests
         repoMock.Setup(x => x.GetByIdAsync(It.IsAny<string>()))
             .ThrowsAsync(new EntityNotFoundException())
             .Verifiable(Times.Once);
-        Mock<IValidator<GetPortalQuery>> validatorMock = new();
-        validatorMock.Setup(x => x.Validate(query))
-            .Returns(new FluentValidation.Results.ValidationResult());
-        GetPortalHandler handler = new(repoMock.Object, validatorMock.Object);
+        GetPortalHandler handler = new(repoMock.Object);
 
         // Act
         var result = await handler.Handle(query, CancellationToken.None);
