@@ -8,7 +8,6 @@ using Bifrost.Shared;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace Bifrost.Features.PortalDefinitions.Handlers;
 

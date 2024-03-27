@@ -1,3 +1,4 @@
+using Bifrost.Behaviors;
 using Bifrost.Components;
 using Bifrost.Components.Account;
 using Bifrost.Data;
@@ -5,6 +6,7 @@ using Bifrost.Features.Identity;
 using Bifrost.Features.Identity.Model;
 using Bifrost.Features.PortalDefinitions;
 using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
@@ -24,6 +26,7 @@ public class Program
 
         // MediatR
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
+        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         // Render-Modes
         builder.Services.AddRazorComponents()
