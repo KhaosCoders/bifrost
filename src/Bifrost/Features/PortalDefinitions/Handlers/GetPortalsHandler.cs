@@ -8,6 +8,7 @@ using Bifrost.Shared;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Bifrost.Features.PortalDefinitions.Handlers;
 
@@ -26,7 +27,9 @@ internal class GetPortalsHandler(
 
             if (result.IsSuccess && result.Portals != default)
             {
-                var portals = await result.Portals.ToListAsync(cancellationToken: cancellationToken);
+                var portals = result.Portals is IAsyncEnumerable<PortalDefinition>
+                    ? await result.Portals.ToListAsync(cancellationToken: cancellationToken)
+                    : [.. result.Portals];
                 return CommandResponse<GetPortalsResult>.Ok(new(portals), "Got portal list");
             }
 

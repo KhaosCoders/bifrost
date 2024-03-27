@@ -1,12 +1,11 @@
 ﻿using Bifrost.Commands.Portals;
-using Bifrost.Commands.Portals.Validation;
 
 namespace Bifrost.Tests.Commands.Portals;
 
 [TestClass]
 public class UpdatePortalCommandValidationTests
 {
-    private static UpdatePortalCommand ValidCommand => new("name", 2, nameof(VpnTypes.OpenVPN), "<config>");
+    private static UpdatePortalCommand ValidCommand => new("id-1", "name", 2, nameof(VpnTypes.OpenVPN), "<config>");
 
     private readonly UpdatePortalCommandValidator Validator = new();
 

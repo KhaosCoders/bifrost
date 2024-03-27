@@ -1,5 +1,4 @@
 ﻿using Bifrost.Commands.Portals;
-using Bifrost.Commands.Portals.Validation;
 
 namespace Bifrost.Tests.Commands.Portals;
 

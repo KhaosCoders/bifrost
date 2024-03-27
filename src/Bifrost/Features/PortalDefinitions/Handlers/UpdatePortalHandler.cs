@@ -1,5 +1,6 @@
 ﻿using Bifrost.Commands;
 using Bifrost.Commands.Portals;
+using Bifrost.Data;
 using Bifrost.Extensions;
 using Bifrost.Features.PortalDefinitions.Services;
 using Bifrost.Shared;
@@ -45,18 +46,25 @@ internal class UpdatePortalHandler(
             return new(false, validationResult.ToErrorDetails());
         }
 
-        var definition = await repository.GetByIdAsync(request.Id);
-        if (definition is null)
+        try
         {
-            return new(false, ErrorDetails.SingleError("Portal", "Portal not found"));
+            var definition = await repository.GetByIdAsync(request.Id);
+            if (definition is null)
+            {
+                return new(false, ErrorDetails.SingleError("NotFound", "Portal not found"));
+            }
+
+            definition.Name = request.Name;
+            definition.MaxInstanceCount = request.MaxInstanceCount;
+            definition.VpnType = request.VpnType;
+            definition.VpnConfig = request.VpnConfig ?? string.Empty;
+
+            await repository.UpdateAsync(definition);
         }
-
-        definition.Name = request.Name;
-        definition.MaxInstanceCount = request.MaxInstanceCount;
-        definition.VpnType = request.VpnType;
-        definition.VpnConfig = request.VpnConfig ?? string.Empty;
-
-        await repository.UpdateAsync(definition);
+        catch (Exception ex) when (RepositoryExceptionHandler.ToErrorDetails(ex) is ErrorDetails error)
+        {
+            return new(false, error);
+        }
 
         return new(true, default);
     }

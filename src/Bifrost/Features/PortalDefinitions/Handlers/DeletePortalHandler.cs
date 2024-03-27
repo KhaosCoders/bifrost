@@ -28,12 +28,7 @@ internal class DeletePortalHandler(
                 return CommandResponse<DeletePortalResult>.Ok(new(true), "Portal deleted");
             }
 
-            return CommandResponse<DeletePortalResult>.Problem(new(false, ErrorDetails: result.ErrorDetails), "Portal not deleted");
-        }
-        catch (EntityNotFoundException)
-        {
-            DeletePortalResult result = new(false, true, ErrorDetails: ErrorDetails.SingleError("NotFound", $"Portal with ID {request.Id} not found"));
-            return CommandResponse<DeletePortalResult>.Problem(result, "Portal not found");
+            return CommandResponse<DeletePortalResult>.Problem(new(false, NotFound: result.NotFound, ErrorDetails: result.ErrorDetails), "Portal not deleted");
         }
         catch (Exception ex)
         {
@@ -42,12 +37,12 @@ internal class DeletePortalHandler(
         }
     }
 
-    private async Task<(bool IsSuccess, ErrorDetails? ErrorDetails)> DeletePortalAsync(DeletePortalCommand request)
+    private async Task<(bool IsSuccess, bool NotFound, ErrorDetails? ErrorDetails)> DeletePortalAsync(DeletePortalCommand request)
     {
         var validationResult = validator.Validate(request);
         if (!validationResult.IsValid)
         {
-            return new(false, validationResult.ToErrorDetails());
+            return new(false, false, validationResult.ToErrorDetails());
         }
 
         try
@@ -56,9 +51,9 @@ internal class DeletePortalHandler(
         }
         catch (Exception ex) when (RepositoryExceptionHandler.ToErrorDetails(ex) is ErrorDetails error)
         {
-            return new(false,  error);
+            return new(false, true,  error);
         }
 
-        return new(true, default);
+        return new(true, false, default);
     }
 }
