@@ -5,6 +5,7 @@ using Bifrost.Data;
 using Bifrost.Features.Identity;
 using Bifrost.Features.Identity.Model;
 using Bifrost.Features.PortalDefinitions;
+using Bifrost.Middleware;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -27,6 +28,7 @@ public class Program
         // MediatR
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
 
         // Render-Modes
         builder.Services.AddRazorComponents()
@@ -60,6 +62,8 @@ public class Program
         app.EnsureDatabaseReady<ApplicationDbContext>();
 
         // Configure the HTTP request pipeline.
+        app.UseExceptionHandler("/Error");
+
         if (app.Environment.IsDevelopment())
         {
             app.UseWebAssemblyDebugging();
@@ -69,7 +73,6 @@ public class Program
         }
         else
         {
-            app.UseExceptionHandler("/Error");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
