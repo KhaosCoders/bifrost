@@ -1,5 +1,8 @@
 ﻿@page "/Manage"
+@using Bifrost.Commands
 @using Bifrost.Commands.Portals
+@using Bifrost.Extensions
+@using Bifrost.Features.Portals.Commands
 @using Bifrost.Models.Portals
 @using Bifrost.Queries.Portals
 @using Bifrost.Shared.Dialogs
@@ -9,8 +12,6 @@
 @rendermode InteractiveAuto
 
 @inject ISender Mediator
-@inject IDialogService DialogService
-@inject IToastService ToastService
 
 <PageTitle>Bifrost - Manage</PageTitle>
 
@@ -52,12 +53,7 @@
     {
         portalProvider = async req =>
         {
-            string? order = req.GetSortByProperties() is IReadOnlyCollection<SortedProperty> { Count: > 0 } collection
-                && collection.FirstOrDefault() is SortedProperty property
-                    ? $"{(property.Direction == SortDirection.Descending ? '-' : string.Empty)}{property.PropertyName}" : null;
-
-            var result = await Mediator.Send(new GetPortalsQuery(req.Count ?? 50, req.StartIndex, order), req.CancellationToken);
-
+            var result = await LoadPortals(req);
             if (!result.Success || result.Data == null)
                 return GridItemsProviderResult.From(items: new List<PortalDefinition>(), totalItemCount: 0);
 
@@ -67,66 +63,17 @@
         };
     }
 
+    private Task<CommandResponse<GetPortalsResult>> LoadPortals<T>(GridItemsProviderRequest<T> req) =>
+        Mediator.Send(new GetPortalsQuery(req.Count ?? 50, req.StartIndex, req.GetOrder()), req.CancellationToken);
+
     private void EditPortal(PortalDefinition portal)
     {
         Console.WriteLine($"Edit clicked {portal.Name}");
     }
 
-    private Task DeletePortal(PortalDefinition portal)
+    private async Task DeletePortal(PortalDefinition portal)
     {
-        return DialogService.ShowDialogAsync<ConfirmationDialog>(new ConfirmationContext(portal, $"Delete portal {portal.Name}?"), new DialogParameters()
-            {
-                Title = $"Deleting {portal.Name}",
-                OnDialogResult = DialogService.CreateDialogCallback(this, HandleDelete),
-                PrimaryAction = "Yes",
-                SecondaryAction = "No",
-                TrapFocus = true,
-                Modal = true,
-            });
-    }
-
-    private async Task HandleDelete(DialogResult dialogResult)
-    {
-        if (dialogResult.Cancelled
-            || dialogResult.Data is not ConfirmationContext ctx
-            || ctx.Context is not PortalDefinition portal)
-        {
-            return;
-        }
-
-        string toastId = $"delete-portal-{portal.Id}";
-
-        ToastService.ShowProgressToast(new()
-            {
-                Id = toastId,
-                Intent = ToastIntent.Progress,
-                Title = "Deleting portal",
-                Content = new()
-                {
-                    Details = "Please wait while we delete the portal...",
-                }
-            });
-
-        try
-        {
-            var result = await Mediator.Send(new DeletePortalCommand(portal.Id));
-            if (result.Success)
-            {
-                ToastService.ShowToast(ToastIntent.Success, "Portal deleted successfully", 3000);
-            }
-            else
-            {
-                ToastService.ShowToast(ToastIntent.Error, $"Failed to delete portal: {(result.Data.ErrorDetails?.FirstOrDefault().Value.FirstOrDefault() ?? "Unknown Error")}", 10000);
-            }
-        }
-        catch (Exception ex)
-        {
-            ToastService.ShowToast(ToastIntent.Error, $"Error: {ex.Message}", 10000);
-        }
-        finally
-        {
-            ToastService.CloseToast(toastId);
-            await grid.RefreshDataAsync();
-        }
+        await Mediator.Send(new TriggerPortalDeleteCommand(portal));
+        await grid.RefreshDataAsync();
     }
 }

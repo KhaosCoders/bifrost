@@ -1,7 +1,7 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 
 @url=https://localhost:7119
-@token=CfDJ8E5wUJR4dWxGnLtDl6mEgqZAERaMOxaA8VXk3SWkLxo5mDOGIVdIHga5V0HxfAS4Klp00naNiuJUAvwr-3JlgA98OoZv73l7v_o9z0GpHys4C7zIHdaFTK4Zjwnhi2RRF2vmKEls8YTWqi-hh1LQ8rcFk7vxGK7K4DMjD8FTWhLKZARXXUk0RfDn3sA29_BrA1Sx22zPjcXADKiM0FVElB_4BC2jaXetXm0EEIHqKsYqrkbV228Xo4Ygf4Nu8PknAo1o9n_P6dz3JYby3USY_3KfG7KzAHWwCpEQvWu37FfP2bq4ewzEd8XwNvje0wqfmY5gyVbejVSo9NpJ_XoYRMMJTVncNV5IZFklCi_FQ6_Nfhr5NiP9ErD-32OqUQNfUZC4XbkEunnYgej9yx2rImxFV1mfX-ZPpcj_H7tCaYjKcPvGFSbgh8SQIqpW5d2xDGavRcV95y33_-MQTs33XTUXA5VLZRvvj0DWd1uW2OrXGQHJynTQ4wlfvySB5lOtVAAgtkEpn1FORmTOURuhpUSL_0Hfhf32zw-YMuJwIipXWDIdjd3bCXjiaEOLI48ZS_Ro8ABDa0OdVSNITV9WUPFeyIGSHD5G3AMX0LyWFRge2gQinrIBa-5r4cA4ug4omZxjQVNdAj9RhHI8EtqAcp2BdpLOC1aZGmrgvCdtclnqHTv5R_iyaSn8uZNGd2u2YQ
+@token=CfDJ8F1wTwxgthNHnEqQW0YAn3AIKYWHhZ2yZY4Ih31aTLJI1KXbGQo2VzrRcicSQvP72MbgzuywOzMaUH1gUBueK01DT8nz51E9c_gPxWP2m4lTKVewVM0ajtfsfEmtDHIjf9Qr9RpIafzi1hg9wboBODvg7V2a3KwFknUsfrjAo98G8-V9348hhNFyywh5PpGbOI2rVDzllHOSYBe9RxPkN0cMIS7aEKb5v7_kZ3BOAgjuxeE3K2PHXaVfUVwJl40uyxvfQTw2M-_-xYqB7oQLJRFHm15pOXv490l4qs21FmIn_nrgDZkPAYCKPVjeQVVic4FQOafekUlnJGpj61ToOhVVpneozKZ2PlwAJ2tRCqM84b6KvEMgutiiOsAnrOIv0sciESd1yIVysnnDrrGS-voA2lrRLqBgOKYBibmtFZNSLOpNXbi_mF_KBw7tNzoVqNQP_4sngvYqvZFws8tDfy3m8liyiskkhUviAsfiW8Yh8pNv1Z0uXYGwshmR9tmcD4m480Dr_cB6FwNO7ulDFZ7h4vtpPdC5nTjjJprpft-f6GsSU2e1Olf_4ZMUTzKM4m4V63RuR_U6QvEwBsqQTu0captIlTwghplS_DYcZVK65iDUi-I7NjLnife8-hHzQW7EDhNAYvX_hizDohk1n1gL8njHz36KATz3LJ73Q7TdCyfrfW7kd5WAXlx0P20HQg
 
 # Register new portal
 POST {{url}}/api/portals
@@ -10,9 +10,9 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "name": "Test5-1",
+    "name": "Test3",
     "maxInstanceCount": 1,
-    "vpnType": "None",
+    "vpnType": "OpenVPN",
     "vpnConfig": "Empty"
 }
 ###

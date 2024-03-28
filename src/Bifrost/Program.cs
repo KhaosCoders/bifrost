@@ -26,7 +26,11 @@ public class Program
         builder.Services.AddValidatorsFromAssemblyContaining(typeof(VpnTypes));
 
         // MediatR
-        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
+        builder.Services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblyContaining<Program>();
+            cfg.RegisterServicesFromAssemblyContaining<Client.UserInfo>();
+        });
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
 
@@ -38,7 +42,7 @@ public class Program
         // FluentUI
         builder.Services.AddFluentUIComponents();
 
-        // DbContext
+        // DbContext}
         var identityConnectionString = builder.Configuration.GetConnectionString("IdentityConnection")
             ?? throw new InvalidOperationException("Connection string 'IdentityConnection' not found.");
         builder.Services.AddDbContext<ApplicationDbContext>(options =>

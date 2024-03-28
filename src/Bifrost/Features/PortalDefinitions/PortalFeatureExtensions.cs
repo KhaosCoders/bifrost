@@ -25,8 +25,8 @@ public static class PortalFeatureExtensions
     public static void MapPortalFeature(this IEndpointRouteBuilder app)
     {
         var api = app.MapGroup("/api")
-            .MapGroup("");
-                //.RequireAuthorization("ApiPolicy");
+            .MapGroup("")
+                .RequireAuthorization("ApiPolicy");
         api.MapPost("/portals", async Task<CreateResult> (
             [FromBody] CreatePortalCommand request,
             [FromServices] ISender mediator
