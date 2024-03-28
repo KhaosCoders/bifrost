@@ -1,0 +1,15 @@
+﻿@implements IDialogContentComponent<ConfirmationContext>
+
+@if (Content != null)
+{
+    <p>@Content.Question</p>
+}
+else
+{
+    <p style="color:red">No ConfirmationContext set!</p>
+}
+
+@code {
+    [Parameter]
+    public ConfirmationContext? Content { get; set; }
+}

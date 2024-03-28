@@ -10,6 +10,7 @@
 
 @inject ISender Mediator
 @inject IDialogService DialogService
+@inject IToastService ToastService
 
 <PageTitle>Bifrost - Manage</PageTitle>
 
@@ -20,7 +21,8 @@
                 ItemSize="46"
                 GenerateHeader="GenerateHeaderOption.Sticky"
                 TGridItem="PortalDefinition"
-                style="height: 405px; overflow:auto;">
+                style="height: 405px; overflow:auto;"
+                @ref="grid">
     <ChildContent>
         <PropertyColumn Property="@(c => c.Name)" Sortable="true" Style="color:burlywood" />
         <PropertyColumn Property="@(c => c.VpnType)" Sortable="true" Title="VPN Type" />
@@ -44,6 +46,7 @@
 
 @code {
     GridItemsProvider<PortalDefinition> portalProvider = default!;
+    FluentDataGrid<PortalDefinition> grid = default!;
 
     protected override void OnInitialized()
     {
@@ -69,8 +72,61 @@
         Console.WriteLine($"Edit clicked {portal.Name}");
     }
 
-    private void DeletePortal(PortalDefinition portal)
+    private Task DeletePortal(PortalDefinition portal)
     {
-        Console.WriteLine($"Delete clicked {portal.Name}");
+        return DialogService.ShowDialogAsync<ConfirmationDialog>(new ConfirmationContext(portal, $"Delete portal {portal.Name}?"), new DialogParameters()
+            {
+                Title = $"Deleting {portal.Name}",
+                OnDialogResult = DialogService.CreateDialogCallback(this, HandleDelete),
+                PrimaryAction = "Yes",
+                SecondaryAction = "No",
+                TrapFocus = true,
+                Modal = true,
+            });
+    }
+
+    private async Task HandleDelete(DialogResult dialogResult)
+    {
+        if (dialogResult.Cancelled
+            || dialogResult.Data is not ConfirmationContext ctx
+            || ctx.Context is not PortalDefinition portal)
+        {
+            return;
+        }
+
+        string toastId = $"delete-portal-{portal.Id}";
+
+        ToastService.ShowProgressToast(new()
+            {
+                Id = toastId,
+                Intent = ToastIntent.Progress,
+                Title = "Deleting portal",
+                Content = new()
+                {
+                    Details = "Please wait while we delete the portal...",
+                }
+            });
+
+        try
+        {
+            var result = await Mediator.Send(new DeletePortalCommand(portal.Id));
+            if (result.Success)
+            {
+                ToastService.ShowToast(ToastIntent.Success, "Portal deleted successfully", 3000);
+            }
+            else
+            {
+                ToastService.ShowToast(ToastIntent.Error, $"Failed to delete portal: {(result.Data.ErrorDetails?.FirstOrDefault().Value.FirstOrDefault() ?? "Unknown Error")}", 10000);
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowToast(ToastIntent.Error, $"Error: {ex.Message}", 10000);
+        }
+        finally
+        {
+            ToastService.CloseToast(toastId);
+            await grid.RefreshDataAsync();
+        }
     }
 }
