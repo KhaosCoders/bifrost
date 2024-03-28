@@ -1,13 +1,76 @@
 ﻿@page "/Manage"
+@using Bifrost.Commands.Portals
+@using Bifrost.Models.Portals
+@using Bifrost.Queries.Portals
+@using Bifrost.Shared.Dialogs
+@using MediatR
 
 @attribute [Authorize]
 @rendermode InteractiveAuto
 
+@inject ISender Mediator
+@inject IDialogService DialogService
+
 <PageTitle>Bifrost - Manage</PageTitle>
 
+<h3>Manage Portals</h3>
 
-<h3>ManagePortalsPage</h3>
+<FluentDataGrid ItemsProvider="portalProvider"
+                Virtualize="true"
+                ItemSize="46"
+                GenerateHeader="GenerateHeaderOption.Sticky"
+                TGridItem="PortalDefinition"
+                style="height: 405px; overflow:auto;">
+    <ChildContent>
+        <PropertyColumn Property="@(c => c.Name)" Sortable="true" Style="color:burlywood" />
+        <PropertyColumn Property="@(c => c.VpnType)" Sortable="true" Title="VPN Type" />
+        <PropertyColumn Property="@(c => c.MaxInstanceCount)" Sortable="true" Title="Max Instances" Align="Align.Center" />
+        <PropertyColumn Property="@(c => c.CreationDate)" Sortable="true" />
+        <TemplateColumn Title="Actions" Align="@Align.End">
+            <FluentButton IconEnd="@(new Icons.Regular.Size16.Edit())" @onclick="@(() => EditPortal(context))" />
+            <FluentButton IconEnd="@(new Icons.Regular.Size16.Delete())" @onclick="@(() => DeletePortal(context))" />
+        </TemplateColumn>
+    </ChildContent>
+    <EmptyContent>
+        <FluentIcon Value="@(new Icons.Filled.Size24.Crown())" Color="@Color.Accent" />&nbsp; Nothing to see here. Carry on!
+    </EmptyContent>
+    <LoadingContent>
+        <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center">
+            Loading...<br />
+            <FluentProgress Width="240px" />
+        </FluentStack>
+    </LoadingContent>
+</FluentDataGrid>
 
 @code {
+    GridItemsProvider<PortalDefinition> portalProvider = default!;
 
+    protected override void OnInitialized()
+    {
+        portalProvider = async req =>
+        {
+            string? order = req.GetSortByProperties() is IReadOnlyCollection<SortedProperty> { Count: > 0 } collection
+                && collection.FirstOrDefault() is SortedProperty property
+                    ? $"{(property.Direction == SortDirection.Descending ? '-' : string.Empty)}{property.PropertyName}" : null;
+
+            var result = await Mediator.Send(new GetPortalsQuery(req.Count ?? 50, req.StartIndex, order), req.CancellationToken);
+
+            if (!result.Success || result.Data == null)
+                return GridItemsProviderResult.From(items: new List<PortalDefinition>(), totalItemCount: 0);
+
+            return GridItemsProviderResult.From(
+                items: result.Data.Portals!,
+                totalItemCount: result.Data.Total);
+        };
+    }
+
+    private void EditPortal(PortalDefinition portal)
+    {
+        Console.WriteLine($"Edit clicked {portal.Name}");
+    }
+
+    private void DeletePortal(PortalDefinition portal)
+    {
+        Console.WriteLine($"Delete clicked {portal.Name}");
+    }
 }

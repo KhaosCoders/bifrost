@@ -4,6 +4,7 @@ namespace Bifrost.Data.Base;
 
 public interface IRepositoryBase<TEntity> where TEntity : class, IEntity
 {
+    Task<int> CountAsync();
     Task CreateAsync(TEntity entity, bool isBulkOperation = false);
     Task DeleteAsync(string id, bool isBulkOperation = false);
     Task<TEntity?> GetByIdAsync(string id);

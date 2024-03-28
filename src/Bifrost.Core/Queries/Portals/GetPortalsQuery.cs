@@ -4,13 +4,16 @@ using FluentValidation;
 
 namespace Bifrost.Queries.Portals;
 
-public record GetPortalsQuery(int Limit = GetPortalsQuery.DefaultLimit, int Offset = GetPortalsQuery.DefaultOffset) : IQuery<GetPortalsResult>
+public record GetPortalsQuery(
+    int Limit = GetPortalsQuery.DefaultLimit,
+    int Offset = GetPortalsQuery.DefaultOffset,
+    string? Order = default) : IQuery<GetPortalsResult>
 {
     public const int DefaultLimit = 50;
     public const int DefaultOffset = 0;
 }
 
-public record GetPortalsResult(IList<PortalDefinition>? Portals, ErrorDetails? ErrorDetails = default);
+public record GetPortalsResult(IList<PortalDefinition>? Portals, int Total, ErrorDetails? ErrorDetails = default);
 
 public class GetPortalsQueryValidator : AbstractValidator<GetPortalsQuery>
 {

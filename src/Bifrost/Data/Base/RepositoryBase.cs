@@ -14,6 +14,12 @@ public abstract class RepositoryBase<TEntity>(DbContext dbContext) : IRepository
     private readonly DbContext dbContext = dbContext;
 
     /// <summary>
+    /// Returns the number of entities in the repository.
+    /// </summary>
+    /// <returns>Count of entities</returns>
+    public Task<int> CountAsync() => dbContext.Set<TEntity>().CountAsync();
+
+    /// <summary>
     /// Returns all entities of the repository.
     /// </summary>
     /// <remarks>
